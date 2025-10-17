@@ -1,0 +1,35 @@
+\newcommand{\authnote}[2]{{\bf \textcolor{blue}{#1}: \em \textcolor{red}{#2}}}
+
+%% Uncomment the following line to remove author notes from the paper
+%% for submission
+%\renewcommand{\authnote}[2]{}
+
+\newcommand{\lorenzo}[1]{\authnote{lorenzo}{#1}}
+\newcommand{\fabio}[1]{\authnote{fabio}{#1}}
+\newcommand{\zhenkai}[1]{\authnote{zhenkai}{#1}}
+\newcommand{\jun}[1]{\authnote{jun}{#1}}
+\newcommand{\jiahao}[1]{\authnote{jiahao}{#1}}
+
+\newcommand{\jh}[1]{{\color{black}{#1}}}
+\newcommand{\red}[1]{{\color{black}{#1}}}
+\newcommand{\tosem}[1]{{\color{blue}{#1}}}
+
+\newcommand{\key}[1]{\authnote{key}{#1}}
+\newcommand{\todo}[1]{\authnote{todo}{#1}}
+
+\newcommand{\mycommfont}[1]{\textcolor{forestblue}{#1}}
+\newcommand{\callfunc}[1]{\textsc{#1}\xspace}
+
+\newcommand{\bulletpoint}[1]{
+    \vspace{1pt}\par
+    \noindent \textbf{\color{black} #1.}
+}
+
+\newcommand{\featurepoint}[2]{
+    \vspace{1pt}\par
+    \noindent \textit{$\mathbb{#1}$} \textit{\color{black} #2.}
+}
+
+\newcommand{\codename}{\textsc{FrameDroid}\xspace}
+\newcommand*{\circled}[1]{\lower.7ex\hbox{\tikz\draw (0pt, 0pt)%
+    circle (.5em) node {\makebox[0.2em][c]{\small #1}};}}

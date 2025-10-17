@@ -1,0 +1,266 @@
+% \documentclass[conference,compsoc]{IEEEtran}
+\documentclass[manuscript,screen,review]{acmart}
+\usepackage{shortcuts}
+
+% to be able to draw some self-contained figs
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{subcaption}	
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{adjustbox}	
+\usepackage{graphicx}	
+\usepackage{multirow}	
+\usepackage{hyperref}
+\usepackage{balance}
+\usepackage{stfloats}
+\usepackage[utf8]{inputenc}
+\usepackage{threeparttable}
+\usepackage{framed}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{diagbox}
+\usepackage{url}
+\usepackage{makecell}
+\usepackage{threeparttable}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{mathtools}
+\usepackage{nccmath}
+% \let\Bbbk\relax 
+% \usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+% \usepackage{cite}
+
+% \hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
+
+\usepackage{wasysym}
+\newcommand{\ymark}{\CIRCLE}
+\newcommand{\nmark}{\Circle}
+\newcommand{\halfmark}{\LEFTcircle}
+
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{52}} %52
+\newcommand{\xmark}{\ding{56}} %56
+
+\usepackage{tcolorbox}
+\newtcolorbox{conclusionbox}{colback=gray!8,colframe=black,width=\linewidth,arc=0.6mm, boxrule=0.4pt, left=1mm,right=1mm,top=0.5mm,bottom=0.5mm,before skip=2mm,after skip=0mm}
+
+
+\definecolor{patriarch}{rgb}{0.5, 0.0, 0.5}
+\definecolor{acmblue}{cmyk}{1, 0.1, 0, 0.1}
+\definecolor{acmdarkblue}{cmyk}{1, 0.2, 0, 0.15}
+\hypersetup{
+  colorlinks,
+  citecolor=patriarch,
+  linkcolor=patriarch,
+  urlcolor=acmdarkblue
+}
+
+% To refine the paper, I have made a brief to-do list as follows:
+% 1) Clarify the usage of our framework, especially how to use it to implement and compare new malware detectors.
+% 2) Provide a detailed discussion on how these 12 approaches were selected.
+% 3) Emphasize our goal to revisit the status of existing Android malware detectors and highlight our contributions.
+% 4) Address the reviewers’ concerns about not including data from 2021 to 2023. I found that the size of malware distributed in 2021 to 2023 in AndroZoo is not enough. I will clarify this in the dataset section.
+% 5) Discuss the potential use of LLM in Android analysis, specifically whether it could help address some of the challenges we have identified.
+\setcopyright{none}
+
+\settopmatter{printacmref=false}
+
+\makeatletter
+\renewcommand\@copyrightpermission{}
+\makeatother
+% --------------
+% \copyrightyear{2018}
+% \acmYear{2018}
+% \acmDOI{XXXXXXX.XXXXXXX}
+% %% These commands are for a PROCEEDINGS abstract or paper.
+% \acmConference[Conference acronym 'XX]{Make sure to enter the correct
+%   conference title from your rights confirmation email}{June 03--05,
+%   2018}{Woodstock, NY}
+%
+%  Uncomment \acmBooktitle if the title of the proceedings is different
+%  from ``Proceedings of ...''!
+%
+%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%  June 03--05, 2018, Woodstock, NY}
+% \acmISBN{978-1-4503-XXXX-X/2018/06}
+
+\begin{document}
+
+\title{Unraveling the Key of Machine Learning-based Android Malware Detection}
+
+
+\author{Jiahao Liu}
+\affiliation{%
+  \institution{National University of Singapore}
+  \city{Singapore}
+  \country{Singapore}}
+\email{jiahao99@comp.nus.edu.sg}
+\author{Jun Zeng}
+\affiliation{%
+  \institution{National University of Singapore}
+  \city{Singapore}
+  \country{Singapore}}
+\email{junzeng@comp.nus.edu.sg}
+\author{Fabio Pierazzi}
+\affiliation{
+  \institution{University College London}
+  \city{London}
+  \country{United Kingdom}}
+\email{f.pierazzi@ucl.ac.uk}
+\author{Ziqi Yang}
+\affiliation{%
+  \institution{The State Key Laboratory of Blockchain and Data Security, Zhejiang University}
+  \city{Hangzhou}
+  \country{China}}
+\affiliation{
+  \institution{Hangzhou High-Tech Zone (Binjiang) Institute of Blockchain and Data Security}
+  \city{Hangzhou}
+  \country{China}}
+\email{yangziqi@zju.edu.cn}
+\author{Lorenzo Cavallaro}
+\affiliation{
+  \institution{University College London}
+  \city{London}
+  \country{United Kingdom}}
+\email{l.cavallaro@ucl.ac.uk}
+\author{Zhenkai Liang}
+\affiliation{%
+  \institution{National University of Singapore}
+  \city{Singapore}
+  \country{Singapore}}
+\email{liangzk@comp.nus.edu.sg}
+
+
+% \affiliation{%
+%   \institution{The Th{\o}rv{\"a}ld Group}
+%   \city{Hekla}
+%   \country{Iceland}}
+% \email{larst@affiliation.org}
+
+% \author{Valerie B\'eranger}
+% \affiliation{%
+%   \institution{Inria Paris-Rocquencourt}
+%   \city{Rocquencourt}
+%   \country{France}
+% }
+
+% \author{Aparna Patel}
+% \affiliation{%
+%  \institution{Rajiv Gandhi University}
+%  \city{Doimukh}
+%  \state{Arunachal Pradesh}
+%  \country{India}}
+
+% \author{Huifen Chan}
+% \affiliation{%
+%   \institution{Tsinghua University}
+%   \city{Haidian Qu}
+%   \state{Beijing Shi}
+%   \country{China}}
+
+% \author{Charles Palmer}
+% \affiliation{%
+%   \institution{Palmer Research Laboratories}
+%   \city{San Antonio}
+%   \state{Texas}
+%   \country{USA}}
+% \email{cpalmer@prl.com}
+
+% \author{John Smith}
+% \affiliation{%
+%   \institution{The Th{\o}rv{\"a}ld Group}
+%   \city{Hekla}
+%   \country{Iceland}}
+% \email{jsmith@affiliation.org}
+
+% \author{Julius P. Kumquat}
+% \affiliation{%
+%   \institution{The Kumquat Consortium}
+%   \city{New York}
+%   \country{USA}}
+% \email{jpkumquat@consortium.net}
+
+% \author{
+%   % IEEE Publication Technology,~\IEEEmembership{Staff,~IEEE,}
+%   Jiahao Liu, Jun Zeng, Fabio Pierazzi, Lorenzo Cavallaro, and Zhenkai Liang
+%         % <-this % stops a space
+% \thanks{This paper was produced by the IEEE Publication Technology Group. They are in Piscataway, NJ.}% <-this % stops a space
+% }
+
+% The paper headers
+% \markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, Aug~2024}%
+% {Shell \MakeLowercase{\textit{et al.}}: A Sample Article Using IEEEtran.cls for IEEE Journals}
+
+% \IEEEpubid{0000--0000/00\$00.00~\copyright~2021 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+\begin{abstract}
+%Android malware detection serves as the front line against malicious apps.
+%These learning-driven methods have reported promising results in detecting malware.
+With the rapid advancement of machine learning (ML), ML-based Android malware detection has become popular due to its ability to automatically extract malicious patterns from Android apps.
+However, the absence of an in-depth analysis of current research progress makes it difficult to gain a holistic picture of the state of the art in this area.
+We present the most extensive investigation to date into ML-based Android malware detection systems, incorporating both empirical and quantitative analyses.
+First, we organize the literature into a taxonomy based on Android app representations and the ML modeling pipeline.
+Next, we design a general-purpose framework for ML-based Android malware detection, re-implementing 12 representative approaches from various research communities (\textit{i.e.,} software engineering, security, and machine learning) and evaluating them across three key dimensions: effectiveness, robustness to real-world challenges, and efficiency.
+Despite the prolific research and promising results in this field, our findings reveal that learning-based Android malware detection approaches still face several challenges such as instability against malware evolution and susceptibility to adversarial attacks.
+We attribute these issues to the detectors' ability to incorporate \textit{malware semantics}, which refers to the process of extracting semantic information that describes malicious behaviors from APK features.
+We conclude by summarizing our insights and providing recommendations to guide future research.
+
+% Despite the prolific research and promising results in this topic, our findings reveal that learning-based Android malware detection approaches still face several challenges rooted in a key observation: the necessity of incorporating {\em eigen semantics}, i.e., key characteristic meanings of Android app behaviors and features to improve performance and robustness of ML-based detectors.
+
+% We conclude by summarizing our insights and offering recommendations to guide future research.
+% We also find that using insightful semantics describing the behavior of Android apps is crucial for enhancing the performance of ML-based detectors.
+% We summarize our findings and put forth recommendations to guide future research.
+\end{abstract}
+
+% \begin{IEEEkeywords}
+%   Machine Learning, Android Malware Detection, Empirical and Quantitative Analysis
+% \end{IEEEkeywords}
+
+\begin{CCSXML}
+  <ccs2012>
+     <concept>
+         <concept_id>10011007</concept_id>
+         <concept_desc>Software and its engineering</concept_desc>
+         <concept_significance>500</concept_significance>
+         </concept>
+     <concept>
+         <concept_id>10002978</concept_id>
+         <concept_desc>Security and privacy</concept_desc>
+         <concept_significance>500</concept_significance>
+         </concept>
+   </ccs2012>
+\end{CCSXML}
+  
+\ccsdesc[500]{Software and its engineering}
+\ccsdesc[500]{Security and privacy}
+
+
+\keywords{
+  Android, Malware Detection, Machine Learning, Systematization of Knowledge
+}
+\maketitle
+\input{tex/introduction}
+\input{tex/systematization}
+\input{tex/framework}
+\input{tex/approaches}
+\input{tex/evaluation}
+\input{tex/findings}
+\input{tex/discussion}
+\input{tex/conclusion}
+
+
+\clearpage
+% \balance
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{paper}
+\clearpage
+\input{tex/appendix}
+\end{document}
+\endinput

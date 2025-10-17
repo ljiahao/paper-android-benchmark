@@ -1,0 +1,124 @@
+\section{\codename}
+\label{sec:framework}
+
+% The architecture of \codename is depicted in Figure~\ref{fig:framework}. 
+% Beginning with a dataset of Android apps, the first step is to extract pertinent features from these apps.
+% These features are then meticulously stored in a feature database. More details are provided in~\ref{sub:feature_db}.
+% Subsequently, a dedicated preprocessor is utilized to transform (including retrieving and encoding) these features.
+% After that, we proceed to train an ML model and assess its performance in detecting malware.
+
+% % The framework is crafted with two guiding principles at its core: modularization and flexibility.
+% \codename is designed with modularity in mind, making it easy to extend and customize.
+% This is achieved by decoupling it into three distinct modules: \textit{feature database}, \textit{preprocessor}, and \textit{ML model}.
+% Given the structured format of the \textit{feature database}, one can easily incorporate new features and integrate them into the assessment pipeline.
+% Moreover, the \textit{preprocessor} can be tailored to accommodate various approaches, granting users the flexibility to determine what/how features are used.
+% The \textit{ML model} is preloaded with various ML models, such as SVM, MLP, CNN, and AE.
+% Alternatively, \codename also supports custom models, allowing users to incorporate their own models into the framework.
+
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=0.94\linewidth]{fig/framework.pdf}
+%     \caption{The architecture of \codename.}
+%     \label{fig:framework}
+%     % \vspace{-0.6cm}
+% \end{figure}
+
+% % Following the feature storing format in the {\em feature database}, it is easy to aggregate new features into the framework.
+% % With this design, it is easy to design an additional feature extractor and store the derived features in the {\em feature database}, ensuring a smooth integration into the assessment pipeline.
+% % Additionally, the {\em preprocessor} can be tailored to accommodate various approaches, granting users the flexibility to choose and adapt feature usage as required.
+% \codename also provides a configurable experimental setting to support a wide range of evaluation scenarios.
+% Parameters such as the ratio of goodware-to-malware, training data sizes, and time decay are all adjustable.
+% This enables users to meticulously select APK samples for diverse evaluation contexts, ensuring comprehensive and accurate assessments.
+% Moreover, \codename integrates an APK obfuscator~\cite{aonzo2020obfuscapk}, allowing for obfuscation prior to feature extraction. 
+% It also possesses the capability to produce adversarial samples, enabling a robust assessment of model resilience.
+% % Leveraging the capabilities of \codename, we re-implement the approaches described in Section~\ref{sec:approach_analysis} and assess them with our curated dataset.
+% % We further analyze the evaluation outcomes to provide deeper insights into the current ML-based Android malware detection in Section~\ref{sec:evaluation}.
+
+% % \bulletpoint{Implementation}
+% % \codename is developed in 17K lines of Python code.
+% % To ensure consistency and mitigate biases from different feature extraction toolchains and learning frameworks, we adopt standardized techniques across all tasks.
+% % For feature extraction, we use Androguard to disassemble APK files and derive features such as permissions, intents, and program graphs. 
+% % LibRadar helps in identifying third-party libraries within the applications, while Angr is used for analyzing native libraries and capturing essential features like opcodes and API calls. 
+% % When it comes to training ML models, the scikit-learn library is our choice for traditional ML algorithms like SVM, KNN, and RF.
+% % On the other hand, for DL architectures such as CNN, LSTM, GNN, and AE, we resort to Pytorch.
+% % This uniform approach ensures a balanced evaluation, concentrating purely on the uniqueness and performance of each method.
+% % Details about the hyper-parameters of these models are provided in Appendix~\ref{sub:hyperparameters}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.74\linewidth]{fig/framework.pdf}
+    \vspace{-0.1cm}
+    \caption{The architecture of \codename.}
+    \label{fig:framework}
+    \vspace{-0.3cm}
+\end{figure}
+
+Having analyzed existing ML-based Android malware detection approaches, we propose a general-purpose framework, \codename, to facilitate the development and evaluation of new Android malware detectors.
+Figure~\ref{fig:framework} illustrates the overall architecture and workflow of \codename.
+It starts with a collection of apps, from which a set of features is extracted and stored in a {\em feature database}.
+These features are then processed by a {\em preprocessor}, being transformed into a numerical vector.
+After that, a selected {\em ML model} is trained and evaluated for detecting malware.
+\codename is also equipped with adaptable experimental settings to support multiple real-world scenarios, such as varying goodware-to-malware ratios, training data sizes, and robustness against adversarial attacks.
+% It is implemented in 17K lines of Python code, detailed in Appendix~\ref{sub:implementation}.
+%
+% The framework is crafted with two guiding principles at its core: modularization and flexibility.
+% \jh{\codename is modular, which makes it easy to extend and customize according to various requirements.}
+% This is achieved by decoupling it into three modules: \textit{feature database}, \textit{preprocessor}, and \textit{ML model}.
+% Given the structured format of the \textit{feature database}, one can easily incorporate new features and integrate them into the assessment pipeline.
+% Moreover, the \textit{preprocessor} can be tailored to accommodate various approaches, granting users the flexibility to determine what/how features are used.
+% The \textit{ML model} is preloaded with various ML models, such as SVM, MLP, CNN, and AE.
+% Alternatively, \codename also supports custom models, allowing users to incorporate their own models into the framework.
+% Given the structured format of the \textit{feature database} (details can be found in~\ref{sub:feature_db}), one can easily incorporate new features and integrate them into the assessment pipeline.
+
+This modular design of \codename simplifies the development of ML-based Android malware detectors. Three key modules, \textit{feature database}, \textit{preprocessor}, and \textit{ML model}, captures the main aspects of designing ML solutions for Android malware detection.
+% \textit{Feature database} organizes the extracted features categorically, including Manifest, ProgramGraph, DisassembledCode, and SharedLibrary, which can be easily extended to incorporate new features.
+\textit{Feature database} organizes the extracted features categorically according to their sources as discussed in Sec~\ref{sub:apk_characterization}, including Manifest, Dex, Library, and Resource.
+For example, the Manifest category contains features extracted from the AndroidManifest.xml file, such as permissions, intents, and components.
+Details of the feature database are provided in Appendix~\ref{sub:feature_db}.
+This design allows for easy integration of new features into the framework.
+\textit{Preprocessor} is used to retrieve and encode features before feeding them into \textit{ML model}.
+This module can be tailored to support different detectors, granting flexibility in feature selection and usage.
+\textit{ML model} integrates widely used ML models, \textit{e.g.,} RF, SVM, KNN, MLP, LSTM, CNN, GNN, and AE.
+Each model provides friendly interfaces for training, testing, and evaluation.
+It also supports model customization and extension --- for example, one can easily add new neural networks of different architectures. 
+To develop a new detector, one only needs to customize \textit{preprocessor} to select corresponding features from \textit{feature database} and feed them into \textit{ML model}.
+If no required features and models are available, users can easily extend the framework by adding new features to the \textit{feature database} and new learning models to the \textit{ML model} module.
+\tosem{Add clarification about, fine-grainded, flexiable, we provide specific functions to choose features, invoke one function and query set of features, can filter by the users.
+And highlight that we have provide our framework to different reseach organizations for reproduce previous work and design their approaches.}
+
+
+\codename provides configurable experimental settings to support different scenarios.
+Parameters, such as goodware-to-malware ratios, sample time distribution, and training data sizes, are all adjustable.
+This facilitates app selection to construct diverse scenarios, ensuring comprehensive and accurate evaluation.
+For instance, one can configure the ratio of goodware-to-malware to evaluate the model's performance under different malware prevalence.
+We can adjust the apps distribution over time to simulate the evolution of malware, which is crucial for assessing the model's robustness.
+\codename also includes an APK obfuscator~\cite{aonzo2020obfuscapk}, which can produce different types of obfuscated samples, \textit{e.g.,} identifier renaming, resource encryption, code modification, and invocation reflection.
+This feature is essential for evaluating the model's resilience to obfuscated malware.
+Moreover, this framework incorporates an adversarial samples generation mechanism from AndroidHIV~\cite{chen2019android}, allowing the assessment of models' resilience to adversarial attacks.
+Such flexibility and adaptability make \codename a versatile tool for developing and evaluating ML-based Android malware detectors.
+\tosem{Add discussion about the training methods, such as incremental training, only need to add new training samples, and load existing models for further traning.
+As for the obfuscation techniques, our framework re-parses the apks, can support the concurrently, if applying them to the apks.}
+
+
+
+% The implementation of \codename is in the Appendix~\ref{sub:implementation}.
+
+
+% \bulletpoint{\codename Implementation}
+% \codename is developed in 17K lines of Python code.
+% To ensure consistency and mitigate biases from different feature extraction toolchains and learning frameworks, we adopt standardized techniques across all tasks.
+% For feature extraction, we use Androguard~\cite{androguard} to disassemble APK files and derive features such as permissions, intents, and program graphs. 
+% LibRadar~\cite{libradar} helps in identifying third-party libraries within the applications, while Angr~\cite{angr} is used for analyzing native libraries and capturing essential features like opcodes and API calls. 
+% When it comes to ML models, the scikit-learn library is our choice for traditional ML algorithms like SVM, KNN, and RF.
+% On the other hand, for DL architectures such as CNN, GNN, and AE, we resort to Pytorch~\cite{pytorch}.
+% This uniform approach ensures a balanced evaluation, concentrating purely on the uniqueness and performance of each method.
+
+\bulletpoint{\codename Implementation}
+\codename is developed in 17K lines of Python code.
+To ensure consistency and mitigate biases from different feature extraction toolchains and learning frameworks, we adopt standardized techniques across all tasks.
+For feature extraction, we use Androguard~\cite{androguard} to disassemble APK files and derive features such as permissions, intents, and program graphs. 
+LibRadar~\cite{libradar} helps in identifying third-party libraries within the applications, while Angr~\cite{angr} is used for analyzing native libraries and capturing essential features like opcodes and API calls. 
+When it comes to ML models, the scikit-learn library is our choice for traditional ML algorithms like SVM, KNN, and RF.
+On the other hand, for DL architectures such as CNN, GNN, and AE, we resort to Pytorch~\cite{pytorch}.
+This uniform approach ensures a balanced evaluation, concentrating purely on the uniqueness and performance of each method.
+We will make \codename publicly available to the research community to facilitate future research in this area.

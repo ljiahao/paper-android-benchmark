@@ -1,0 +1,101 @@
+% \vspace{-0.1cm}
+\section{Findings and Recommendations}
+\label{sec:findings}
+We now draw from our findings to discuss the current state of ML-based Android malware detection and put forth recommendations to guide future research in this area.
+
+% \subsection{Findings}
+% \label{sec:findings}
+\bulletpoint{Findings}
+We summarize our key findings as follows:
+
+\noindent \textit{(1) Current ML-based Android malware detectors still face open challenges.}
+While ML models have been evidently effective in detecting malware~\cite{he2022msdroid,kim2018multimodal,li2021robust,mariconti2016mamadroid}, their effectiveness is still far from satisfactory when faced with challenging scenarios such as limited data size, rapid malware evolution, and adversarial attacks.
+
+\noindent \textit{(2) Selecting features relevant to malware semantics is crucial for effective detection.}
+Diverse APK features, such as permissions and intents, have been leveraged to identify malware~\cite{xu2018deeprefiner,arp2014drebin,kim2018multimodal}. 
+These features profile apps and play a pivotal role in shaping the effectiveness of malware detectors.
+Our findings indicate that heuristic feature selection can help reduce noise in the feature space, enabling models to identify malicious patterns more effectively, particularly in scenarios with limited data.
+However, we also observe that the semantics of various features are not always complementary, and how to combine them does not be well explored.
+Simply incorporating additional features does not necessarily lead to improved performance.
+
+% Our analysis reveals that feature engineering helps models to discern malicious patterns when data is limited.
+% However, including more features randomly does not guarantee enhanced performance. 
+% Thus, researchers should carefully select features to improve the effectiveness and efficiency.
+\noindent \textit{(3) More complex models are not a silver bullet in designing malware detectors.}
+The literature reflects the trend towards employing more powerful ML models to detect malware~\cite{xu2018deeprefiner,arp2014drebin}.
+Our analysis reveals that DL-based methods appear to be more resilient than TML-based approaches in adapting to malware evolution.
+However, we also find that DL-based approaches are less effective than TML-based methods when the malware-to-goodware ratio is low.
+This suggests that utilizing more complex models is not a universal solution for malware detection.
+Instead, the choice of models should take into account the richness of the semantic information derived from the features.
+% When introducing a new model to detect malware, it is crucial to justify the rationale behind it.
+
+\noindent \textit{(4) Both feature abstraction and models' defensive mechanism contribute to detectors' robustness.}
+Our analysis indicates that abstracting features can help models capture robust malicious patterns~\cite{bhagoji2018enhancing}.
+For instance, MamaDroid~\cite{mariconti2016mamadroid} abstracts program graphs with families and packages, enhancing its robustness to adversarial attacks.
+Moreover, bolstering the defensive capability of ML models can further amplify detectors' reliability and stability~\cite{papernot2016distillation}.
+
+\noindent \textit{(5) Detection effectiveness does not positively correlate with efficiency.}
+Through a combined analysis of effectiveness and efficiency, we observe that effectiveness and efficiency do not always positively correlate.
+A detector demanding more resources does not necessarily deliver enhanced results.
+For example, Drebin~\cite{arp2014drebin} can achieve competitive detection performance with relatively low resource consumption.
+
+\begin{table*}[t]
+    \centering
+    \renewcommand{\arraystretch}{1.15}
+    \caption{The efficiency (\textit{i.e.,} model training time) of selected approaches across datasets from different years.}
+    % \vspace{-0.1cm}
+    \begin{adjustbox}{width=\textwidth}
+        \begin{tabular}{@{}r|r|r|r|r|r|r|r|r|r|r|r|r@{}}
+            \toprule
+            \textbf{Year} & \multicolumn{1}{c|}{\textbf{Drebin}} & \multicolumn{1}{c|}{\textbf{MamaDroid}} & \multicolumn{1}{c|}{\textbf{Mclaughlin}} & \multicolumn{1}{c|}{\textbf{HinDroid}} & \multicolumn{1}{c|}{\textbf{DeepRefiner}} & \multicolumn{1}{c|}{\textbf{Kim}} & \multicolumn{1}{c|}{\textbf{MalScan}} & \multicolumn{1}{c|}{\textbf{SDAC}} & \multicolumn{1}{c|}{\textbf{HomDroid}} & \multicolumn{1}{c|}{\textbf{Xmal}} & \multicolumn{1}{c|}{\textbf{RAMDA}} & \multicolumn{1}{c}{\textbf{MSDroid}} \\ \midrule
+            \textbf{2011} & 15.11s        & 1.90s            & 128m22s                  & 2m19s           & 369m18s            & 98m47s            & 1m14s          & 84m47s      & 2.00s           & 1m15s       & 1m6s         & 20m19s        \\ \midrule
+            \textbf{2012} & 20.88s        & 1.94s            & 97m01s                   & 2m18s           & 359m35s            & 92m47s            & 1m18s          & 89m05s      & 2.04s           & 1m25s       & 1m11s        & 37m54s        \\ \midrule
+            \textbf{2013} & 22.37s        & 2.12s            & 172m20s                  & 2m13s           & 477m18s            & 115m40s           & 1m24s          & 115m35s     & 2.04s           & 50.36s      & 1m06s        & 40m11s        \\ \midrule
+            \textbf{2014} & 32.49s        & 2.46s            & 128m13s                  & 2m40s           & 629m26s            & 104m03s           & 1m33s          & 132m55s     & 2.20s           & 2m20s       & 1m17s        & 42m07s        \\ \midrule
+            \textbf{2015} & 26.40s        & 2.60s            & 411m03s                  & 2m44s           & 730m41s            & 115m27s           & 1m38s          & 250m07s     & 2.22s           & 2m10s       & 1m20s        & 42m52s        \\ \midrule
+            \textbf{2016} & 32.62s        & 2.99s            & 234m19s                  & 2m51s           & 867m25s            & 135m50s           & 1m42s          & 470m38s     & 2.26s           & 1m05s       & 1m19s        & 142m23s       \\ \midrule
+            \textbf{2017} & 22.36s        & 2.75s            & 192m41s                  & 2m28s           & 997m04s            & 145m24s           & 1m37s          & 296m05s     & 2.22s           & 1m54s       & 1m20s        & 47m22s        \\ \midrule
+            \textbf{2018} & 19.97s        & 2.91s            & 227m48s                  & 2m36s           & 933m12s            & 128m32s           & 1m34s          & 716m43s     & 2.21s           & 1m19s       & 1m21s        & 155m50s       \\ \midrule
+            \textbf{2019} & 26.83s        & 3.03s            & 514m18s                  & 2m34s           & 968m50s            & 185m43s           & 1m32s          & 918m09s     & 2.22s           & 1m34s       & 1m18s        & 130m41s       \\ \midrule
+            \textbf{2020} & 22.87s        & 2.69s            & 771m44s                  & 2m22s           & 1064m30s           & 148m08s           & 1m29s          & 867m55s     & 2.17s           & 2m09s       & 1m12s        & 93m08s        \\ \bottomrule
+            \end{tabular}
+    \end{adjustbox}
+    \label{tab:efficiency_ml_modeling}
+\vspace{-0.5cm}
+\end{table*}
+
+\bulletpoint{Recommendations}
+Our findings reveal that the effectiveness of ML-based Android malware detectors is closely tied to the quantity and quality of malware semantics extracted from APK features, which describe the malicious behaviors of apps.
+To design more effective and robust detectors, we recommend the following strategies:
+
+\noindent \textit{(1) Quantify malware semantics.}
+Instead of simply incorporating more features to enhance detection performance, one can design metrics to evaluate the quantity and quality of malware semantics captured by the features, as well as the redundancy among them.
+This can guide researchers in selecting features that are more informative and complementary, improving the effectiveness of detectors.
+
+\noindent \textit{(2) Investigate feature combination and abstraction.}
+Given the diverse features available to describe app behaviors, a promising research direction is to explore effective strategies for combining these features to amplify their collective ability to capture malware semantics. 
+Additionally, feature abstraction has demonstrated potential in enhancing the robustness of detectors. 
+Future work could focus on developing techniques to abstract features in ways that improve detectors' resilience to real-world challenges while maintaining or even enhancing detection performance.
+
+\noindent \textit{(3) Mine invariant malware semantics.}
+Noticeable challenges in ML-based Android malware detection include the instability against malware evolution and susceptibility to adversarial attacks.
+To address these challenges, researchers can explore invariant malware semantics that remain consistent across different versions of malware.
+
+\noindent \textit{(4) Align model complexity with malware semantics.}
+Once the features and their role in describing malware semantics are determined, the next step is selecting models that can effectively utilize this information.
+Researchers should carefully match the complexity of the models to the richness of the malware semantics to achieve optimal detection performance.
+Failing to do so may result in unnecessary computational overhead without improving detection effectiveness.
+
+
+% \bulletpoint{Detection effectiveness does not positively correlate with efficiency}
+% Through a combined analysis of effectiveness and efficiency, we observe that effectiveness and efficiency do not always positively correlate.
+% A detector demanding more resources does not necessarily deliver enhanced results.
+% For example, Drebin~\cite{arp2014drebin} can achieve competitive detection performance with relatively low resource consumption.
+
+% \bulletpoint{Current ML-based Android malware detectors still face open challenges}
+% While ML models have been evidently effective in detecting malware~\cite{he2022msdroid,kim2018multimodal,li2021robust,mariconti2016mamadroid}, their effectiveness is still far from satisfactory when faced with challenging scenarios such as limited data size, rapid malware evolution, and adversarial attacks.
+% Given this context, the field presents substantial opportunities for improvement, particularly in designing robust and practical detectors for real-world usage.
+
+
+% \subsection*{other findings} 
+% performance.
