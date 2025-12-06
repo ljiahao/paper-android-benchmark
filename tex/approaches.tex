@@ -18,6 +18,7 @@
 
 To understand the state of ML-based Android malware detection, a quantitative analysis of current work is indispensable.
 While an ideal scenario is evaluating as many approaches as possible, conducting an exhaustive examination of each method is impractical due to the vast amount of existing literature.
+Moreover, it is important to understand that, despite vast publications in this area achieving promising results, many of them share similar techniques (\textit{e.g.,} similar neural networks), and novel solutions are comparatively fewer.
 Thus, our analysis focuses on methods that represent the broad spectrum and depth of advancements in the field.
 That is, we aim to select representative approaches and utilize our framework to re-implement and evaluate them.
 Specifically, in this section, we outline the selected approaches and provide a comparative analysis to highlight their experimental designs.
@@ -46,8 +47,9 @@ Such a comprehensive investigation enables us to gain a thorough understanding o
 % Such a comprehensive investigation enables us to gain a thorough understanding of the entire workflow of Android malware detection.}
 
 \bulletpoint{Reflect research progress}
-Considering the evolving landscape of this field, where novel methods continually emerge, we prioritize approaches that introduce new techniques or achieve remarkable performance, such as proposing new feature representations or employing new learning architectures.
-% In consideration of the evolving research landscape, where new methodologies continually emerge, we place emphasis on approaches that introduce cutting-edge techniques.
+% Considering the evolving landscape of this field, where novel methods continually emerge, we prioritize approaches that introduce new techniques or achieve remarkable performance, such as proposing new feature representations or employing new learning architectures.
+In consideration of the evolving research landscape, where new methodologies continually emerge, we place emphasis on approaches that introduce cutting-edge techniques.
+Particularly, we prioritize methods that either propose novel feature representations or employ innovative learning architectures, or achieve remarkable performance in the field.
 
 % Given the dynamic nature of the research landscape where novel methodologies emerge, and existing ones are refined, \jh{we prioritize approaches that introduce novel techniques such as employing a new learning architecture or proposing a new feature representation, or achieve remarkable performance in the field.}
 
@@ -151,11 +153,10 @@ Drebin~\cite{arp2014drebin} first collects APK features, such as hardware compon
 These features are then converted into a binary vector to signify their existence or not.
 An SVM is then trained to detect Android malware.
 
+% \jh{With the Markov chain constructed from API call sequences, the transition probabilities between these calls are computed as features.}
 \bulletpoint{MamaDroid}
-MamaDroid~\cite{mariconti2016mamadroid} pioneers the use of Markov chains to depict apps' behaviors.
-\jh{With the Markov chain constructed from API call sequences, the transition probabilities between these calls are computed as features.}
-% By constructing a Markov chain based on the sequence of abstracted API calls invoked by an app, the transition probabilities between these calls are computed as features. 
-\jh{These features then inform an RF model to detect Android malware.}
+MamaDroid~\cite{mariconti2016mamadroid} pioneers the use of Markov chains to model app behavior. 
+It constructs a Markov chain over the sequence of abstracted API calls invoked by an app and computes the transition probabilities between these calls as features, which are then used by an RF classifier to detect Android malware.
 
 \bulletpoint{Mclaughlin et al}
 This technique~\cite{mclaughlin2017deep} presents the leading edge in image-based Android malware detection.
@@ -165,7 +166,7 @@ By transforming opcode sequences into images via a one-hot encoding, it leverage
 \bulletpoint{HinDroid}
 Hou et al.~\cite{hou2017hindroid} introduce a novel approach by representing API calls as a structured heterogeneous information graph.
 This approach accounts for the inter-relationships among API calls, such as their presence in the same code block.
-It then captures apps' semantics with meta-path techniques [89].
+It then captures apps' semantics with meta-path techniques~\cite{sun2011pathsim}.
 A multi-kernel SVM is further applied to recognize malicious patterns.
 
 
@@ -258,13 +259,14 @@ In this section, we conduct a comparative review of the selected approaches, foc
 (a) \textit{Effectiveness} refers to the ability of an approach to accurately identify malware under various circumstances, such as different dataset sizes and goodware-to-malware ratios;
 (b) \textit{Robustness} assesses the methods' resilience, especially in response to challenges like malware evolution;
 (c) \textit{Efficiency} reflects the computational overhead incurred during APK processing and ML modeling.
+Building on this, we further emphasize the importance of employing a unified framework to evaluate the effectiveness, robustness, and efficiency of ML-based Android malware detection techniques.
+
 
 % To accurately estimate the current state of ML-based Android malware detection, it is essential to consider three critical dimensions.
 % These criteria collectively determine the practicality and potency of an approach, offering a holistic insight into the prevailing research trends.
 % This section conducts a comparative review of the selected approaches, examining how they address these three aspects.
 
 % Specifically, we check their experimental setup, efficiency assessment, robustness evaluation, and associated toolchains.
-% Building on this, we emphasize the importance of employing a unified framework to evaluate the effectiveness, robustness, and efficiency of ML-based Android malware detection techniques.
 
 
 % In this section, we conduct a comparative review of the selected approaches, examining their experimental setup, efficiency assessment, robustness evaluation, artifact release, and associated toolchains.
@@ -274,9 +276,9 @@ In this section, we conduct a comparative review of the selected approaches, foc
 
 \bulletpoint{Effectiveness}
 Effectiveness is the most important criterion for any detection technique, and all the selected approaches evaluate this aspect.
-However, the experimental settings --- dataset size, time span, dataset partition, and malware ratio --- vary dramatically, as shown in Table~\ref{tab:comparative_study}, making direct comparisons challenging.
-% However, the experimental setup varies dramatically across these approaches, as shown in Table~\ref{tab:comparative_study}, making direct comparisons challenging.
-% As indicated in Table~\ref{tab:comparative_study}, the experimental setup demonstrates large variations across studies, making direct comparisons challenging.
+% However, the experimental settings --- dataset size, time span, dataset partition, and malware ratio --- vary dramatically, as shown in Table~\ref{tab:comparative_study}, making direct comparisons challenging.
+However, the experimental setup varies dramatically across these approaches, making direct comparisons challenging.
+As indicated in Table~\ref{tab:comparative_study}, the experimental settings --- dataset size, time span, dataset partition, and malware ratio --- demonstrate large variations across studies.
 % We know there is a positive correlation between the training data sizes and ML model performance.
 \jh{It is well-established that a positive correlation exists between the training data size and ML model performance.}
 The training data size in these approaches ranges from 2,334~\cite{hou2017hindroid} to 129,013~\cite{arp2014drebin}, making it difficult to compare their effectiveness.
@@ -294,7 +296,8 @@ However, this ratio in testing datasets significantly varies across different st
 % This omission is likely due to the considerable effort required for such evaluations in the absence of a unified framework.
 \bulletpoint{Robustness}
 Robustness stands as a pivotal criterion for any methodology. 
-Android malware detection faces three major challenges: malware evolution, obfuscation, and adversarial attacks~\cite{pendlebury2019tesseract}.
+% Android malware detection faces three major challenges: malware evolution, obfuscation, and adversarial attacks~\cite{pendlebury2019tesseract}.
+Within Android malware detection, this robustness typically encompasses an approach's capacity to counteract malware evolution, obfuscation strategies, and adversarial attacks~\cite{pendlebury2019tesseract}.
 Specifically, detectors routinely operate in hostile and dynamic contexts~\cite{barbero2022transcending}, where malware constantly evolves to evade detection.
 Also, obfuscation techniques have been widely adopted by attackers to conceal their malicious operations~\cite{aonzo2020obfuscapk}.
 Additionally, the inherent susceptibility of ML models to adversarial attacks~\cite{li2023black,athalye2018obfuscated} complicates the detection process.
@@ -302,16 +305,31 @@ We observe that these selected approaches miss one or more of the challenges, as
 This omission complicates the assessment of their true effectiveness in real-world deployments.
 
 \bulletpoint{Efficiency}
-To measure a new technique, the importance of efficiency stands parallel to effectiveness.
+To measure a new malware detector, the importance of efficiency stands parallel to effectiveness.
 As Android apps grow in size and complexity, the time and computational resources required for APK processing and ML modeling could substantially rise.
 However, as Table~\ref{tab:comparative_study} shows, not every approach evaluates the efficiency of these two parts.
 Additionally, understanding how efficiency shifts when dealing with APKs at various times is vital to ensure detectors' sustainability and long-term utility; unfortunately, this is not considered by any of the selected approaches.
 
-\bulletpoint{Other considerations}
-Table~\ref{tab:comparative_study} additionally provides information on whether the selected approaches make their artifacts available and the specific toolchains they utilize.
-We note that nearly half of them have not released their artifacts, posing significant challenges for reproducibility and further research.
-Furthermore, the toolchains used by them are diverse, such as Androguard~\cite{androguard}, APKTool~\cite{apkt}, and BackSmali~\cite{backsmali}.
-Such heterogeneity complicates the direct comparison of these methods' effectiveness, as different toolchains can substantially impact the outcomes.
+\bulletpoint{Artifact Release and Toolchain}
+Table~\ref{tab:comparative_study} also reports whether the selected approaches make their artifacts publicly available and details the specific toolchains they employ. 
+We observe that nearly half of these approaches do not release their artifacts, which poses significant challenges for reproducibility and subsequent research. 
+Furthermore, the toolchains they use are diverse, including Androguard~\cite{androguard}, APKTool~\cite{apkt}, and BackSmali~\cite{backsmali}.
+We know that different toolchains may yield varying analysis results for the same APK due to differences in their static analysis capabilities~\cite{arp2014drebin,mariconti2016mamadroid}.
+As a result, it is difficult to fairly compare the effectiveness and efficiency of these approaches when they rely on heterogeneous toolchains.
+To further investigate this issue, we conduct an experimental analysis in Section~\ref{sec:toolchain_analysis}.
+
+Combining the aforementioned analyses, there is a pressing need for a general-purpose framework that standardizes the entire development pipeline, from feature extraction and model construction to training and deployment.
+Such a framework should also support diverse and configurable evaluation scenarios for ML-based Android malware detectors, enabling fair comparison across approaches, improving reproducibility, and facilitating large-scale empirical studies.
+
+% Such heterogeneity complicates the direct comparison of these methods' effectiveness, as different toolchains can substantially impact the outcomes.
+
+% \begin{center}
+%     \begin{conclusionbox}
+%     \textit{Finding:} There is a pressing need for a general-purpose framework that not only unifies the development process but also supports various evaluation scenarios for ML-based Android malware detectors.
+%     \end{conclusionbox}
+% \end{center}
+
+
 
 % It is worth noting that several surveys and empirical studies~\cite{qiu2020survey,liu2022deep,faruki2014android,gao2024comprehensive} have highlighted the significance of comparatively analyzing Android malware detection techniques.
 % However, these studies often depend exclusively on theoretical surveys or are constrained by a narrow scope.
@@ -321,7 +339,7 @@ Such heterogeneity complicates the direct comparison of these methods' effective
 % To bridge the gap, we design and release a general-purpose framework accompanied by a large-scale, realistic dataset, as detailed in Sec.~\ref{sec:evaluation}.
 % Based on this framework, we conduct the most exhaustive and wide-ranging comparative analysis, aiming to understand the current state of Android malware detection. 
 
-% Combining with the aforementioned analysis, there is a pressing need for a general-purpose framework that not only unifies the development process but also supports various evaluation scenarios for ML-based Android malware detectors.
+
 
 % It is worth highlighting that a number of studies~\cite{qiu2020survey,liu2022deep,faruki2014android,gao2024comprehensive} have started to analyze Android malware detection techniques.
 % Nevertheless, these analyses often resort to theoretical reviews and are typically either constrained in scope or conducted in unrealistic settings.
