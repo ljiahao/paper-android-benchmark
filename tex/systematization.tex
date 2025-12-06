@@ -11,15 +11,41 @@ For malicious pattern identification, ML models have become increasingly popular
 % This has led to the growing popularity of ML models in Android malware detection~\cite{qiu2020survey}.
 % To align with the research trend, we focus on ML-based approaches that prioritize static feature extraction for detecting Android malware.
 % We also conduct a systematic investigation of the literature to validate our choice, which can be found in the supplementary material~\cite{supplementary}.
-In this paper, we focus on ML-based approaches that prioritize static feature extraction for detecting Android malware.
-% \tdsc{Static features are actively explored in recent developments in the field, as discussed in Sec.~\ref{sec:discussion}.}
-To further validate our research scope, we also conduct a systematic investigation of the literature, as discussed in Sec.~\ref{sec:discussion}.
+To validate the trend towards ML-based Android malware detection, we conduct a systematic investigation of the literature, which can be found in Sec.~\ref{sec:discussion}.
 
-\tosem{Add discussion about existing surveys or empirical studyies, and highlight the differences of our work. Pinpoint the need for our framework and it can pave lots of ...
-Move the other consideration to this part, to make a related work summary here.}
+It is worth noting that, in an effort to better characterize the landscape of ML-based Android malware detection, a number of studies~\cite{souri2018state,qiu2020survey,liu2022deep,faruki2014android,gao2024comprehensive} have reviewed existing detection approaches to identify common practices and open challenges.
+However, these reviews largely rely on theoretical analyses without experimental validation or adopt narrow perspectives --- for example, focusing primarily on how popular ML models are applied to this domain~\cite{qiu2020survey} or examining individual solutions in isolation.
+Such limitations make it difficult to draw broader conclusions or form a holistic understanding of how the entire detection pipeline operates, including what features are commonly used and how these features are utilized by ML models.
+Gao et al.~\cite{gao2024comprehensive} attempt to experimentally assess the state of ML-based Android malware detection; however, the analysis remains limited in scope and scale (\textit{e.g.,} focusing mainly on robustness) and does not account for real-world settings or end-to-end performance evaluation.
+To the best of our knowledge, no existing work provides a comprehensive study that systematically investigates ML-based Android malware detection through both (i) empirical categorization and elucidate the overall detection workflow, and (ii) quantitative evaluation to assess the state of the art across multiple dimensions --- effectiveness, robustness, and efficiency --- under realistic conditions.
+Moreover, there is currently no publicly available, general-purpose framework that supports the development and evaluation of ML-based Android malware detection systems.
 
+To bridge this gap, we first present a systematic investigation of ML-based Android malware detection.
+We then design and release a general-purpose framework, \codename, together with a large-scale, realistic dataset (see Sec.~\ref{sec:framework}), enabling the most comprehensive and wide-ranging comparative analysis to date.
+Using this unified platform, we examine the current state of ML-based Android malware detection and highlight the key challenges and opportunities that shape this field.
+
+In this section, we demonstrate the empirical analysis about how existing detectors represent and incorporate features for Android malware detection. 
 Rather than analyzing each approach individually, our methodology is to deconstruct and unify the workflow of ML-based Android malware detection. We identify three common phases: APK characterization (Sec~\ref{sub:apk_characterization}), feature representation (Sec~\ref{sub:apk_feature_encoding}), and ML modeling (Sec~\ref{sub:ml_models}).
 Following this, we collate and summarize the key techniques employed in each phase by investigating existing approaches, offering a thorough overview of how ML models are applied in Android malware detection.
+
+% It is worth highlighting that a number of studies~\cite{qiu2020survey,liu2022deep,faruki2014android,gao2024comprehensive} have started to analyze Android malware detection techniques.
+% Nevertheless, these analyses often resort to theoretical reviews and are typically either constrained in scope or conducted in unrealistic settings.
+% For instance, Qiu et al.~\cite{qiu2020survey} analyze how mainstream ML models, \textit{e.g.,} CNN and RNN, are applied in this field without experimental comparison.
+% Gao et al.~\cite{gao2024comprehensive} assess the robustness of malware detectors under ideal experimental settings, overlooking the influence of real-world settings (\textit{e.g.,} malware ratio and dataset size) on the effectiveness of these detectors and the efficiency evaluation of the entire detection pipeline.
+% It is observed that there is no study that undertakes a thorough analysis of current Android malware detection from multi-faceted perspectives ---  effectiveness, robustness, and efficiency --- in a quantitative manner within real-world settings.
+% To bridge this gap, we design and release a general-purpose framework, \codename, along with a large-scale, realistic dataset, as detailed in Sec.~\ref{sec:framework}.
+% Furthermore, in Sec.~\ref{sec:evaluation}, we conduct the most comprehensive and wide-ranging comparative analysis to examine the state of ML-based Android malware detection, highlighting the challenges and opportunities that define this field.
+
+
+% In this paper, we focus on ML-based approaches that prioritize static feature extraction for detecting Android malware.
+% % \tdsc{Static features are actively explored in recent developments in the field, as discussed in Sec.~\ref{sec:discussion}.}
+% To further validate our research scope, we also conduct a systematic investigation of the literature, as discussed in Sec.~\ref{sec:discussion}.
+
+% % \tosem{Add discussion about existing surveys or empirical studyies, and highlight the differences of our work. Pinpoint the need for our framework and it can pave lots of ...
+% % Move the other consideration to this part, to make a related work summary here.}
+
+% Rather than analyzing each approach individually, our methodology is to deconstruct and unify the workflow of ML-based Android malware detection. We identify three common phases: APK characterization (Sec~\ref{sub:apk_characterization}), feature representation (Sec~\ref{sub:apk_feature_encoding}), and ML modeling (Sec~\ref{sub:ml_models}).
+% Following this, we collate and summarize the key techniques employed in each phase by investigating existing approaches, offering a thorough overview of how ML models are applied in Android malware detection.
 % ML-based Android malware detection has been extensively researched in the literature over the past decade.
 % Typically, the detection procedure unfolds in three main phases --- APK characterization, feature representation, and machine learning models.
 % To offer a through overview of its landscape, this section provides a systematic investigation of the core techniques employed in each phase of the workflow.
@@ -34,29 +60,26 @@ Following this, we collate and summarize the key techniques employed in each pha
 % \vspace{-0.1cm}
 \subsection{APK Characterization}
 \label{sub:apk_characterization}
-% \bulletpoint{Input from APK}
-% An APK is a compressed archive that contains an app's codebase, resources, and auxiliary files.
+\bulletpoint{Input from APK}
+An APK is a compressed archive that contains an app's codebase, resources, and auxiliary files.
+It contains several types of files and directories, including the Manifest ($\mathbb{M}$), Dex ($\mathbb{D}$), Library ($\mathbb{L}$), and Resource ($\mathbb{R}$) components~\cite{faruki2014android,apkfile}, each contributing distinctive features relevant to malware detection.
+\textit{Manifest}: The manifest serves as a descriptor file that provides essential metadata about the app, including the package name, requested permissions, components, and hardware requirements.
+\textit{Dex}: This includes Java classes that are compiled according to the Dalvik Executable (DEX) file standard, designed to run on the Dalvik Virtual Machine (DVM).
+\textit{Library}: Native libraries appear as shared object files and offer critical low-level functionality (\textit{e.g.,} WebKit). They support and optimize the app’s execution and may expose behaviors indicative of malicious activity.
+\textit{Resource}: This category includes static assets and non-compiled resources required by the app, such as images, XML layouts, and animation sequences.
 
-% \textit{Manifest}: Serving as a descriptor, the manifest provides metadata about the app, detailing elements like the package name, permissions, and hardware components.
-% \textit{Dex}: This includes Java classes that are compiled according to the Dalvik Executable (DEX) file standard, designed to run on the Dalvik Virtual Machine (DVM).
-% \textit{Library}: Within an APK, native libraries present as shared object files that provide some necessary services for apps (\textit{e.g.,} Webkit), which assists and optimizes the app's execution.
-% \textit{Resource}: This category contains static assets and non-compiled resources integral to the app, such as graphics, layout schematics, and sequences for animations.
-
-% \bulletpoint{APK features}
-% The quartet of file types mentioned above is fundamental to the process of APK characterization. 
-% Researchers often deploy static analysis to extract and distill pertinent features.
-% \jh{\textit{Manifest} and \textit{Resource} files often adhere to well-defined structures, such as XML format.}
-% This inherent organization facilitates their parsing. 
-% The features from these files can be efficiently extracted with regular expressions or dedicated XML parsers.
-% In contrast, the \textit{Dex} and \textit{Library} consist of several binary files. 
-% Extracting features from them necessitates a deep dive with reverse engineering tools. 
-% \textit{Dex} can be disassembled by Androguard~\cite{androguard} and APKTool~\cite{apktool} into smali code, which is a more human-readable representation depicting apps' behaviors.
-% For the \textit{Library}, tools like Angr~\cite{angr} or IDA Pro~\cite{ida_pro} are helpful in disassembling the native libraries into assembly codes, which facilitates analysis of the native services utilized by apps.
-% \jh{By analyzing this assembly code, it is possible to capture critical features within native codes.}
+\bulletpoint{APK features}
+The quartet of file types described above forms the foundation of APK characterization. Researchers commonly employ static analysis techniques to extract and distill relevant features.
+\jh{\textit{Manifest} and \textit{Resource} files typically follow well-defined structures, such as XML,} which makes them straightforward to parse. Features from these components can thus be efficiently extracted using regular expressions or dedicated XML parsers.
+In contrast, the \textit{Dex} and \textit{Library} components consist of binary files, making their analysis substantially more involved. Feature extraction from these binaries requires reverse engineering techniques and specialized tooling.
+\textit{Dex} can be disassembled by Androguard~\cite{androguard} and APKTool~\cite{apkt} into smali code, which is a more human-readable representation depicting apps' behaviors.
+For the \textit{Library}, tools like Angr~\cite{angr} or IDA Pro~\cite{ida_pro} are helpful in disassembling the native libraries into assembly codes, which facilitates analysis of the native services utilized by apps.
+By analyzing this assembly code, it is possible to capture critical features within native codes.
 % From this code, features are then teased out for further analysis.
 % \jh{The \textit{META-INF} category is not viewed as a primary feature source because it does not directly pertain to the app's core functionality~\cite{faruki2014android}.}
 %
-An APK comprises several types of files and folders, including \textit{Manifest}($\mathbb{M}$), \textit{Dex}($\mathbb{D}$), \textit{Library}($\mathbb{L}$), and \textit{Resource}($\mathbb{R}$)~\cite{faruki2014android,apkfile}, which contribute distinctive features for malware detection.
+
+
 % Figure~\ref{fig:features} delineates the relationship between APK file/folder and the features derived from them. 
 Figure~\ref{fig:features} delineates the features typically utilized and their corresponding APK file or folder in ML-based Android malware detection.
 In the subsequent section, we elaborate on these features in detail.
@@ -192,20 +215,20 @@ Approaches like DeepRefiner~\cite{xu2018deeprefiner} consider resource informati
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.68\linewidth]{fig/representation.pdf}
-    \vspace{-0.2cm}
+    \includegraphics[width=0.73\linewidth]{fig/representation.pdf}
+    \vspace{-0.1cm}
     \caption{The relationships between Feature Representations and widely used APK Features.}
     \label{fig:representation}
-    \vspace{-0.4cm}
+    \vspace{-0.5cm}
 \end{figure}
 
 \subsection{Feature Representation}
 \label{sub:apk_feature_encoding}
-% APK characterizations offer multi-perspective views of an app's behavior.
-Before being fed into models, APK features must be encoded into a format that is interpretable by the models.
-Specifically, the encoding process can be organized into four categories: categorical, image-based, text-based, and graph-based.
-\jh{Figure~\ref{fig:representation} illustrates the relationships between these encoding strategies and specific APK features.}
-In the following section, we discuss these encoding strategies in detail.
+APK characterizations provide multi-perspective views of an app's behavior.
+Before these features can be fed into ML models, they must be encoded into representations that the models can interpret.
+Broadly, the encoding process falls into four categories: categorical, image-based, text-based, and graph-based.
+\jh{Figure~\ref{fig:representation} illustrates the relationships between these encoding strategies and the corresponding APK features.}
+In the following section, we discuss each encoding strategy in detail.
 
 % Some approaches~\cite{yuan2014droid,arp2014drebin,li2019adversarial,feng2019mobidroid,li2021robust,wu2021android,hou2017hindroid} encode these features into a binary vector, where each position indicates whether a specific feature exists or not.
 % Alternatively, another approach showcased in~\cite{kim2018multimodal} calculates the frequency of each feature to obtain a vector of real numbers.
@@ -236,6 +259,7 @@ For instance, Zegzhda et al.~\cite{zegzhda2018applying} combine API calls with p
 Text-based encoding is also a widely used strategy in Android malware detection.
 Many existing methods~\cite{xu2018deeprefiner,xu2020sdac,karbab2021petadroid,karbab2018maldozer,sun2019scalable} have approached APK features from a textual perspective, employing natural language processing (NLP) techniques to amplify detection capability.
 For example, by considering API calls as \texttt{words} and their sequences as \texttt{sentences}, methods presented in~\cite{xu2020sdac,karbab2021petadroid,karbab2018maldozer} utilize word embedding techniques, such as Word2Vec~\cite{mikolov2013distributed}, to extract semantic information included in the API calls.
+Separately, Sun et al.~\cite{sun2019scalable} treat API calls and permissions as sparse data, applying Doc2Vec~\cite{le2014distributed} to derive their vector representations.
 
 \bulletpoint{Graph-based encoding}
 Recently, graph structure has been widely adopted to represent apps' semantics~\cite{he2022msdroid,li2023black}.
@@ -283,24 +307,25 @@ As a basic feed-forward neural network, Multi-Layer Perceptron (MLP), composed o
 The Recurrent Neural Network (RNN)~\cite{medsker2001recurrent} is a type of neural architecture that can capture the sequential information of input data.
 By representing APK features (\textit{e.g.}, API calls and bytecode) as sequences, existing solutions~\cite{xu2018deeprefiner,yan2018lstm,vinayakumar2017deep} leverage RNN to explore the temporal dependencies embedded in these features.
 The Convolutional Neural Network (CNN)~\cite{he2017mask} is equipped with multiple convolutional and pooling layers, enabling it to recognize contextual information derived from low-level features~\cite{girshick2015fast}.
-% This intrinsic capability makes it especially effective in capturing patterns from image-oriented data.
+This intrinsic capability makes it especially effective in capturing patterns from image-oriented data.
 Reflecting its efficacy, CNN has been extensively employed to extract malicious patterns from image-based features in Android malware detection~\cite{mclaughlin2017deep,hsien2018r2,feng2019mobidroid,karbab2018maldozer,huang2019deep,he2019malware}.
 Given the graph representation of APK features (\textit{e.g.,} program graphs), Graph Neural Network (GNN)~\cite{kipf2016semi} can facilitate malware detection~\cite{he2022msdroid,mariconti2016mamadroid,gao2021gdroid,fan2021heterogeneous}.
 This is because GNN can effectively propagate and aggregate node information along graph edges, thereby capturing the structural information of apps.
+% some approaches~\cite{he2022msdroid,gao2021gdroid,fan2021heterogeneous} have attempted to tailor Graph Neural Networks (GNN) to facilitate malware detection.
 Utilizing a process of encoding and subsequently decoding input features, Autoencoders (AE) have the capacity to generate refined data representations, which makes it a popular choice in detecting malware~\cite{li2021robust,yang2021cade,zhu2021hybrid}.
 
 In addition, existing research~\cite{su2016deep,wang2020sedroid,amin2022android} also tries to explore the potential of other DL models, like generative adversarial network (GAN)~\cite{goodfellow2014generative} and deep belief network (DBN)~\cite{hinton2009deep}.
 For instance, Amin et al.~\cite{amin2022android} employ the dual-network structure of GAN --- one generates malware samples and the other works to distinguish these samples --- to enhance the malware detection capability.
 
 
-% \begin{center}
-%     \begin{conclusionbox}
-%     \textit{Observation:} 
-%     \jh{Central to static and ML-based Android malware detection is how to effectively \textit{profile apps' behaviors} and how to \textit{leverage suitable ML models} to unveil malicious patterns.}
-%     \end{conclusionbox}
-% \end{center}
+\begin{center}
+    \begin{conclusionbox}
+    \textit{Observation:} 
+    \jh{Central to static and ML-based Android malware detection is how to effectively \textit{profile apps' behaviors} and how to \textit{leverage suitable ML models} to unveil malicious patterns.}
+    \end{conclusionbox}
+\end{center}
 
-% some approaches~\cite{he2022msdroid,gao2021gdroid,fan2021heterogeneous} have attempted to tailor Graph Neural Networks (GNN) to facilitate malware detection.
+
 % \subsection{Summary}
 % \label{sub:summary}
 % Quick summarize this section, and use some motivation to illustrate we need to conduct a quantitative analysis on the primary techniques.

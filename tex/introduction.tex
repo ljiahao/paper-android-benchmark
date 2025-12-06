@@ -12,26 +12,45 @@ Over the past decade, ML-based Android malware detection has received increased 
 Much attention has been given to exploring various combinations of APK features and ML models.
 The trend is primarily led by advancements in ML models (\textit{e.g.}, graph neural network~\cite{he2022msdroid}) and analogies drawn from other well-studied fields (\textit{e.g.}, social network~\cite{wu2019malscan}).
 Most existing approaches report high F1 scores (up to 0.98)~\cite{wu2019malscan,kim2018multimodal}.
-Such promising results motivate us to ask a number of important research questions.
+Such promising results motivate us to ask a number of important research questions \tosem{regarding the current state of ML-based Android malware detection.}
 For example,
 how does the existing work represent and incorporate diverse APK features into ML models for Android malware detection?
 How do different detection approaches compare when evaluated on the same datasets, metrics, and toolchains?
 Are current ML-based approaches sufficient to meet the requirements in real-world scenarios?
 Does a more powerful ML model necessarily yield better results?
+\tosem{Does model selection materially affect the detection effectiveness when the features are fixed?}
 Does incorporating more features to describe app behaviors always come with better outcomes?
 Is there a positive correlation between the detection effectiveness and efficiency?
 
-In this paper, we investigate the current state and offer an in-depth understanding of ML-based Android malware detection with empirical and quantitative analysis.
-Given the significant growth of app availability --- Google Play's app count has reached 3.95 millions, up 6.5\% from 2023~\cite{appnumber} --- this study focuses on assessing methods that are scalable to large datasets and practical in real-world usage. 
-We aim to experimentally compare the results from a number of representative approaches to understand the advancements and challenges encountered in the field.
-While instructive, we identify several challenges that hinder the comparison.
+\tosem{Existing studies~\cite{faruki2014android,qiu2020survey,liu2022deep,gao2024comprehensive} provide a good starting point to understand the landscape of ML-based Android malware detection.
+However, most are either theoretical reviews or limited in experimental scope and scalability, and thus fall short of a systematic, end-to-end view of the field.
+For example, Qiu et al.~\cite{qiu2020survey} organize the landscape by model family (\textit{e.g.,} CNN and RNN) and examine how these models are applied in Android malware detection.
+% Gao et al.~\cite{gao2024comprehensive} evaluate the robustness of malware detectors under ideal conditions but do not explore how real-world factors (\textit{e.g.,} malware ratio and dataset size) affect effectiveness, and omit an assessment of end-to-end efficiency.
+To our knowledge, no prior work provides an empirical and quantitative real-world analysis that jointly considers effectiveness, robustness, and efficiency.
+Additionally, there is no publicly available framework that standardizes the implementation and evaluation of Android malware detectors, enabling reproducible research and supporting future development.
+}
+
+Accordingly, in this paper, we conduct an empirical, quantitative study to answer these questions and clarify the current state of ML-based Android malware detection.
+Given the scale of the ecosystem --- Google Play's catalog reached 4.2 million apps in 2025, a 6.3\% increase over 2024~\cite{appnumber} --- we prioritize methods that scale to large datasets and are practical for real-world deployment.
+Specifically, we implement and evaluate representative approaches head-to-head to characterize both progress and remaining gaps.
+While informative, this exercise also reveals several challenges to fair comparisons as follows.
+
+% Accordingly, in this paper, we aim to investigate the current state and offer an in-depth understanding of ML-based Android malware detection by answering the above research questions with empirical and quantitative analysis.
+% Given the large and growing number of Android apps --- Google play's app count has reached 4.2 million in 2025, up 6.3\% compared to 2024~\cite{appnumber} --- this study focuses on assessing methods that are scalable to large datasets and practical in real-world usage.
+% Specifically, we experimentally compare the results from a number of representative approaches to understand the advancements and challenges encountered in the field.
+% While instructive, we identify several challenges that hinder the comparison.
+
+% In this paper, we investigate the current state and offer an in-depth understanding of ML-based Android malware detection with empirical and quantitative analysis.
+% Given the significant growth of app availability --- Google Play's app count has reached 3.95 millions, up 6.5\% from 2023~\cite{appnumber} --- this study focuses on assessing methods that are scalable to large datasets and practical in real-world usage. 
+% We aim to experimentally compare the results from a number of representative approaches to understand the advancements and challenges encountered in the field.
+% While instructive, we identify several challenges that hinder the comparison.
 \begin{itemize}[leftmargin=10pt, itemsep=2pt]
 % \begin{description}%[leftmargin=0pt]
   %\item \textit{Existing experimental results are not directly comparable.}
   \item \textit{Unfair Comparisons.}
   Previous approaches are usually evaluated on datasets of different sizes, goodware-to-malware ratios, and training-to-testing ratios~\cite{arp2014drebin,hou2017hindroid,li2021robust}.
   Moreover, they report outcomes using diverse metrics (\textit{e.g.,} F1-score, Accuracy, and False Positive Rate), making it unclear which method performs better under specific settings.
-  In addition, they often rely on different toolchains to develop detectors, which introduce ambiguity --- whether the promising results stem from the novelty of the approach or not~\cite{vasilache2018tensor}.
+  In addition, they often rely on different toolchains (\textit{e.g.,} Androguard~\cite{androguard} and APKTool~\cite{apkt}) to develop detectors, which introduce ambiguity --- whether the promising results stem from the novelty of the approach or not~\cite{vasilache2018tensor}.
 
   %\item[Real-world scenarios, \textit{e.g.,} malware evolution, obfuscation, and adversarial attacks are not often fully considered in many existing studies.]
   \item \textit{Unrealistic Evaluations.} 
@@ -42,23 +61,22 @@ While instructive, we identify several challenges that hinder the comparison.
 
   %\item[Most methods overlook reporting the end-to-end efficiency from feature engineering to ML modeling.]
   \item \textit{Unclear Computational Costs.}
-  With the exponential growth of apps in sizes and complexities, feature extraction gradually becomes notably time-consuming. 
+  With the exponential growth of apps in sizes and complexities, feature extraction gradually becomes notably time-consuming --- for example, it can take up 30 minutes to gather API paths from one app~\cite{xu2020sdac}.
   Furthermore, as ML models evolve in complexity, they demand greater computational power to achieve state-of-the-art results.
   Unfortunately, it remains uncertain what prices to pay to gain the desired results.
 \end{itemize}
 
-%{\noindent \bf Our Approach.}To tackle these issues, we design a general-purpose framework, \codename, to evaluate ML-based Android malware detection solutions. 
+%{\noindent \bf Our Approach.}To tackle these issues, we design a general-purpose framework, \codename, to evaluate ML-based Android malware detection solutions.
 
-To tackle these issues, we design a general-purpose framework, \codename, to evaluate ML-based Android malware detection solutions. 
-\codename is modular and configurable, facilitating the development of new Android malware detectors and the design of various evaluation scenarios.
-Specifically, we dissect the detection pipeline into three phases: APK characterization, feature representation, and ML modeling.
-Guided by this taxonomy, we first empirically analyze the related work to explore how current approaches detect Android malware.
-% We begin with dissecting the detection pipeline into three phases: APK characterization, feature representation, and ML modeling.
-% Guided by this taxonomy, we empirically analyze the related work to explore how current approaches detect Android malware.
-%
-Next, we apply our framework to 12 representative approaches from three research communities: software engineering~\cite{wu2019malscan,wu2021homdroid,wu2021android}, security~\cite{arp2014drebin,mariconti2016mamadroid,mclaughlin2017deep,xu2018deeprefiner,kim2018multimodal,xu2020sdac,he2022msdroid}, and machine learning~\cite{hou2017hindroid,li2021robust}.
-In particular, we ensure that the same task (\textit{e.g,} feature extraction) across different methods is performed using the same toolchain, eliminating potential discrepancies in the results caused by different toolchains.
-To further facilitate the development of new detectors, we implement \codename to be modular and configurable, where components (\textit{e.g.,} neural networks) can be freely swapped.
+To address these challenges, we design \codename, a general-purpose framework that streamlines the implementation and evaluation of ML-based Android malware detection systems.
+\codename adopts a modular and configurable architecture, enabling both the rapid development of new detection techniques and the flexible construction of diverse evaluation scenarios.
+Specifically, we begin with decomposing the detection pipeline into three core phases: APK characterization, feature representation, and ML modeling.
+Guided by this taxonomy, we conduct an empirical analysis of prior work to examine how existing approaches detect Android malware.
+
+Next, we apply our framework to 12 representative approaches spanning three research communities: software engineering~\cite{wu2019malscan,wu2021homdroid,wu2021android}, security~\cite{arp2014drebin,mariconti2016mamadroid,mclaughlin2017deep,xu2018deeprefiner,kim2018multimodal,xu2020sdac,he2022msdroid}, and machine learning~\cite{hou2017hindroid,li2021robust}.
+To ensure fairness and reproducibility, we standardize shared tasks (\textit{e.g.,} feature extraction) across different methods by using the same toolchain (\textit{i.e.,} Androguard~\cite{androguard}), eliminating discrepancies caused by heterogeneous tool support.
+Furthermore, to facilitate the development of new detectors, \codename is implemented as a modular and configurable system, allowing components (\textit{e.g.,} neural networks) to be easily replaced or customized.
+% Update evaluation
 For evaluation, we randomly sample 221,310 apps spanning ten years from AndroZoo~\cite{allix2016androzoo}, a continuously updated public repository of Android apps.
 The malware ratio is set as 10\% to mimic a realistic setting~\cite{pendlebury2019tesseract}.
 To make the experiments mirror real-world conditions, we evaluate the selected approaches using common used metrics (\textit{e.g.,} F1-score and Accuracy), focusing on the following aspects: the effectiveness and efficiency in malware detection, the robustness against app evolution and obfuscation, and the resilience against adversarial attacks.
@@ -88,8 +106,9 @@ In summary, we make the following contributions:
   We conduct a thorough systematic investigation of ML-based Android malware detection using empirical and qualitative methods, drawing a holistic picture of the field.
   \item
   We design a general-purpose framework, \codename, to facilitate the implementation and evaluation of various Android malware detectors.
-  For comparison in realistic settings, we collect and open-source the largest dataset to date, both in size and time span.
-  The framework, along with the dataset, is available at \url{https://anonymous.4open.science/r/RkRyb2lk}.
+  For comparison in realistic settings, we collect the largest dataset to date, both in size and temporal coverage.
+  The framework and dataset are available at \url{https://anonymous.4open.science/r/RkRyb2lk}.
+  \codename has already supported research in multiple organizations; we will release the framework publicly to further support future research.
   \item 
   We offer a comprehensive comparative analysis of 12 representative approaches using \codename, focusing on assessing their effectiveness, robustness, and efficiency. We point out that the key for enhancing ML-based Android malware detection is incorporating the malware semantics derived from APK features.
 \end{itemize}
