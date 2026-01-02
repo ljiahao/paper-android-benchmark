@@ -75,9 +75,9 @@ Furthermore, \codename provides configurable experimental settings to support di
 
 This modular design of \codename simplifies the development of ML-based Android malware detectors. Three key modules, \textit{feature database}, \textit{preprocessor}, and \textit{ML model}, captures the main aspects of designing ML solutions for Android malware detection.
 % \textit{Feature database} organizes the extracted features categorically, including Manifest, ProgramGraph, DisassembledCode, and SharedLibrary, which can be easily extended to incorporate new features.
-The \textit{feature database} organizes extracted features categorically according to their sources, as discussed in Sec.\ref{sub:apk_characterization}, including Manifest, Dex, Library, and Resource. 
+The \textit{feature database} organizes extracted features categorically according to their sources, as discussed in Section~\ref{sub:apk_characterization}, including Manifest, Dex, Library, and Resource. 
 For example, the Manifest category contains features extracted from the AndroidManifest.xml file, such as permissions, intents, and application components.
-Further details about the feature database are provided in Appendix\ref{sub:feature_db}.
+Further details about the feature database are provided in Appendix~\ref{sub:feature_db}.
 Notably, all features are stored in a manner consistent with our APK characterization taxonomy.
 Each directory corresponds to a specific feature source, and the features of a given APK are distributed accordingly --- for instance, Hardware Components and Application Components under Manifest; API Calls, Opcodes, and Program Graphs under Dex; Native Functions under Library; and Image Resources under Resource.
 Such structured storage enables developers to easily query and extract the required features without re-extracting them from the original APKs, greatly accelerating the development of new detectors.

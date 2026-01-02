@@ -11,7 +11,7 @@ For malicious pattern identification, ML models have become increasingly popular
 % This has led to the growing popularity of ML models in Android malware detection~\cite{qiu2020survey}.
 % To align with the research trend, we focus on ML-based approaches that prioritize static feature extraction for detecting Android malware.
 % We also conduct a systematic investigation of the literature to validate our choice, which can be found in the supplementary material~\cite{supplementary}.
-To validate the trend towards ML-based Android malware detection, we conduct a systematic investigation of the literature, which can be found in Sec.~\ref{sec:discussion}.
+To validate the trend towards ML-based Android malware detection, we conduct a systematic investigation of the literature, which can be found in Section~\ref{sec:discussion}.
 
 It is worth noting that, in an effort to better characterize the landscape of ML-based Android malware detection, a number of studies~\cite{souri2018state,qiu2020survey,liu2022deep,faruki2014android,gao2024comprehensive} have reviewed existing detection approaches to identify common practices and open challenges.
 However, these reviews largely rely on theoretical analyses without experimental validation or adopt narrow perspectives --- for example, focusing primarily on how popular ML models are applied to this domain~\cite{qiu2020survey} or examining individual solutions in isolation.
@@ -21,11 +21,11 @@ To the best of our knowledge, no existing work provides a comprehensive study th
 Moreover, there is currently no publicly available, general-purpose framework that supports the development and evaluation of ML-based Android malware detection systems.
 
 To bridge this gap, we first present a systematic investigation of ML-based Android malware detection.
-We then design and release a general-purpose framework, \codename, together with a large-scale, realistic dataset (see Sec.~\ref{sec:framework}), enabling the most comprehensive and wide-ranging comparative analysis to date.
+We then design and release a general-purpose framework, \codename, together with a large-scale, realistic dataset (see Section~\ref{sec:framework}), enabling the most comprehensive and wide-ranging comparative analysis to date.
 Using this unified platform, we examine the current state of ML-based Android malware detection and highlight the key challenges and opportunities that shape this field.
 
 In this section, we demonstrate the empirical analysis about how existing detectors represent and incorporate features for Android malware detection. 
-Rather than analyzing each approach individually, our methodology is to deconstruct and unify the workflow of ML-based Android malware detection. We identify three common phases: APK characterization (Sec~\ref{sub:apk_characterization}), feature representation (Sec~\ref{sub:apk_feature_encoding}), and ML modeling (Sec~\ref{sub:ml_models}).
+Rather than analyzing each approach individually, our methodology is to deconstruct and unify the workflow of ML-based Android malware detection. We identify three common phases: APK characterization (Section~\ref{sub:apk_characterization}), feature representation (Section~\ref{sub:apk_feature_encoding}), and ML modeling (Section~\ref{sub:ml_models}).
 Following this, we collate and summarize the key techniques employed in each phase by investigating existing approaches, offering a thorough overview of how ML models are applied in Android malware detection.
 
 % It is worth highlighting that a number of studies~\cite{qiu2020survey,liu2022deep,faruki2014android,gao2024comprehensive} have started to analyze Android malware detection techniques.

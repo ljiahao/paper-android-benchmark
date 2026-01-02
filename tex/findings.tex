@@ -39,30 +39,31 @@ Through a combined analysis of effectiveness and efficiency, we observe that eff
 A detector demanding more resources does not necessarily deliver enhanced results.
 For example, Drebin~\cite{arp2014drebin} can achieve competitive detection performance with relatively low resource consumption.
 
-\begin{table*}[t]
-    \centering
-    \renewcommand{\arraystretch}{1.15}
-    \caption{The efficiency (\textit{i.e.,} model training time) of selected approaches across datasets from different years.}
-    % \vspace{-0.1cm}
-    \begin{adjustbox}{width=\textwidth}
-        \begin{tabular}{@{}r|r|r|r|r|r|r|r|r|r|r|r|r@{}}
-            \toprule
-            \textbf{Year} & \multicolumn{1}{c|}{\textbf{Drebin}} & \multicolumn{1}{c|}{\textbf{MamaDroid}} & \multicolumn{1}{c|}{\textbf{Mclaughlin}} & \multicolumn{1}{c|}{\textbf{HinDroid}} & \multicolumn{1}{c|}{\textbf{DeepRefiner}} & \multicolumn{1}{c|}{\textbf{Kim}} & \multicolumn{1}{c|}{\textbf{MalScan}} & \multicolumn{1}{c|}{\textbf{SDAC}} & \multicolumn{1}{c|}{\textbf{HomDroid}} & \multicolumn{1}{c|}{\textbf{Xmal}} & \multicolumn{1}{c|}{\textbf{RAMDA}} & \multicolumn{1}{c}{\textbf{MSDroid}} \\ \midrule
-            \textbf{2011} & 15.11s        & 1.90s            & 128m22s                  & 2m19s           & 369m18s            & 98m47s            & 1m14s          & 84m47s      & 2.00s           & 1m15s       & 1m6s         & 20m19s        \\ \midrule
-            \textbf{2012} & 20.88s        & 1.94s            & 97m01s                   & 2m18s           & 359m35s            & 92m47s            & 1m18s          & 89m05s      & 2.04s           & 1m25s       & 1m11s        & 37m54s        \\ \midrule
-            \textbf{2013} & 22.37s        & 2.12s            & 172m20s                  & 2m13s           & 477m18s            & 115m40s           & 1m24s          & 115m35s     & 2.04s           & 50.36s      & 1m06s        & 40m11s        \\ \midrule
-            \textbf{2014} & 32.49s        & 2.46s            & 128m13s                  & 2m40s           & 629m26s            & 104m03s           & 1m33s          & 132m55s     & 2.20s           & 2m20s       & 1m17s        & 42m07s        \\ \midrule
-            \textbf{2015} & 26.40s        & 2.60s            & 411m03s                  & 2m44s           & 730m41s            & 115m27s           & 1m38s          & 250m07s     & 2.22s           & 2m10s       & 1m20s        & 42m52s        \\ \midrule
-            \textbf{2016} & 32.62s        & 2.99s            & 234m19s                  & 2m51s           & 867m25s            & 135m50s           & 1m42s          & 470m38s     & 2.26s           & 1m05s       & 1m19s        & 142m23s       \\ \midrule
-            \textbf{2017} & 22.36s        & 2.75s            & 192m41s                  & 2m28s           & 997m04s            & 145m24s           & 1m37s          & 296m05s     & 2.22s           & 1m54s       & 1m20s        & 47m22s        \\ \midrule
-            \textbf{2018} & 19.97s        & 2.91s            & 227m48s                  & 2m36s           & 933m12s            & 128m32s           & 1m34s          & 716m43s     & 2.21s           & 1m19s       & 1m21s        & 155m50s       \\ \midrule
-            \textbf{2019} & 26.83s        & 3.03s            & 514m18s                  & 2m34s           & 968m50s            & 185m43s           & 1m32s          & 918m09s     & 2.22s           & 1m34s       & 1m18s        & 130m41s       \\ \midrule
-            \textbf{2020} & 22.87s        & 2.69s            & 771m44s                  & 2m22s           & 1064m30s           & 148m08s           & 1m29s          & 867m55s     & 2.17s           & 2m09s       & 1m12s        & 93m08s        \\ \bottomrule
-            \end{tabular}
-    \end{adjustbox}
-    \label{tab:efficiency_ml_modeling}
-\vspace{-0.5cm}
-\end{table*}
+
+% \begin{table*}[t]
+%     \centering
+%     \renewcommand{\arraystretch}{1.15}
+%     \caption{The efficiency (\textit{i.e.,} model training time) of selected approaches across datasets from different years.}
+%     % \vspace{-0.1cm}
+%     \begin{adjustbox}{width=\textwidth}
+%         \begin{tabular}{@{}r|r|r|r|r|r|r|r|r|r|r|r|r@{}}
+%             \toprule
+%             \textbf{Year} & \multicolumn{1}{c|}{\textbf{Drebin}} & \multicolumn{1}{c|}{\textbf{MamaDroid}} & \multicolumn{1}{c|}{\textbf{Mclaughlin}} & \multicolumn{1}{c|}{\textbf{HinDroid}} & \multicolumn{1}{c|}{\textbf{DeepRefiner}} & \multicolumn{1}{c|}{\textbf{Kim}} & \multicolumn{1}{c|}{\textbf{MalScan}} & \multicolumn{1}{c|}{\textbf{SDAC}} & \multicolumn{1}{c|}{\textbf{HomDroid}} & \multicolumn{1}{c|}{\textbf{Xmal}} & \multicolumn{1}{c|}{\textbf{RAMDA}} & \multicolumn{1}{c}{\textbf{MSDroid}} \\ \midrule
+%             \textbf{2011} & 15.11s        & 1.90s            & 128m22s                  & 2m19s           & 369m18s            & 98m47s            & 1m14s          & 84m47s      & 2.00s           & 1m15s       & 1m6s         & 20m19s        \\ \midrule
+%             \textbf{2012} & 20.88s        & 1.94s            & 97m01s                   & 2m18s           & 359m35s            & 92m47s            & 1m18s          & 89m05s      & 2.04s           & 1m25s       & 1m11s        & 37m54s        \\ \midrule
+%             \textbf{2013} & 22.37s        & 2.12s            & 172m20s                  & 2m13s           & 477m18s            & 115m40s           & 1m24s          & 115m35s     & 2.04s           & 50.36s      & 1m06s        & 40m11s        \\ \midrule
+%             \textbf{2014} & 32.49s        & 2.46s            & 128m13s                  & 2m40s           & 629m26s            & 104m03s           & 1m33s          & 132m55s     & 2.20s           & 2m20s       & 1m17s        & 42m07s        \\ \midrule
+%             \textbf{2015} & 26.40s        & 2.60s            & 411m03s                  & 2m44s           & 730m41s            & 115m27s           & 1m38s          & 250m07s     & 2.22s           & 2m10s       & 1m20s        & 42m52s        \\ \midrule
+%             \textbf{2016} & 32.62s        & 2.99s            & 234m19s                  & 2m51s           & 867m25s            & 135m50s           & 1m42s          & 470m38s     & 2.26s           & 1m05s       & 1m19s        & 142m23s       \\ \midrule
+%             \textbf{2017} & 22.36s        & 2.75s            & 192m41s                  & 2m28s           & 997m04s            & 145m24s           & 1m37s          & 296m05s     & 2.22s           & 1m54s       & 1m20s        & 47m22s        \\ \midrule
+%             \textbf{2018} & 19.97s        & 2.91s            & 227m48s                  & 2m36s           & 933m12s            & 128m32s           & 1m34s          & 716m43s     & 2.21s           & 1m19s       & 1m21s        & 155m50s       \\ \midrule
+%             \textbf{2019} & 26.83s        & 3.03s            & 514m18s                  & 2m34s           & 968m50s            & 185m43s           & 1m32s          & 918m09s     & 2.22s           & 1m34s       & 1m18s        & 130m41s       \\ \midrule
+%             \textbf{2020} & 22.87s        & 2.69s            & 771m44s                  & 2m22s           & 1064m30s           & 148m08s           & 1m29s          & 867m55s     & 2.17s           & 2m09s       & 1m12s        & 93m08s        \\ \bottomrule
+%             \end{tabular}
+%     \end{adjustbox}
+%     \label{tab:efficiency_ml_modeling}
+% \vspace{-0.5cm}
+% \end{table*}
 
 \bulletpoint{Recommendations}
 Our findings reveal that the effectiveness of ML-based Android malware detectors is closely tied to the quantity and quality of malware semantics extracted from APK features, which describe the malicious behaviors of apps.

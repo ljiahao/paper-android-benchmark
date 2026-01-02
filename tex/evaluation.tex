@@ -1,4 +1,3 @@
-% \vspace{-0.5cm}
 \section{Quantitative Analysis}
 \label{sec:evaluation}
 
@@ -20,99 +19,51 @@
 % Specifically, we re-implement these approaches using our general-purpose framework, \codename.
 % We then assess their effectiveness, robustness, and efficiency on our crafted dataset.
 
-% One of our contributions is conducting a quantitative analysis of the selected approaches.
-This analysis seeks to assess and disentangle the effects of various experimental settings --- such as data size, goodware-to-malware ratios, and the presence of adversarial attacks --- on the performance of these methods.
-By conducting these experiments, we can observe how current ML-based Android malware detection methods perform under varied conditions and identify key factors that contribute to an effective malware detector.
-Specifically, we re-implement the 12 representative approaches outlined in Sec.~\ref{sec:approach_analysis} using our general-purpose framework
-(Implementation details are in Appendix~\ref{sub:approach_overview}).
-We then evaluate their effectiveness (Sec.~\ref{effectiveness}), robustness (Sec.~\ref{robustness}), and efficiency (Sec.~\ref{efficiency}) on a large-scale, long-duration dataset (Sec.~\ref{sec:dataset}) tailored for this study.
+One of our key contributions is a comprehensive quantitative analysis of the selected approaches.
+This analysis aims to assess and disentangle the effects of various experimental settings --- such as data size, goodware-to-malware ratios, and the presence of adversarial attacks --- on the performance of these representative detectors.
+By systematically varying these conditions, we can observe how current ML-based Android malware detection methods behave under different scenarios and identify key factors that contribute to an effective detector.
+Specifically, we re-implement the 12 representative approaches outlined in Section~\ref{sec:approach_analysis} within our general-purpose framework, \codename\ (implementation details are provided in Appendix~\ref{sub:approach_overview}).
+We then evaluate their effectiveness (Section.~\ref{effectiveness}), robustness (Section.~\ref{robustness}), and efficiency (Section.~\ref{efficiency}) on a large-scale, long-duration dataset (Section.~\ref{sec:dataset}) tailored for this study.
+Beyond these experiments, we also investigate additional aspects, such as the influence of reverse-engineering toolchains and model selection given specific feature sets, to derive deeper insights into the current state of Android malware detection.
 
-% In this section, we re-implement the 12 methods described in Section~\ref{sec:approach_analysis} and assess their effectiveness, robustness, and efficiency on our curated dataset (more reproduction details are provided in~\ref{sub:approach_overview}).
-% Through this, we aim to provide a comprehensive understanding of the state-of-the-art techniques in Android malware detection.
-% \subsection{\codename}
-% \label{sec:framework}
-
-% % \jiahao{Add more discussion and illustration of the framework. How to use it? What are the key components?}
-% Figure~\ref{fig:framework} illustrates the workflow of \codename.
-% The procedure initiates with a collection of apps, from which a set of features is extracted and stored in a feature database.
-% These features are then processed by a preprocessor, being transformed into a numerical vector.
-% After that, an ML model is trained and evaluated for detecting malware.
-% \codename is also equipped with adaptable experimental settings to support multiple real-world scenarios. 
-% It is implemented in 17K lines of Python code, detailed in supplementary materials~\cite{supplementary}.
-
-% % The framework is crafted with two guiding principles at its core: modularization and flexibility.
-% % \jh{\codename is modular, which makes it easy to extend and customize according to various requirements.}
-% % This is achieved by decoupling it into three modules: \textit{feature database}, \textit{preprocessor}, and \textit{ML model}.
-% % Given the structured format of the \textit{feature database}, one can easily incorporate new features and integrate them into the assessment pipeline.
-% % Moreover, the \textit{preprocessor} can be tailored to accommodate various approaches, granting users the flexibility to determine what/how features are used.
-% % The \textit{ML model} is preloaded with various ML models, such as SVM, MLP, CNN, and AE.
-% % Alternatively, \codename also supports custom models, allowing users to incorporate their own models into the framework.
-% % Given the structured format of the \textit{feature database} (details can be found in~\ref{sub:feature_db}), one can easily incorporate new features and integrate them into the assessment pipeline.
-% \codename consists of three modules: \textit{feature database}, \textit{preprocessor}, and \textit{ML model}.
-% % This modular design simplifies the development of ML-based Android malware detectors.
-% \textit{Feature database} organizes the extracted features categorically, including Manifest, ProgramGraph, DisassembledCode, and SharedLibrary, which can be easily extended to incorporate new features.
-% \textit{Preprocessor} is used to retrieve and encode features before feeding them into \textit{ML model}.
-% % This module can be tailored to support different detectors, granting flexibility in feature selection and usage.
-% % The role of \textit{preprocessor} is to transform (\textit{i.e.,} retrieve and encode) APK features and can be tailored to suit various malware detectors, granting flexibility in feature selection and usage.
-% % The \textit{ML model} is preloaded with various ML models, such as SVM, MLP, and AE.
-% % Additionally, it offers the capability for model customization, enabling users to easily integrate their own models into the framework.
-% \textit{ML model} integrates widely used ML models, \textit{e.g.,} RF, SVM, KNN, MLP, LSTM, CNN, GNN, and AE.
-% It also supports model customization --- for example, one can easily add new neural networks of different architectures.
-% % It also supports model customization, making it straightforward to incorporate bespoke models. 
-% % To develop a new detector, one only needs to customize \textit{preprocessor} to select corresponding features from \textit{feature database} and feed them into \textit{ML model}.
-
-% \codename provides configurable experimental settings to support different scenarios.
-% Parameters, such as goodware-to-malware ratios and training data sizes, are all adjustable.
-% Different configurations enable the creation of diverse evaluation scenarios.
-% % This capability enhances the app selection process, enabling the creation of diverse evaluation scenarios. 
-% % This facilitates app selection to construct diverse scenarios, ensuring comprehensive and accurate evaluation.
-% \codename also includes an APK obfuscator~\cite{aonzo2020obfuscapk}, which can produce different types of obfuscated samples, \textit{e.g.,} code modification and identifier renaming.
-% Moreover, this framework incorporates an adversarial samples generation mechanism from AndroidHIV~\cite{chen2019android}, allowing the assessment of models' resilience to adversarial attacks.
-
-% \subsection{\codename Implementation}
-% \codename is developed in 17K lines of Python code.
-% To ensure consistency and mitigate biases from different feature extraction toolchains and learning frameworks, we adopt standardized techniques across all tasks.
-% For feature extraction, we use Androguard~\cite{androguard} to disassemble APK files and derive features such as permissions, intents, and program graphs. 
-% LibRadar~\cite{libradar} helps in identifying third-party libraries within the applications, while Angr~\cite{angr} is used for analyzing native libraries and capturing essential features like opcodes and API calls. 
-% When it comes to ML models, the scikit-learn library is our choice for traditional ML algorithms like SVM, KNN, and RF.
-% On the other hand, for DL architectures such as CNN, GNN, and AE, we resort to Pytorch~\cite{pytorch}.
-% This uniform approach ensures a balanced evaluation, concentrating purely on the uniqueness and performance of each method.
-
-% \codename also includes an APK obfuscator~\cite{aonzo2020obfuscapk}, which can produce different types of obfuscated samples, \textit{e.g.,} code modification and identifier renaming.
-% Moreover, this framework incorporates an adversarial samples generation mechanism from AndroidHIV~\cite{chen2019android}, allowing the assessment of models' resilience to adversarial attacks.
 \subsection{Dataset}
 \label{sec:dataset}
-\subsubsection{\textbf{Primary Dataset}}
-\label{primary_dataset}
-For an evaluation that mirrors real-world scenarios and supports a multi-dimensional assessment, it is crucial that the dataset adheres to the following criteria~\cite{pendlebury2019tesseract}.
-\textit{Market Diversity}:
-Android apps are distributed across various app stores; it is better to sample them from multiple platforms to ensure comprehensive representation.
-We choose to collect our dataset from AndroZoo~\cite{allix2016androzoo}, which is a growing collection of apps from different platforms, like Google Play, PlayDrone, VirusShare, and AppChina.
-\textit{Grayware}:
-Owing to the uncertain nature of grayware, incorporating it might skew the results.
-To filter out grayware, we use the number of positive antivirus alerts (denoted as $p$) derived from VirusTotal~\cite{virustotal} as a criterion.
-Following previous studies~\cite{pendlebury2019tesseract,miller2016reviewer}, apps with $p\geq 4$ are categorized as malicious, while those with $p=0$ are considered benign.
-\textit{Time Distribution}:
-To study malware evolution~\cite{cai2020assessing,lei2019evedroid}, the dataset should cover a wide range of years.
-We set the time span as ten years for a comprehensive evaluation.
-However, during app collection, we find that due to collection delays, the number of malware samples in the last few years is relatively small, making it challenging to support a thorough evaluation~\cite{arp2022and}.
-Therefore, similar to previous studies~\cite{chen2023continuous,gao2024comprehensive}, we collect apps from 2011 to 2020.
-\tosem{Highlight the apps are enough.}
-\textit{Malware Ratio}:
-To mimic actual conditions, we select apps based on a monthly time window, ensuring that around 2,000 apps are collected each month, with a goodware-to-malware ratio aligning with the estimated $9:1$ in the wild~\cite{pendlebury2019tesseract}.
-% Additionally, to ensure the quality of the dataset, we exclude apps that fail to be analyzed by AndroGuard~\cite{androguard}.
-Additionally, to ensure the quality of the dataset, we exclude apps that cannot be parsed by AndroGuard~\cite{androguard} because we cannot extract the required features for malware detection.
-\tosem{Provide a more detailed explanation of the deduplication process.}
 
-Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and 198,440 benign apps, as summarized in Table~\ref{tab:dataset_stat}.
+\bulletpoint{Dataset Construction Principles}
+To conduct an evaluation that is representative of real-world scenarios and enables a comprehensive, multi-dimensional assessment, it is essential that the dataset satisfies the following criteria~\cite{pendlebury2019tesseract}.
+\begin{itemize}[leftmargin=14pt]
+    \item \textit{Market Diversity}: Android apps should be collected from multiple app stores to ensure comprehensive representation of the ecosystem. We consider various sources, including Google Play, VirusShare, and malware repositories.
+    \item \textit{Exclusion of Grayware}: Grayware should be excluded to prevent skewing the results, as its uncertain nature can complicate the classification of apps. To filter out grayware, we use the number of positive antivirus alerts (denoted as $p$) derived from VirusTotal~\cite{virustotal} as a criterion. Following previous studies~\cite{pendlebury2019tesseract,miller2016reviewer}, apps with $p\geq 4$ are categorized as malicious, while those with $p=0$ are considered benign.
+    \item \textit{Temporal Distribution}: Malware evolution is a critical factor affecting detection performance; thus, the dataset should span a wide range of years to capture this dynamic.
+    \item \textit{Realistic Malware Ratio}: The dataset should reflect the actual goodware-to-malware ratio observed in the wild to ensure that the evaluation is grounded in real-world conditions. Specifically, we follow previous studies~\cite{pendlebury2019tesseract,chen2023continuous} and set the malware ratio to 10\%, to establish a realistic evaluation environment.
+    \item \textit{Deduplication}: To avoid bias in the evaluation, duplicate apps should be removed from the dataset. We first perform hash-based deduplication to eliminate exact copies of the same APK. We then filter out apps that share the same package name and version code, as they are likely to be identical or highly similar. Finally, we inspect the extracted features, such as the number of permissions and API calls, to identify potential duplicates that may have been repackaged or slightly modified.
+\end{itemize}
+
+
+% \textit{Market Diversity}:
+% Android apps are distributed across various app stores; it is better to sample them from multiple platforms to ensure comprehensive representation.
+% We choose to collect our dataset from AndroZoo~\cite{allix2016androzoo}, which is a growing collection of apps from different platforms, like Google Play, PlayDrone, VirusShare, and AppChina.
+% \textit{Grayware}:
+% Owing to the uncertain nature of grayware, incorporating it might skew the results.
+% To filter out grayware, we use the number of positive antivirus alerts (denoted as $p$) derived from VirusTotal~\cite{virustotal} as a criterion.
+% Following previous studies~\cite{pendlebury2019tesseract,miller2016reviewer}, apps with $p\geq 4$ are categorized as malicious, while those with $p=0$ are considered benign.
+% \textit{Time Distribution}:
+% To study malware evolution~\cite{cai2020assessing,lei2019evedroid}, the dataset should cover a wide range of years.
+% We set the time span as ten years for a comprehensive evaluation.
+% However, during app collection, we find that due to collection delays, the number of malware samples in the last few years is relatively small, making it challenging to support a thorough evaluation~\cite{arp2022and}.
+% Therefore, similar to previous studies~\cite{chen2023continuous,gao2024comprehensive}, we collect apps from 2011 to 2020.
+% \tosem{Highlight the apps are enough.}
+% \textit{Malware Ratio}:
+% To mimic actual conditions, we select apps based on a monthly time window, ensuring that around 2,000 apps are collected each month, with a goodware-to-malware ratio aligning with the estimated $9:1$ in the wild~\cite{pendlebury2019tesseract}.
+% Additionally, to ensure the quality of the dataset, we exclude apps that cannot be parsed by AndroGuard~\cite{androguard} because we cannot extract the required features for malware detection.
 
 \begin{table}[t]
     \renewcommand{\arraystretch}{0.9}
     \centering
-    \caption{Evaluation Dataset Statistics.
+    \caption{Evaluation Dataset Statistics of the Primary Dataset.
     The unit used for measuring APK size is megabytes (MB).}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.7\linewidth, center}
+    \begin{adjustbox}{width=0.8\linewidth, center}
     \begin{tabular}{c|ccccc}
     \hline
     \textbf{Year}  & \textbf{Malicious} & \textbf{Benign} & \textbf{M+B} & \textbf{M/(M+B)} & \textbf{Avg.Size} \\ \hline
@@ -133,11 +84,22 @@ Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and
     \vspace{-0.3cm}
 \end{table}
 
-\begin{table}[h]
+Following these principles, we construct two datasets: a primary dataset (Section~\ref{primary_dataset}) used for the main evaluation, and an additional dataset (Section~\ref{additional_dataset}) employed for further validation and complementary experiments.
+
+
+% We set the time span as ten years for a comprehensive evaluation.
+% However, during app collection, we find that due to collection delays, the number of malware samples in the last few years is relatively small, making it challenging to support a thorough evaluation~\cite{arp2022and}.
+% Therefore, similar to previous studies~\cite{chen2023continuous,gao2024comprehensive}, we collect apps from 2011 to 2020.
+
+
+% \tosem{Provide a more detailed explanation of the deduplication process.}
+
+
+\begin{table}[t]
     \centering
-    \caption{Data distribution of four sub-datasets. M/N indicates M benign and N malicious apps.}
+    \caption{Data distribution of four sub-datasets derived from primary dataset. M/N indicates M benign and N malicious apps.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.53\linewidth, center}
+    \begin{adjustbox}{width=0.6\linewidth, center}
  \begin{tabular}{r|r|r|c}
      \hline
      \multicolumn{1}{c|}{\textbf{Training}} & \multicolumn{1}{c|}{\textbf{Validation}} & \multicolumn{1}{c|}{\textbf{Testing}} & \textbf{Alias} \\ \hline
@@ -151,30 +113,57 @@ Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and
     \vspace{-0.3cm}
 \end{table}
 
+\subsubsection{\textbf{Primary Dataset}}
+\label{primary_dataset}
+
+To build the main evaluation dataset, we take AndroZoo~\cite{allix2016androzoo} as our app source, which is a growing collection of apps from different platforms, like Google Play, PlayDrone, and AppChina.
+As for the temporal distribution, we set the time span as ten years (\textit{i.e.,} from 2011 to 2020) for a comprehensive evaluation, following previous studies~\cite{chen2023continuous,gao2024comprehensive}.
+To mimic actual conditions, we select apps based on a monthly time window, ensuring that around 2,000 apps are collected each month, with a goodware-to-malware ratio aligning with the estimated $9:1$ in the wild~\cite{pendlebury2019tesseract}.
+Additionally, to ensure the quality of the dataset, we exclude apps that cannot be parsed by AndroGuard~\cite{androguard} because we cannot extract the required features for malware detection.
+Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and 198,440 benign apps, as summarized in Table~\ref{tab:dataset_stat}.
+We employ this primary dataset for the main evaluation of the selected approaches in effectiveness, robustness, and efficiency.
+
 \bulletpoint{Settings}
-To support certain evaluation scenarios, we construct four sub-datasets from the aforementioned dataset.
-For each sub-dataset, apps are randomly sampled to form training, validation, and testing sets.
-Table~\ref{tab:effectiveness_dataset} shows their data distribution.
-Importantly, the apps in these sub-datasets are sampled from different years to ensure comprehensive representation.
-For instance, for \ding{182}, each year contributes 1440 benign and 160 malicious apps for training, 180 benign and 20 malicious apps for validation, and the same for testing. 
+To further support specifc evaluation scenarios, we construct four sub-datasets wtih different configurations derived from the primary dataset.
+For each sub-dataset, apps are randomly sampled to form training, validation, and testing sets, and their distributions are summarized in Table~\ref{tab:effectiveness_dataset}.
+Importantly, the apps in these sub-datasets are sampled from different years to ensure comprehensive temporal representation.
+For instance, for \ding{182}, each year contributes 1,440 benign and 160 malicious apps for training, 180 benign and 20 malicious apps for validation, and the same number for testing. 
 Duplicate apps are also avoided across these sets.
+We use these sub-datasets to investigate the effectiveness of the selected representative approaches under different settings, such as goodware-to-malware ratio and APK features.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.68\linewidth]{fig/new_data.pdf}
+    \vspace{-0.1cm}
+    \caption{Data statistics of apps collected from 2021 to 2024. The y axis uses a logarithmic scale.}
+    \label{fig:new_data}
+    \vspace{-0.3cm}
+\end{figure}
 
 \subsubsection{\textbf{Additional Dataset}}
 \label{additional_dataset}
-\tosem{To complementary verify the application of our framework, \codename, we also collect apps recently from 2021 to 2024, although the dataset is smaller, to further evaluate exsiting solutions and support our main findings.}
+
+As a complementary dataset, we collect Android apps from AndroZoo~\cite{allix2016androzoo} spanning the years 2021 to 2024, following the same principles outlined above.
+During this process, we observe that the number of malware samples in these years is relatively small, making it challenging to support a thorough evaluation~\cite{arp2022and}.
+To enrich the dataset, we therefore additionally gather malware samples from VirusShare~\cite{vs}, a well-known repository that aggregates a large collection of malware from various sources.
+We maintain a realistic goodware-to-malware ratio of 9:1 in this additional dataset.
+Figure~\ref{fig:new_data} summarizes its statistics, which in total contains 7,911 apps, including 791 malicious and 7,120 benign samples.
+We note that the number of malicious samples in this additional dataset is still relatively small compared to the primary dataset.
+Nonetheless, it is sufficient to support our complementary experiments, which primarily aim to validate the findings from the main evaluation, particularly regarding the effectiveness (\textit{e.g.,} whether detection performance changes significantly) and efficiency (\textit{e.g.,} memory usage) of the selected approaches.
 
 \subsection{Effectiveness}
 \label{effectiveness}
-In this section, we examine how the effectiveness of the selected approaches varies across different experimental settings to pinpoint the factors that contribute to an effective malware detector. 
-Specifically, we focus on the following aspects: goodware-to-malware ratio, training set size, APK features, and model selection.
-These factors are pivotal as they influence the quality of the training data and the model's ability to extract relevant information, both of which are essential for the performance of ML-based detectors.
+In this section, we examine how the detection effectiveness of the selected approaches varies under different experimental settings, with the goal of identifying the key factors that contribute to an effective malware detector.
+Specifically, we focus on the following aspects: goodware-to-malware ratio, training set size, APK feature choices, and model selection.
+These factors are pivotal because they influence the quality of the training data and the model's ability to extract relevant information, both of which are critical to the performance of ML-based detectors.
+All experiments in this section are conducted on the primary dataset (Section~\ref{sec:dataset}).
 
 \begin{table}[t]
     \centering
     \renewcommand{\arraystretch}{0.9}
-    \caption{The effectiveness of the approaches across varied goodware-to-malware ratios in training and testing sets.}
+    \caption{The effectiveness (F1 and Accuracy) of the approaches across varied goodware-to-malware ratios in training and testing sets.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.74\linewidth, center}
+    \begin{adjustbox}{width=0.84\linewidth, center}
  \begin{tabular}{@{}c|cccc|cccc@{}}
      \toprule
      \multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}\\Selected\\ Approach\end{tabular}}} & \multicolumn{4}{c|}{\textbf{B:M=9:1 in Tr (\ding{182} - \ding{183})}}& \multicolumn{4}{c}{\textbf{B:M=1:1 in Tr (\ding{184} - \ding{185})}}\\ \cmidrule(l){2-9} 
@@ -199,46 +188,104 @@ These factors are pivotal as they influence the quality of the training data and
  \footnotesize
  \item \textit{Tr:} training set, \textit{Ts:} testing set. \ding{182} - \ding{185} correspond to the four scenarios in Table~\ref{tab:effectiveness_dataset}. The top 3 results for each scenario are highlighted in bold.
  \end{tablenotes}
-    \vspace{-0.5cm}
+    \vspace{-0.3cm}
 \end{table}
 
 % We investigate how various factors --- goodware-to-malware ratio in training and testing sets, training set size, and APK feature --- affect the effectiveness of these approaches.
 
+\begin{table}[t]
+    \centering
+    \renewcommand{\arraystretch}{0.9}
+    \caption{The effectiveness (precision and recall) of the approaches across varied goodware-to-malware ratios in training and testing sets.}
+    \begin{adjustbox}{width=0.84\linewidth, center}
+    \begin{tabular}{@{}c|cccc|cccc@{}}
+     \toprule
+     \multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}\\Selected\\ Approach\end{tabular}}} 
+     & \multicolumn{4}{c|}{\textbf{B:M=9:1 in Tr (\ding{182} - \ding{183})}}
+     & \multicolumn{4}{c}{\textbf{B:M=1:1 in Tr (\ding{184} - \ding{185})}}\\ 
+     \cmidrule(l){2-9} 
+     & \multicolumn{2}{c|}{\textbf{B:M=9:1 in Ts}}
+     & \multicolumn{2}{c|}{\textbf{B:M=1:1 in Ts}}
+     & \multicolumn{2}{c|}{\textbf{B:M=9:1 in Ts}}
+     & \multicolumn{2}{c}{\textbf{B:M=1:1 in Ts}} \\ 
+     \cmidrule(l){2-9} 
+     & \multicolumn{1}{c|}{\textbf{Prec.}} 
+     & \multicolumn{1}{c|}{\textbf{Rec.}} 
+     & \multicolumn{1}{c|}{\textbf{Prec.}} 
+     & \textbf{Rec.} 
+     & \multicolumn{1}{c|}{\textbf{Prec.}} 
+     & \multicolumn{1}{c|}{\textbf{Rec.}} 
+     & \multicolumn{1}{c|}{\textbf{Prec.}} 
+     & \textbf{Rec.} \\ 
+     \midrule
+
+     Drebin          & \multicolumn{1}{c|}{0.776} & \multicolumn{1}{c|}{0.675} & \multicolumn{1}{c|}{0.964} & 0.671 & \multicolumn{1}{c|}{0.501} & \multicolumn{1}{c|}{0.925} & \multicolumn{1}{c|}{0.906} & 0.930 \\ \midrule
+     MamaDroid       & \multicolumn{1}{c|}{0.863} & \multicolumn{1}{c|}{0.535} & \multicolumn{1}{c|}{0.984} & 0.535 & \multicolumn{1}{c|}{0.506} & \multicolumn{1}{c|}{0.910} & \multicolumn{1}{c|}{0.905} & 0.886 \\ \midrule
+     Mclaughlin et al.& \multicolumn{1}{c|}{0.758} & \multicolumn{1}{c|}{0.675} & \multicolumn{1}{c|}{0.958} & 0.685 & \multicolumn{1}{c|}{0.584} & \multicolumn{1}{c|}{0.820} & \multicolumn{1}{c|}{0.908} & 0.925 \\ \midrule
+     HinDroid        & \multicolumn{1}{c|}{0.722} & \multicolumn{1}{c|}{0.740} & \multicolumn{1}{c|}{0.956} & 0.717 & \multicolumn{1}{c|}{0.578} & \multicolumn{1}{c|}{0.890} & \multicolumn{1}{c|}{0.914} & 0.937 \\ \midrule
+     DeepRefiner     & \multicolumn{1}{c|}{0.663} & \multicolumn{1}{c|}{0.650} & \multicolumn{1}{c|}{0.944} & 0.659 & \multicolumn{1}{c|}{0.562} & \multicolumn{1}{c|}{0.820} & \multicolumn{1}{c|}{0.883} & 0.878 \\ \midrule
+     Kim et al.      & \multicolumn{1}{c|}{0.717} & \multicolumn{1}{c|}{0.860} & \multicolumn{1}{c|}{0.960} & 0.859 & \multicolumn{1}{c|}{0.644} & \multicolumn{1}{c|}{0.905} & \multicolumn{1}{c|}{0.922} & 0.954 \\ \midrule
+     MalScan         & \multicolumn{1}{c|}{0.704} & \multicolumn{1}{c|}{0.665} & \multicolumn{1}{c|}{0.954} & 0.678 & \multicolumn{1}{c|}{0.442} & \multicolumn{1}{c|}{0.875} & \multicolumn{1}{c|}{0.878} & 0.881 \\ \midrule
+     SDAC            & \multicolumn{1}{c|}{0.632} & \multicolumn{1}{c|}{0.480} & \multicolumn{1}{c|}{0.908} & 0.511 & \multicolumn{1}{c|}{0.379} & \multicolumn{1}{c|}{0.850} & \multicolumn{1}{c|}{0.835} & 0.838 \\ \midrule
+     HomDroid        & \multicolumn{1}{c|}{0.755} & \multicolumn{1}{c|}{0.714} & \multicolumn{1}{c|}{0.963} & 0.708 & \multicolumn{1}{c|}{0.583} & \multicolumn{1}{c|}{0.879} & \multicolumn{1}{c|}{0.926} & 0.898 \\ \midrule
+     Xmal            & \multicolumn{1}{c|}{0.728} & \multicolumn{1}{c|}{0.670} & \multicolumn{1}{c|}{0.953} & 0.729 & \multicolumn{1}{c|}{0.549} & \multicolumn{1}{c|}{0.875} & \multicolumn{1}{c|}{0.927} & 0.920 \\ \midrule
+     RAMDA           & \multicolumn{1}{c|}{0.516} & \multicolumn{1}{c|}{0.830} & \multicolumn{1}{c|}{0.910} & 0.781 & \multicolumn{1}{c|}{0.357} & \multicolumn{1}{c|}{0.890} & \multicolumn{1}{c|}{0.829} & 0.918 \\ \midrule
+     MSDroid         & \multicolumn{1}{c|}{0.563} & \multicolumn{1}{c|}{0.760} & \multicolumn{1}{c|}{0.805} & 0.866 & \multicolumn{1}{c|}{0.387} & \multicolumn{1}{c|}{0.800} & \multicolumn{1}{c|}{0.820} & 0.919 \\
+
+     \bottomrule
+     \end{tabular}
+    \end{adjustbox}
+    \label{tab:res_ratio_prec_rec}
+    \begin{tablenotes}[flushleft, labelsep=0]
+    \footnotesize
+    \item \textit{Tr:} training set, \textit{Ts:} testing set. \ding{182} - \ding{185} correspond to the four scenarios in Table~\ref{tab:effectiveness_dataset}. The top 3 results for each scenario are highlighted in bold.
+    \end{tablenotes}
+    \vspace{-0.3cm}
+\end{table}
 \bulletpoint{Goodware-to-malware ratio}
 The effectiveness of ML-based Android malware detectors is heavily influenced by malware distributions in the training and testing sets.
 Here, we consider two ratios, \textit{i.e.}, 10\%, and 50\%, in both training and testing sets.
-These choices are inspired by the estimated 10\% in the wild~\cite{pendlebury2019tesseract} and the 50\% widely used in previous studies~\cite{wu2019malscan,li2021robust,mariconti2016mamadroid}.
-The \ding{182} - \ding{185} in Table~\ref{tab:effectiveness_dataset} present these four scenarios.  
+These choices are inspired by the estimated 10\% in the wild~\cite{pendlebury2019tesseract,chen2023continuous} and the 50\% widely used in previous studies~\cite{wu2019malscan,li2021robust,mariconti2016mamadroid}.
+The \ding{182} - \ding{185} in Table~\ref{tab:effectiveness_dataset} present these four scenarios, where \ding{182} and \ding{183} have a 10\% malware ratio in training sets, while \ding{184} and \ding{185} have a 50\% malware ratio.
 
 Table~\ref{tab:res_ratio} summarizes the results in terms of F1-score and Accuracy.
-The results are arranged from left to right, mapping scenarios \ding{182} to \ding{185}.
-We observe that all the approaches produce promising results under scenario \ding{185}, characterized by a \texttt{1:1} goodware-to-malware ratio in both training and testing sets.
+The results are arranged from left to right, corresponding to scenarios \ding{182} through \ding{185}.
+We observe that all approaches achieve promising performance in all metrics under scenario \ding{185}, which is characterized by a \texttt{1:1} goodware-to-malware ratio in both the training and testing sets.
+These findings are consistent with the results reported in the original papers, confirming the validity of our re-implementations. 
 This demonstrates that these approaches can effectively detect Android malware under ideal conditions, where goodware and malware are balanced.
-However, when the malware ratio is adjusted to 10\% (\ding{182}), there is a marked decline in the F1-score across all methods.
-% It is evident that most of these approaches suffer from performance degradation when faced with a realistic malware ratio.
-% This is primarily due to the limited number of malware samples available for training, which hampers the model's ability to learn effective patterns.
-% Additionally, by increasing the malware ratio in testing sets from 10\% to 50\% (\ding{183} and \ding{185}), we notice the F1-scores increase for all methods.
-% This is expected, as the increased number of malware samples in the testing set makes models more likely to encounter familiar patterns, leading to improved performance.
-% For a coarse and aggregate analysis, upon analyzing the top three results, we find that DL-based approaches appear to outperform TML-based methods when the malware ratio is 50\% (\ding{183} and \ding{185}) --- almost all the top three results are achieved by DL-based methods.
-% While in more realistic scenarios (\ding{182} and \ding{184}), DL-based approaches do not exhibit a marked advantage over TML-based methods.
+However, when the malware proportion is reduced to 10\% (\ding{182}), there is a pronounced decline in F1-score across all methods.
 It is evident that many existing approaches experience performance degradation when evaluated under realistic malware ratios.
 This is primarily attributed to the scarcity of malware samples in the training data, which constrains the model's ability to learn discriminative malware semantics.
 Moreover, when the malware ratio in the test set is increased from 10\% to 50\% (\ding{183} and \ding{185}), we observe a consistent improvement in F1-scores across all methods.
 This trend is expected, as a higher prevalence of malware samples in the test set increases the likelihood that models will encounter patterns similar to those seen during training, enhancing their predictive performance.
-In a coarse-grained, average analysis, where the influence of differing feature combinations is partially mitigated due to the diverse features used by both TML-based and DL-based approaches, we find an interesting phenomenon: DL-based approaches appear to outperform TML-based methods when the testing malware ratio is 50\% (\ding{183} and \ding{185}) --- almost all the top three results are achieved by DL-based methods.
-While in more realistic scenarios (\ding{182} and \ding{184}), DL-based approaches do not exhibit a marked advantage over TML-based methods.
-One possible explanation is that DL-based methods are better equipped to capture the complex semantics underlying app behaviors, which tend to be more prominent in datasets with a higher malware ratio.
-
-\tosem{Add more metrics of recall and precision of table 5.}
-
+To more clearly reveal the performance differences between deep learning (DL)-based and traditional machine learning (TML)-based approaches, we conduct a coarse-grained, averaged analysis of the results, as averaging can partially mitigate the influence of the differing feature combinations employed by both types of approaches.
+We observe an interesting phenomenon: DL-based approaches appear to outperform TML-based methods when the testing malware ratio is 50\% (\ding{183} and \ding{185}) --- almost all the top three results are achieved by DL-based methods.
+While in more realistic scenarios (\ding{182} and \ding{184}), DL-based approaches do not exhibit a pronounced advantage over TML-based methods.
+One possible explanation is that DL-based methods are better equipped to capture the complex semantics underlying app behaviors, but require more malware samples to effectively distill such semantics, which tend to be more prominent in datasets with a higher malware ratio.
 % This is because malware samples are typically more diverse and intricate, presenting greater challenges for detection.
 
+
+
+Table~\ref{tab:res_ratio_prec_rec} provides Precision and Recall values for these scenarios.
+When the training set ratio is fixed, we observe that the malware detection performance (in terms of Recall) does not change significantly as the testing set ratio varies, as shown by pairs \ding{182}-\ding{183} and \ding{184}-\ding{185} in Table~\ref{tab:res_ratio_prec_rec}. 
+In contrast, when the testing set ratio is fixed, we find that the Recall improves as the training set ratio increases from 10\% to 50\%, as illustrated by pairs \ding{182}-\ding{184} and \ding{183}-\ding{185} in Table~\ref{tab:res_ratio_prec_rec}.
+This indicates that having a higher proportion of malware samples in the training set enhances the model's ability to learn effective malicious patterns, thereby improving detection accuracy.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\linewidth]{fig/training_size.pdf}
+    \vspace{-0.2cm}
+    \caption{Effectiveness of the selected approaches using different sizes of training data.}
+    \label{fig:training_size}
+    \vspace{-0.3cm}
+\end{figure}
+
 \bulletpoint{Training set size}
-The training set's size is a critical determinant of the effectiveness of ML classifiers~\cite{sun2017revisiting}, since high-quality training data typically provides richer semantic information about malware, which is essential for learning effective classifiers.
-However, securing a large, high-quality training set is often infeasible due to the significant costs of data collection and labeling.
+The size of the training set is a critical determinant of the effectiveness of ML classifiers~\cite{sun2017revisiting}, as larger, high-quality datasets typically provide richer semantic information about malware, which is essential for learning effective classifiers.
+However, obtaining such large, high-quality training sets is often infeasible due to the substantial costs associated with data collection and labeling.
 % Thus, we experiment with varying training set sizes to simulate different levels of semantic richness. 
 % This assumption is justified by the fact that, as more data is included, a broader spectrum of malware semantics is likely to be captured, since our dataset is collected from multiple sources and spans a wide range of years, reflecting the real-world distribution of Android apps.
-Thus, we experiment with different training set sizes to simulate varying levels of semantic richness (\textit{i.e.,} larger datasets are assumed to encompass more diverse malware semantics) and analyze their impact on classifier performance.
+In this experiment, we experiment with different training set sizes to simulate varying levels of semantic richness (\textit{i.e.,} larger datasets are assumed to encompass more diverse malware semantics) and analyze their impact on classifier performance.
 Specifically, we consider two training set sizes, 50\% and 10\% of the original training set size, while maintaining the malware ratio at 10\%.
 % To study the impact of training set size, we down-sample the training set in Table~\ref{tab:effectiveness_dataset}(\ding{182}) to 50\% and 10\% of its initial size, while ensuring that the malware ratio remains 10\%.
 
@@ -249,24 +296,16 @@ The figure clearly shows that reducing the training set size leads to performanc
 Interestingly, Mclaughlin et al. and DeepRefiner display a greater sensitivity to training set size compared to others.
 One explanation is that, unlike other methods that heuristically select features from apps, these two approaches take the original apps' bytecode as input and automatically extract semantics, requiring more data to learn patterns from raw data as opposed to hand-crafted features.
 This finding highlights that the effectiveness of malware detectors is closely tied to the quality of the training data and the semantic richness it provides.
-Also, it suggests that heuristic selected features that are semantically rich can be more effective than raw data in scenarios where data is limited.
+Furthermore, these findings suggest that carefully selected features that better capture malware semantics are crucial for effective detection, especially when training data is limited.
+In contrast, models that learn directly from raw data often struggle to perform well under such data-scarce conditions.
+
+
+% Also, it suggests that heuristic selected features that are semantically rich can be more effective than raw data in scenarios where data is limited.
 
 
 % {\bf This finding highlights the importance of feature selection in ML-based Android malware detection, especially in scenarios where data is limited.} The features selected needs to be related to the semantics of malware, where further work is needed to quantify the relevance. We also carry out an analysis on how the level of relevance in semantics affects effectiveness. 
 
 % \tdsc{It's better to have a conclusion for Sec. 5.3.}
-
-
-
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.64\linewidth]{fig/training_size.pdf}
-    \vspace{-0.2cm}
-    \caption{Effectiveness of the selected approaches using different sizes of training data.}
-    \label{fig:training_size}
-    \vspace{-0.5cm}
-\end{figure}
 
 % \subsection{Effectiveness vs. Semantics Levels\tdsc{(Domain Semantics?)}}
 
@@ -275,25 +314,10 @@ Android malware detectors often leverage diverse features to enhance detection p
 The reason is that each feature contributes to characterizing APKs, encoding their unique semantics.
 One question arises: does the incorporation of more features necessarily enhance a detector's performance?
 To investigate this, we remove individual features from the original feature set to assess the resulting performance.
-For this experiment, it is essential that the features of the chosen approaches are decomposable, allowing the sequential removal of individual features.
+For this experiment, it is essential that the required features of the chosen approaches are decomposable, allowing the sequential removal of individual features.
 Accordingly, we spotlight Drebin, Kim et al., Xmal, and RAMDA, owing to their decomposable feature sets.
 We exclude methods whose features are highly intertwined.
 For instance, MamaDroid and MalScan rely on specific API calls to extract features from program graphs, making it challenging to remove individual features --- if API calls are removed, the graph features will also be removed.
-
-Table~\ref{tab:combination_feats} presents the outcomes of this experiment.
-From the table, we observe that Drebin, Xmal, and RAMDA have performance degradation when one feature is removed.
-Interestingly, Kim et al. deviate from this trend.
-In fact, even after omitting several features, its performance exceeds the original results.
-These two observations underscore:
-(i) each feature contains unique semantics describing the APKs and contributes to the overall effectiveness of a malware detector, and (ii) the semantics of different feature sets are not always complementary, and merely expanding the feature set does not guarantee enhanced performance.
-This phenomenon underscores the importance of evaluating and justifying the inclusion of each feature in a malware detector based on the semantics.
-
-\tosem{Add experiments for Kim, training epoch, and hidden size dimension.}
-
-% These two observations underscore that each feature contributes to the overall effectiveness of a malware detector.
-% While in some cases, merely expanding the feature set does not guarantee enhanced performance.
-
-% {\bf This phenomenon underscores the importance of evaluating and justifying the inclusion of each feature in a malware detector based on the semantics.}
 
 \begin{table}[t]
     \centering
@@ -323,6 +347,41 @@ This phenomenon underscores the importance of evaluating and justifying the incl
     \vspace{-0.5cm}
 \end{table}
 
+Table~\ref{tab:combination_feats} presents the outcomes of this experiment.
+From the table, we observe that Drebin, Xmal, and RAMDA have performance degradation when one feature is removed.
+This is intuitive, that each feature contains unique semantics describing the APKs and contributes to the overall effectiveness of a malware detector.
+Interestingly, Kim et al. deviate from this trend.
+In fact, even after omitting several features, its performance exceeds the original results.
+For example, removing the app-intent features, the F1-score improves from 0.726 to 0.776, and Accuracy increases from 0.944 to 0.952.
+These two observations underscore:
+(i) each feature contains unique semantics describing the APKs and contributes to the overall effectiveness of a malware detector, and 
+(ii) in some cases (\textit{e.g.,} specifc models or feature combination style), simply expanding the feature set does not guarantee enhanced performance.
+This phenomenon underscores the importance of evaluating and justifying the inclusion of each feature in a malware detector based on the semantics.
+
+It is important to note that we further examine the impact of feature combinations on the approach proposed by Kim et al. by varying the number of training epochs, in order to verify whether the observed phenomenon persists across different model configurations. Specifically, we set the training epochs to 50, 100, 150, and 200, and repeat the app-intent removal experiment under each setting to assess result consistency.
+As shown in Table~\ref{tab:ablation_app_intent}, removing the app-intent feature consistently improves performance across all training epochs, in terms of both F1-score and accuracy. This demonstrates that the observed behavior is robust and not an artifact of a particular training configuration or convergence state.
+These findings highlight an important insight: under certain conditions—such as specific classifiers or feature-combination strategies—the inclusion of additional features does not necessarily enhance detection performance and may even be detrimental. Consequently, researchers and practitioners should critically assess the contribution of individual features to overall model performance, rather than assuming that incorporating more features will invariably yield better results.
+
+\begin{table}[t]
+\centering
+\caption{Ablation study on the impact of app-intent information across different training epochs.}
+\label{tab:ablation_app_intent}
+\begin{adjustbox}{width=0.67\linewidth, center}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Method} & \textbf{Metric} & \textbf{50} & \textbf{100} & \textbf{150} & \textbf{200} \\
+\midrule
+\multirow{2}{*}{w/o app-intent}
+& F-Score  & 0.740 & 0.776 & 0.753 & 0.753 \\
+& Accuracy & 0.947 & 0.952 & 0.950 & 0.950 \\
+\midrule
+\multirow{2}{*}{original}
+& F-Score  & 0.725 & 0.725 & 0.740 & 0.738 \\
+& Accuracy & 0.944 & 0.944 & 0.952 & 0.942 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
 
 \bulletpoint{Model type}
 Given specific features that describe app behaviors, different models can be used to extract semantics and detect malware.
@@ -331,10 +390,38 @@ In this section, we select MamaDroid, HinDroid, and MalScan, which share the sam
 From the results in Table~\ref{tab:res_ratio} under scenario \ding{182}, we observe that HinDroid outperforms MamaDroid and MalScan.
 This suggests that given a fixed feature set, different models demonstrate varying capabilities in extracting semantics and detecting Android malware.
 
-\bulletpoint{Feature and model combination investigation}
-\tosem{choose several models, (RF, SVM, KNN, MLP) and evaluated these models with specifc set of features (Hardware component, application component, intent, permission, API call, opcode, code string, resource information).
-Point to there are lots of combination of features, and hint that maybe choose specific features for certain kinds of malware is a trend.
-}
+\begin{table}[ht]
+  \centering
+  \caption{Performance of common ML models across API and permission feature subsets.}
+  \label{tab:model_comparison}
+  \begin{adjustbox}{width=0.87\linewidth}
+    \begin{tabular}{lcccccc}
+      \toprule
+      \multirow{2}{*}{\textbf{Model}} &
+        \multicolumn{2}{c}{\textbf{API+Permission}} &
+        \multicolumn{2}{c}{\textbf{API}} &
+        \multicolumn{2}{c}{\textbf{Permission}} \\
+      \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+      & \textbf{Accuracy} & \textbf{F1-score} & \textbf{Accuracy} & \textbf{F1-score} & \textbf{Accuracy} & \textbf{F1-score} \\
+      \midrule
+      RandomForest & 0.984 & 0.929 & 0.975 & 0.897 & 0.973 & 0.868 \\
+      SVM          & 0.978 & 0.897 & 0.975 & 0.897 & 0.962 & 0.794 \\
+      DecisionTree & 0.984 & 0.927 & 0.965 & 0.857 & 0.959 & 0.819 \\
+      KNN          & 0.973 & 0.865 & 0.975 & 0.897 & 0.954 & 0.761 \\
+      MLP          & 0.981 & 0.916 & 0.973 & 0.886 & 0.973 & 0.872 \\
+      \bottomrule
+    \end{tabular}
+  \end{adjustbox}
+  \vspace{-0.3cm}
+\end{table}
+
+Beyond analyzing existing approaches, we conduct a small-scale empirical study to examine how different learning models perform given a fixed feature set. Specifically, we select two widely used feature types—API calls and permissions—to represent app behavior, and evaluate five representative models commonly adopted in Android malware detection: Random Forest, SVM, Decision Tree, KNN, and MLP.
+For this experiment, we use the dataset shown in Figure~\ref{fig:new_data} and randomly sample 4,000 apps (3,600 benign and 400 malicious). The dataset is split into training, validation, and testing sets using an \texttt{8:1:1} ratio.
+
+Intuitively, there is no universally optimal model for Android malware detection, as model performance is closely tied to the choice of feature representation. As shown in Table~\ref{tab:model_comparison}, when API calls are used as features, all evaluated classifiers achieve comparable performance. In contrast, when using permissions alone, MLP significantly outperforms the other models. When combining API calls and permission features, Random Forest achieves the best overall performance, with an accuracy of 98.4\% and an F1-score of 92.9\%.
+Overall, our results suggest that ensemble-based models (\textit{e.g.}, Random Forest) and deep learning models (\textit{e.g.}, MLP) generally outperform traditional classifiers (\textit{e.g.}, SVM, Decision Tree, and KNN) in Android malware detection tasks. Consequently, when designing new detectors, these models represent strong and practical baseline choices.
+
+
 
 \begin{conclusionbox}
     \textit{Summary:}
@@ -373,22 +460,67 @@ Then, the model is applied to test data in the next $N$ months, yielding $N$ F1-
 These scores are further used to calculate the $AUT(F1, N)$.
 By averaging the $AUT(F1, N)$ values sourced from distinct yearly datasets, we chart the outcomes in Figure~\ref{fig:evolution}.
 
-It is clear that malware evolution affects the effectiveness of these selected techniques.
-This is within expectations, as malware evolves over time, the semantics of malware may change, making it harder for detectors to capture these changes.
-Most DL approaches display superior resilience against malware evolution compared to their TML counterparts.
-Specifically, the majority of DL techniques retain about 60\% effectiveness even after two years. 
-In contrast, many TML methods see their F1-scores reduced to 50\% within the same time span.
-This disparity can be traced back to the inherent capability of DL methods to discern intricate patterns, which TML might miss.
-Interestingly, Mclaughlin et al. and DeepRefiner, do not fare as well over time.
-This could be attributed to their reliance on apps' original bytecode as input, which may contain more noise and complicate the semantic extraction process.
-\tosem{Add more analysis how to improve the robustness}
+It is evident that malware evolution affects the effectiveness of the selected malware detectors.
+This is expected: as malware evolves over time, its underlying semantics may change, making it more difficult for detectors to capture these behaviors.
+Overall, most DL-based approaches exhibit stronger resilience to malware evolution than their TML-based counterparts.
+Specifically, the majority of DL techniques retain around 60\% effectiveness even after two years, whereas many TML methods see their F1-scores drop to about 50\% over the same period.
+This disparity can be attributed to the inherent capability of DL models to capture more intricate patterns that TML methods may miss.
+Interestingly, McLaughlin et al. and DeepRefiner do not perform as well over time.
+A plausible reason is their reliance on raw bytecode as input, which may contain substantial noise and complicate semantic extraction.
+To enhance the robustness of ML-based Android malware detectors against malware evolution, two aspects are particularly important:
+(i) extracting robust features that are less susceptible to temporal changes—for example, Xmal and RAMDA use carefully selected features (such as stable API calls and permissions) and tend to be more resilient to evolution;
+and (ii) designing models that can effectively capture evolving malware semantics, such as persistent malicious behaviors—for instance, MsDroid employs a graph neural network to model structural relationships among code components, enabling it to better capture these evolving semantics.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.96\linewidth]{fig/stable_trend.pdf}
+    % \vspace{-0.1cm}
+    \caption{Performance of the selected detection approaches for each year from 2011 to 2020. Orange markers indicate Accuracy, and blue markers indicate F1-score.}
+    \label{fig:stable_trend}
+\vspace{-0.3cm}
+\end{figure*}
+
+\bulletpoint{Detector stableness on different time period datasets}
+Having examined the impact of malware evolution on detection effectiveness, we now turn to investigating whether the selected approaches can be applied to datasets collected in different time periods.
+This experiment aims to assess the sensitivity of these approaches to temporal variations in the data. 
+Such an analysis helps determine whether the approaches can be used reliably in practice and whether our findings are generalizable.
+To cunduct this experiment, we partition the primary dataset into ten subsets based on the year of app collection, spanning from 2011 to 2020.
+For each year-specific subset, we split the data into training (80\%), validation (10\%), and testing (10\%) sets.
+Each approach is trained on the training set, with hyperparameters tuned using the validation set, and finally evaluated on the testing set.
+
+Figure~\ref{fig:stable_trend} illustrates the performance of the selected approaches across different years.
+We observe that most approaches maintain relatively stable performance over time, indicating that they can be effectively applied to datasets collected at different periods.
+This stability suggests that the approaches are generally applicable rather than tailored to specific datasets, which in turn supports the claim that our findings are likely to generalize across different time periods.
+
+
+
+\bulletpoint{Obfuscation}
+Obfuscation techniques often alter an app's code. 
+It can also affect the effectiveness of malware detectors~\cite{he2022msdroid}.
+This part explores the influences of popular obfuscation techniques, \textit{i.e.,} renaming identifiers, encrypting resources, modifying code, and invoking reflection~\cite{aonzo2020obfuscapk}, on the selected approaches separately.
+We apply the obfuscation strategies discussed earlier to the testing set in Table~\ref{tab:effectiveness_dataset}(\ding{182}).
+Only the apps that can be successfully obfuscated by all the strategies are included in the obfuscated testing set, which contains 1,303 apps.
+The effectiveness of the selected approaches, previously trained on the original training set, is then evaluated on this obfuscated testing set.
+
+Table~\ref{table:res_obfuscation} summarizes the results.
+Overall, most methods exhibit a decrease in performance when subjected to obfuscation.
+This is expected, as obfuscation can hide malicious semantics, making them more difficult for detectors to capture. 
+Specifically, the impact of obfuscation on detectors significantly depends on how the detectors utilize APK features.
+For instance, Xmal and RAMDA show greater robustness against obfuscation.
+A closer examination reveals that both approaches use API calls as features and rely on manually selected API calls as anchors, checking whether these APIs appear in the code.
+We further observe that most of these anchor APIs are system APIs, which are less likely to be affected by the obfuscation techniques employed.
+In other words, the obfuscation does not substantially modify the features used by these detectors.
+In contrast, approaches such as MamaDroid and MsDroid, which rely heavily on code structure, tend to be more susceptible to code modification.
+This suggests that the impact of obfuscation on detectors is closely related to the extent to which obfuscation techniques alter the semantics of the features they use.
+Moreover, comparing MamaDroid and MsDroid—both structure-based—indicates that robustness to obfuscation is also influenced by the model's capability to extract semantics.
+To better defend against obfuscation, it is therefore crucial to (i) select features that are less likely to be altered by obfuscation techniques and (ii) design models that can effectively extract the underlying semantics from these features.
 
 \begin{table}[t]
     \centering
     \renewcommand{\arraystretch}{0.7}
     \caption{The F-score of the selected approaches under different obfuscation strategies~\cite{aonzo2020obfuscapk}.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.74\linewidth, center}
+    \begin{adjustbox}{width=0.86\linewidth, center}
     \begin{tabular}{@{}c|c|c|c|c|c@{}}
     \toprule
     \diagbox[innerleftsep=-0.1em, innerrightsep=-0.3em, height=2.7em,width=7em]{\textbf{Approach}}{\textbf{Obfuscation}} & \textbf{\begin{tabular}[c]{@{}c@{}}Without \\ Obfus.\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rename \\ Identifier\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Encrypt \\ Resource\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Modify \\ Code\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Reflect \\ Invocation\end{tabular}} \\ \midrule
@@ -409,28 +541,6 @@ This could be attributed to their reliance on apps' original bytecode as input, 
     \label{table:res_obfuscation}
     \vspace{-0.3cm}
 \end{table}
-
-\bulletpoint{Obfuscation}
-Obfuscation techniques often alter an app's code. 
-It can also affect the effectiveness of malware detectors~\cite{he2022msdroid}.
-This part explores the influences of popular obfuscation techniques, \textit{i.e.,} renaming identifiers, encrypting resources, modifying code, and invoking reflection~\cite{aonzo2020obfuscapk}, on the selected approaches.
-
-We apply the obfuscation strategies discussed earlier to the testing set in Table~\ref{tab:effectiveness_dataset}(\ding{182}).
-Only the apps that can be successfully obfuscated by all the strategies are included in the obfuscated testing set, which contains 1,303 apps.
-The effectiveness of the selected approaches, previously trained on the original training set, is then evaluated on this obfuscated testing set.
-Table~\ref{table:res_obfuscation} summarizes the results.
-Clearly, most methods exhibit a performance decrease when subjected to obfuscation.
-This is expected, as obfuscation can hidden the malicious semantics, making it harder for detectors to capture them.
-Specifically, the impact of obfuscation on detectors significantly depends on how the detectors utilize APK features.
-For instance, Xmal and RAMDA show greater robustness against obfuscation.
-This is mainly because the employed obfuscation techniques do not change their used features.
-In contrast, MamaDroid and MSDroid, relying on the code structure, tend to be more susceptible to the code modification.
-This suggests that the impact of obfuscation on detectors is closely related to the degree to which obfuscation techniques alter the semantics of the features utilized by the detectors.
-Also, by comparing MamaDroid and MSDroid --- both relying on the code structure --- we observe that a detector's robustness against obfuscation is also shaped by the model's semantic extraction capability.
-\tosem{- permission from manifest
-- extracted APIs, the list is hardcode, we simiply check the obfuscation, system api, doest not check it.
-}
-
 
 \bulletpoint{Adversarial attack}
 We now utilize the dataset from Table~\ref{tab:effectiveness_dataset}(\ding{182}) to explore the impact of adversarial attacks on the performance of these selected approaches.
@@ -473,7 +583,7 @@ These findings suggest that abstracting feature representations or augmenting mo
     \renewcommand{\arraystretch}{0.73}
     \caption{The robustness of our selected approaches on various adversarial attacks.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.7\linewidth, center}
+    \begin{adjustbox}{width=0.9\linewidth, center}
  \begin{tabular}{@{}c|cc|c||c|cc|c@{}}
   \toprule
   \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Selected\\ Approach\end{tabular}}} & \multicolumn{2}{c|}{\textbf{ASR}}      & \multirow{2}{*}{\textbf{APR}} & \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Selected\\ Approach\end{tabular}}} & \multicolumn{2}{c|}{\textbf{ASR}}      & \multirow{2}{*}{\textbf{APR}} \\ \cmidrule(lr){2-3} \cmidrule(lr){6-7}
@@ -499,45 +609,111 @@ These findings suggest that abstracting feature representations or augmenting mo
 % \vspace{-0.1cm}
 \subsection{Efficiency}
 \label{efficiency}
-In this section, we scrutinize the efficiency of the selected methods across datasets from different years, focusing on both feature transformation and ML modeling.
-For fairness, we normalize the time taken by these methods based on the analysis of 20,000 apps per year.
+In this section, we scrutinize the efficiency of the selected methods across datasets from different years, 
+focusing on the end-to-end efficiency of the entire detection pipeline, including feature extraction, transformation, and ML modeling.
+For feature extraction, we utilize average time for processing one APK and memory overhead during the extraction process.
+For feature transformation, we measure the time taken to retrieve and encode the required features from pre-extracted features.
+We normalize the time based on processing 20,000 apps per year.
+For ML modeling, we evaluate the time taken for model training and prediction.
+% focusing on both feature transformation and ML modeling.
+% For fairness, we normalize the time taken by these methods based on the analysis of 20,000 apps per year.
 All experiments are performed on a server with 32-core CPUs operating at 2.10 GHz, 251 GB of physical memory, and two GPUs, each with 32 GB of memory.
 
-\bulletpoint{Feature transformation}
-With the pre-extracted features, we assess the time efficiency of the selected methods in retrieving and encoding their required features.
-Note that we utilize 16 processes to transform the features concurrently.
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}{0.46\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/efficiency_time.pdf}
+        \caption{Time efficiency}
+        \label{fig:efficiency_time}
+    \end{subfigure}
+    \begin{subfigure}{0.46\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/memory_overhead.pdf}
+        \caption{Memory efficiency}
+        \label{fig:efficiency_memory}
+    \end{subfigure}
 
-Figure~\ref{fig:efficiency_encoding} depicts the time taken by these approaches for feature transformation.
-As time advances, a noticeable increase in the time required for processing is evident, which aligns with the exponential growth in the size and complexity of APKs over the years.
-This observation underscores the importance of designing efficient feature extraction strategies to keep pace with the rapid evolution of Android applications.
-Notably, there is a significant variance in the time consumption among different approaches.
-This is within our expectation since various methods employ distinct features and encoding techniques.
-For instance, SDAC consumes the most time due to its requirement to query the program graph recursively for API call sequence generation.
-While methods like Xmal and RAMDA are more time-efficient, as they perform a one-time traversal on the program graph to capture API calls.
+    \caption{The efficiency of extracting features from APKs in terms of time and memory.}
+    \label{fig:efficiency_combined}
+    \vspace{-0.3cm}
+\end{figure}
+
+\bulletpoint{Feature extraction}
+We first measure the performance overhead incurred during feature extraction from APKs.
+The extraction process supports multi-process execution to enable concurrent feature extraction; in our experiments, we set the number of processes to 16.
+We record the average time required to extract features from a single APK, as well as the average memory consumption.
+Memory usage is monitored across all processes at 30-second intervals, and the mean value is reported as the memory overhead.
+
+Figure~\ref{fig:efficiency_combined} illustrates the time and memory efficiency of feature extraction. We observe that both time and memory overheads increase over the years, a trend that can be attributed to the growing complexity and size of APKs, which require more resources for effective feature extraction. In general, time and memory consumption are positively correlated, with higher extraction times typically accompanied by higher memory usage.
+Despite this upward trend, the observed overheads remain acceptable for practical use of \codename. For example, extracting features from an APK released in 2020 takes approximately 5.5 seconds, with an overall memory consumption of about 22.9~GB when using 16 concurrent processes --- well within the capabilities of modern systems.
+
+\bulletpoint{Feature transformation}
+With pre-extracted features available, we further evaluate the time efficiency of the selected methods in retrieving and encoding their required features. All feature transformation procedures are executed using 16 concurrent processes to ensure consistency across methods.
+
+Figure~\ref{fig:efficiency_encoding} presents the time overhead incurred by different approaches during feature transformation. We observe a clear increasing trend over time, with more recent APKs requiring longer processing times. This trend is consistent with the rapid growth in both the size and structural complexity of Android applications, which imposes higher computational costs during feature encoding. These results highlight the importance of designing scalable and efficient feature encoding strategies to keep pace with the evolution of Android ecosystems.
+Notably, substantial variance in time consumption is observed across different detection approaches. This variation aligns with our expectations, as different methods rely on distinct feature types and encoding mechanisms with varying computational complexity. For example, SDAC exhibits the highest time overhead due to its need to recursively traverse the program graph to generate API call sequences, an operation that scales poorly with increasing code complexity. In contrast, approaches such as Xmal and RAMDA are considerably more time-efficient, as they rely on a single traversal of the program graph to extract API calls, resulting in significantly lower processing overhead.
+
+Overall, these findings demonstrate that the choice of feature representation and encoding strategy has a substantial impact on time efficiency, underscoring a key trade-off between expressive feature modeling and computational scalability in ML-based Android malware detection.
 
 \bulletpoint{ML modeling}
-For each yearly dataset, we divide it into training, validation, and testing sets with a ratio of \texttt{8:1:1}.
-We then calculate the time required by the selected methods for model training and testing.
-Note that we take the early stopping strategy during the training phase for DL models.
+For each yearly dataset, we split the samples into training, validation, and testing sets using an \texttt{8:1:1} ratio. We then measure the time required by the selected approaches for both model training and testing. For deep learning (DL)-based methods, we adopt an early-stopping strategy during training to prevent overfitting and ensure fair comparison.
 
-Table~\ref{tab:efficiency_ml_modeling} details the training time taken by these approaches. 
-From a horizontal perspective, we observe that most DL techniques require more time than their TML counterparts. 
-Furthermore, model complexity directly correlates with its training duration. 
-Analyzing longitudinally, there is a clear trend: as years progress, the time requirements for these methods increase. 
-This can be attributed to apps growing in complexity and an expanding feature set.
-When combined with the effectiveness (Sec.~\ref{effectiveness}), we note that detection effectiveness does not always match resource utilization.
-Striking a balance between effectiveness and efficiency is critical when developing new detectors, where semantics plays a key role in deciding the balance.
+Table~\ref{tab:efficiency_ml_modeling} reports the training and testing time of the evaluated approaches.
+From a cross-method perspective, we observe that most DL-based techniques incur substantially higher training costs than traditional machine learning (TML) methods.
+Moreover, training time is strongly correlated with model complexity, with deeper or more expressive architectures requiring longer training durations.
+From a longitudinal perspective, training time consistently increases over the years, reflecting the growing complexity of Android applications and the expanding dimensionality of extracted features.
+When considered jointly with detection effectiveness (Sec.~\ref{effectiveness}), these results reveal that higher resource consumption does not necessarily translate into superior detection performance.
+This observation highlights a fundamental trade-off between effectiveness and efficiency in ML-based Android malware detection.
+Designing practical detectors therefore requires careful consideration of this balance, where incorporating semantically meaningful features plays a critical role in achieving strong performance without excessive computational overhead.
+During the testing phase, we observe trends similar to those in training, with prediction time increasing modestly over time.
+Nevertheless, most approaches are able to complete inference within seconds when evaluating approximately 2,000 apps, indicating that they remain suitable for near real-time malware detection in practical deployment scenarios.
+
 
 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.56\linewidth]{fig/efficiency_encoding.pdf}
+    \includegraphics[width=0.76\linewidth]{fig/efficiency_encoding.pdf}
     % \vspace{-0.2cm}
     \caption{The efficiency of feature transformation of the selected approaches. The x-axis shows the dataset year, and the y-axis indicates the utilized time in hours.}
     \label{fig:efficiency_encoding}
     \vspace{-0.3cm}
 \end{figure}
+
+\begin{table*}[t]
+    \centering
+    \renewcommand{\arraystretch}{1.1}
+    \caption{The efficiency of selected approaches across datasets from different years, covering training and testing phases.}
+    \begin{adjustbox}{width=0.98\textwidth}
+    \begin{tabular}{@{}cclc|c|c|c|c|c|c|c|c|c|c|c@{}}
+    \cmidrule(l){4-15}
+    \multicolumn{3}{c}{}   & Drebin & MamaDroid & Mclaughlin et al. & HinDroid & DeepRefiner & Kim et al. & MalScan & SDAC & HomDroid & Xmal   & RAMDA & MSDroid \\ \midrule
+    \multicolumn{1}{c|}{\multirow{10}{*}{\raisebox{-2.8cm}{\rotatebox{90}{\textbf{\begin{tabular}[c]{@{}c@{}}Training\end{tabular}}}}}} & \multicolumn{2}{c|}{\textbf{2011}} & 15.11s  & 1.90s & 128m22s & 2m19s & 369m18s & 98m47s & 1m14s & 84m47s & 2.00s & 1m15s  & 1m6s & 20m19s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2012}} & 20.88s  & 1.94s & 97m01s  & 2m18s & 359m35s   & 92m47s  & 1m18s   & 89m05s   & 2.04s     & 1m25s  & 1m11s & 37m54s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2013}} & 22.37s  & 2.12s & 172m20s & 2m13s & 477m18s   & 115m40s & 1m24s   & 115m35s  & 2.04s     & 50.36s & 1m06s & 40m11s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2014}} & 32.49s  & 2.46s & 128m13s & 2m40s & 629m26s   & 104m03s & 1m33s   & 132m55s  & 2.20s     & 2m20s  & 1m17s & 42m07s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2015}} & 26.40s  & 2.60s & 411m03s & 2m44s & 730m41s   & 115m27s & 1m38s   & 250m07s  & 2.22s     & 2m10s  & 1m20s & 42m52s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2016}} & 32.62s  & 2.99s & 234m19s & 2m51s & 867m25s   & 135m50s & 1m42s   & 470m38s  & 2.26s     & 1m05s  & 1m19s & 142m23s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2017}} & 22.36s  & 2.75s & 192m41s & 2m28s & 997m04s   & 145m24s & 1m37s   & 296m05s  & 2.22s     & 1m54s  & 1m20s & 47m22s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2018}} & 19.97s  & 2.91s & 227m48s & 2m36s & 933m12s   & 128m32s & 1m34s   & 716m43s  & 2.21s     & 1m19s  & 1m21s & 155m50s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2019}} & 26.83s  & 3.03s & 514m18s & 2m34s & 968m50s   & 185m43s & 1m32s   & 918m09s  & 2.22s     & 1m34s  & 1m18s & 130m41s \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2020}} & 22.87s  & 2.69s & 771m44s & 2m22s & 1064m30s  & 148m08s & 1m29s   & 867m55s  & 2.17s     & 2m09s  & 1m12s & 93m08s \\ \midrule \midrule
+    \multicolumn{1}{c|}{\multirow{10}{*}{\raisebox{-2cm}{\rotatebox{90}{\textbf{\begin{tabular}[c]{@{}c@{}}Testing\end{tabular}}}}}}  & \multicolumn{2}{c|}{\textbf{2011}} & 0.98s   & 0.06s & 16.03s  & 29.82s & 42.04s & 0.62s & 18.02s   & 54.43s & 1.20s     & 0.32s   & 0.07s  & 4.33s    \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2012}} & 1.36s   & 0.06s & 16.94s  & 30.40s & 45.50s & 0.89s & 22.23s   & 53.97s  & 1.30s  & 0.32s   & 0.07s  & 6.15s   \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2013}} & 1.48s   & 0.06s & 16.25s  & 31.53s & 50.36s & 1.10s & 19.27s   & 1m21s   & 1.22s  & 0.34s   & 0.07s  & 7.14s   \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2014}} & 1.53s   & 0.06s & 24.69s  & 33.10s & 59.22s & 1.11s & 24.83s   & 1m51s   & 1.36s  & 0.32s   & 0.09s  & 11.29s  \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2015}} & 1.73s   & 0.06s & 28.63s  & 34.95s & 1m12s  & 0.97s & 23.59s   & 2m54s   & 1.41s  & 0.39s   & 0.07s  & 10.92s  \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2016}} & 2.16s   & 0.06s & 40.04s  & 36.50s & 1m23s  & 1.19s & 23.92s   & 3m37s   & 1.54s  & 0.33s   & 0.08s  & 18.72s  \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2017}} & 1.46s   & 0.06s & 34.05s  & 35.25s & 1m12s  & 0.92s & 26.19s   & 4m16s   & 1.50s  & 0.31s   & 0.09s  & 17.96s  \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2018}} & 1.28s   & 0.06s & 36.39s  & 35.17s & 1m18s  & 0.89s & 22.67s   & 6m21s   & 1.28s  & 0.32s   & 0.09s  & 17.96s  \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2019}} & 1.74s   & 0.06s & 57.58s  & 34.93s & 1m33s  & 1.18s & 24.43s   & 8m55s   & 1.45s  & 0.33s   & 0.09s  & 21.14s  \\ \cmidrule(l){2-15} 
+    \multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{2020}} & 1.40s   & 0.06s & 1m12s   & 33.90s & 1m49s  & 0.91s & 23.62s   & 8m27s   & 1.52s  & 0.41s   & 0.07s  & 19.54s  \\ \bottomrule
+    \end{tabular}
+    \end{adjustbox}
+    \label{tab:efficiency_ml_modeling}
+\vspace{-0.3cm}
+\end{table*}
 
 \begin{conclusionbox}
     \textit{Summary:}
@@ -547,19 +723,85 @@ Striking a balance between effectiveness and efficiency is critical when develop
 \subsection{Further Experimental Validation}
 \label{further_experiments}
 
+
+
+\begin{table}[htbp]
+\centering
+\caption{Test Set Performance Comparison: APKTool vs Androguard Features}
+\label{tab:results}
+\renewcommand{\arraystretch}{1.1}
+\begin{adjustbox}{width=0.93\linewidth}
+\begin{tabular}{l|cccc|cccc}
+\hline
+\multirow{2}{*}{\textbf{Model}} & \multicolumn{4}{c|}{\textbf{APKTool}} & \multicolumn{4}{c}{\textbf{Androguard}} \\
+\cline{2-9}
+& \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} \\
+\hline
+RandomForest & 0.975 & 0.941 & 0.800 & 0.865 & 0.984 & 0.886 & 0.975 & 0.929 \\
+SVM          & 0.963 & 0.931 & 0.675 & 0.783 & 0.978 & 0.921 & 0.875 & 0.897 \\
+DecisionTree & 0.960 & 0.786 & 0.825 & 0.805 & 0.984 & 0.905 & 0.950 & 0.927 \\
+KNN          & 0.960 & 0.900 & 0.675 & 0.771 & 0.973 & 0.941 & 0.800 & 0.865 \\
+MLP          & 0.973 & 0.939 & 0.775 & 0.849 & 0.981 & 0.884 & 0.950 & 0.916 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
 \subsubsection{\textbf{Influence of Reverse Engineering Tools}}
 \label{tool_influence}
+As discussed in Section~\ref{sub:compare}, different reverse engineering tools may extract divergent features from the same APK, potentially affecting the performance of ML-based malware detectors.
+To systematically investigate this effect, we randomly select 4,000 apps from the additional dataset shown in Figure~\ref{fig:new_data}, maintaining a malware ratio of 10\%.
+We then extract features using two widely adopted reverse engineering tools: Androguard~\cite{androguard} and APKTool~\cite{apkt}.
+In this experiment, we focus on two commonly used feature types—API calls and permissions.
+We split the dataset into training, validation, and testing sets, and train five representative ML models --- Random Forest, SVM, Decision Tree, KNN, and MLP --- using features extracted by each tool independently.
+Each trained model is evaluated on its corresponding test set, and the results are compared to assess the impact of tool choice on detection performance.
 
-\tosem{use APK tool to handle maybe 4000 apps, and then extract specific features, to test the influence of features for specific models (such as MLP, RF, SVM,...)
-with new experiments dataset.}
+Our analysis reveals that the features extracted by the two tools are not always consistent.
+In some cases, certain API calls or permissions are identified by one tool but missed by the other.
+For instance, for the APK \texttt{00002EA4***0B6FB1}, Androguard extracts 15 additional API calls, such as \texttt{getRunningAppProcesses} and \texttt{getRunningTasks}, that are not detected by APKTool.
+Such discrepancies are expected, as different tools employ distinct parsing strategies and static analysis techniques, leading to variations in feature coverage.
+We further evaluate the performance of models trained on features extracted by each tool, with the results summarized in Table~\ref{tab:results}.
+The results show noticeable performance differences across models depending on the tool used for feature extraction, demonstrating that the choice of reverse engineering tool can significantly influence experimental outcomes
+This finding underscores the importance of standardizing the feature extraction toolchain when conducting comparative evaluations.
+Accordingly, in this work, we use the same tool for all approaches to ensure fair and reproducible comparisons.
+Given its consistently stronger performance across most settings, we select Androguard as the default feature extraction tool in \codename.
 
 \subsubsection{\textbf{Detection Effectiveness}}
 \label{sec:detect_effectiveness}
+As described in Section~\ref{sec:dataset}, we use the primary dataset spanning 2011-2020 as the main benchmark for evaluating the effectiveness of the selected representative approaches, providing a comprehensive view of the state of ML-based Android malware detection.
+To further validate the generalizability of our findings and examine whether they remain valid on more recent data, we conduct an additional evaluation using a supplementary dataset collected between 2021 and 2024, as illustrated in Figure~\ref{fig:new_data}.
+For consistency, we split the dataset into training, validation, and testing sets using an \texttt{8:1:1} ratio, while maintaining a goodware-to-malware ratio of 9:1, following the same experimental setup as in Section~\ref{effectiveness}.
 
-\tosem{add the experiments year by year, to say the result is stable.
-add 21-24 data, and re-run some experiments (effectiveness, evolution)}
+Table~\ref{tab:2021_2024_results} reports the F1-score and accuracy of the selected approaches on the additional datasets.
+We observe trends consistent with those obtained from the primary dataset: under realistic settings, Hindroid, Kim et al., and Homdroid consistently outperform other methods and achieve comparable F1-score and accuracy.
+These results indicate that traditional machine learning (TML)-based and deep learning (DL)-based approaches continue to exhibit similar effectiveness on recent data, further supporting our earlier finding that DL-based methods may require a larger volume of malware samples to effectively distill malicious semantics and surpass TML-based approaches.
 
-\subsubsection{\textbf{Detection Efficiency}}
-\label{sec:detect_efficiency}
+This experiment serves as a lightweight yet fundamental validation that the selected representative approaches—and our key observations—remain effective on more recent datasets.
+Other aspects of detector behavior, such as robustness and efficiency, are less sensitive to dataset time periods and therefore are not re-evaluated on the additional dataset.
+Further discussion on the influence of dataset temporal characteristics is provided in Section~\ref{sec:discussion}.
 
-\tosem{discuss the efficiency metrics, and add new efficiency metrics, and add new experiments}
+
+\begin{table}[ht]
+\centering
+\caption{Average F1-Score and Accuracy for different methods on the additional datasets from 2021 to 2024.}
+\begin{adjustbox}{width=0.89\linewidth}
+\begin{tabular}{lcccccc}
+	\toprule
+	\textbf{Method} & Drebin & Mamadroid & Mclaughin et al. & Hindroid & DeepRefiner & Kim et al. \\
+\midrule
+	\textbf{F1-Score} & 0.857 & 0.716 & 0.717 & 0.900 & 0.707 & 0.879 \\
+	\textbf{Accuracy} & 0.973 & 0.744 & 0.744 & 0.981 & 0.742 & 0.977 \\
+\midrule
+\midrule
+	\textbf{Method} & Malscan & SDAC & Homdroid & Xmal & RAMDA & MsDroid \\
+\midrule
+	\textbf{F1-Score} & 0.716 & 0.735 & 0.888 & 0.670 & 0.723 & 0.823 \\
+	\textbf{Accuracy} & 0.743 & 0.747 & 0.979 & 0.734 & 0.932 & 0.958 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\label{tab:2021_2024_results}
+\end{table}
+
+
+
