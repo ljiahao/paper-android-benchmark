@@ -12,11 +12,11 @@ We summarize our key findings as follows:
 While ML models have been evidently effective in detecting malware~\cite{he2022msdroid,kim2018multimodal,li2021robust,mariconti2016mamadroid}, their effectiveness is still far from satisfactory when faced with challenging scenarios such as limited data size, rapid malware evolution, and adversarial attacks.
 
 \noindent \textit{(2) Selecting features relevant to malware semantics is crucial for effective detection.}
-Diverse APK features, such as permissions and intents, have been leveraged to identify malware~\cite{xu2018deeprefiner,arp2014drebin,kim2018multimodal}. 
-These features profile apps and play a pivotal role in shaping the effectiveness of malware detectors.
-Our findings indicate that heuristic feature selection can help reduce noise in the feature space, enabling models to identify malicious patterns more effectively, particularly in scenarios with limited data.
-However, we also observe that the semantics of various features are not always complementary, and how to combine them does not be well explored.
-Simply incorporating additional features does not necessarily lead to improved performance.
+A wide range of APK features, such as permissions and intents, have been leveraged for malware detection~\cite{xu2018deeprefiner,arp2014drebin,kim2018multimodal}.
+These features serve to profile app behavior and play a critical role in determining detector effectiveness.
+Our findings suggest that heuristic feature selection can effectively reduce noise in the feature space, allowing models to more readily identify malicious patterns --- particularly in data-scarce settings.
+However, we also observe that the semantics captured by different feature types are not always complementary, and principled strategies for combining them remain underexplored.
+Consequently, naively incorporating additional features does not necessarily yield improved detection performance.
 
 % Our analysis reveals that feature engineering helps models to discern malicious patterns when data is limited.
 % However, including more features randomly does not guarantee enhanced performance. 
@@ -27,6 +27,9 @@ Our analysis reveals that DL-based methods appear to be more resilient than TML-
 However, we also find that DL-based approaches are less effective than TML-based methods when the malware-to-goodware ratio is low.
 This suggests that utilizing more complex models is not a universal solution for malware detection.
 Instead, the choice of models should take into account the richness of the semantic information derived from the features.
+One more practical observation is given feature sets including discrete features (\textit{i.e.,} permissions and API calls), ensembling models and DL models with embedding layers tend to outperform other typical models.
+
+
 % When introducing a new model to detect malware, it is crucial to justify the rationale behind it.
 
 \noindent \textit{(4) Both feature abstraction and models' defensive mechanism contribute to detectors' robustness.}
