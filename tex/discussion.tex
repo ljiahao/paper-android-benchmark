@@ -30,10 +30,10 @@ Including mobile apps from multiple markets is essential for improving the repre
 To incorporate diverse app sources, we select AndroZoo~\cite{allix2016androzoo} as the primary data source, following common practice in prior studies~\cite{chen2023continuous,pendlebury2019tesseract}. 
 AndroZoo aggregates apps collected from multiple distribution channels, including Google Play as well as third-party markets such as Anzhi and AppChina, enabling the construction of a dataset that spans different app ecosystems rather than relying on a single market.
 We acknowledge that, despite its scale and diversity, AndroZoo does not cover all existing Android markets.
-In particular, some prominent regional app stores --- such as Huawei AppGallery, Xiaomi, and other OEM-operated markets --- are not included.
-Incorporating apps from these additional sources could further enhance the comprehensiveness of the dataset, and we consider this an important direction for future work.
-Nevertheless, during dataset construction, we explicitly ensured that our samples include apps originating from multiple markets within AndroZoo, rather than being dominated by a single source.
-As a result, our analysis and findings are grounded in behaviors observed across different app markets, which mitigates the risk that our conclusions are driven by market-specific biases.
+In particular, some prominent regional app stores—such as Huawei AppGallery and other OEM-operated markets—are not included.
+Incorporating applications from these additional sources could further enhance the comprehensiveness of the dataset, and we consider this an important direction for future work.
+Nevertheless, during dataset construction, we explicitly ensured that our samples include applications originating from multiple markets within AndroZoo, including Google Play, VirusShare, AppChina, Anzhi, and VirusTotal, rather than being dominated by a single source.
+Consequently, our analysis and findings are grounded in behaviors observed across diverse app markets, which mitigates the risk that our conclusions are driven by market-specific biases.
 
 Moreover, different app markets adopt security policies and vetting mechanisms, which can affect both the prevalence and behavioral characteristics of malware.
 Although these vetting strategies often share common mechanisms --- such as signature-based scanning and heuristic analysis --- prior work has shown that they are inherently reactive and subject to non-negligible detection delays~\cite{grace2012riskranker,zhou2012dissecting}.
