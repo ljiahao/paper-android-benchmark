@@ -419,7 +419,7 @@ Beyond analyzing existing approaches, we conduct a small-scale empirical study t
 For this experiment, we use the dataset shown in Figure~\ref{fig:new_data} and randomly sample 4,000 apps (3,600 benign and 400 malicious). The dataset is split into training, validation, and testing sets using an \texttt{8:1:1} ratio.
 
 Intuitively, there is no universally optimal model for Android malware detection, as model performance is closely tied to the choice of feature representation. As shown in Table~\ref{tab:model_comparison}, when API calls are used as features, all evaluated classifiers achieve comparable performance. In contrast, when using permissions alone, MLP significantly outperforms the other models. When combining API calls and permission features, Random Forest achieves the best overall performance, with an accuracy of 98.4\% and an F1-score of 92.9\%.
-Overall, our results suggest that ensemble-based models (\textit{e.g.}, Random Forest) and deep learning models (\textit{e.g.}, MLP) generally outperform traditional classifiers (\textit{e.g.}, SVM, Decision Tree, and KNN) in Android malware detection tasks. Consequently, when designing new detectors, these models represent strong and practical baseline choices.
+Overall, our results suggest that ensemble-based models (\textit{e.g.}, Random Forest) and deep learning models (\textit{e.g.}, MLP) generally outperform other traditional classifiers (\textit{e.g.}, SVM, Decision Tree, and KNN) in Android malware detection tasks. Consequently, when designing new detectors, these models represent strong and practical baseline choices.
 
 
 
@@ -456,8 +456,12 @@ This metric ranges in (0, 1), where higher values indicate greater resilience to
 In the study, we adopt a rolling algorithm over the data from 2011 to 2020 to calculate the $AUT(f, N)$.
 Specifically, for each year, from 2011 to 2020, we first partition the data into training, validation, and testing sets with \texttt{8:1:1}.
 Next, we train models with the training data, validate to get the best model, and evaluate it on the test set to get the F1-score as $AUT(F1, 0)$.
-Then, the model is applied to test data in the next $N$ months, yielding $N$ F1-scores. 
+Then, the model is applied to test data in the next $N$ months, yielding $N$ F1-scores.
+It is important to note that the $N$ months of test data may span across different years.
+For example, if we use data from 2011 as the training set and set $N$ to 15 months, the corresponding test data will include apps collected from January 2012 to March 2013.
 These scores are further used to calculate the $AUT(F1, N)$.
+We repeat this process for each year from 2011 to 2020, resulting in ten distinct $AUT(F1, N)$ values for each $N$, if available.
+For instance, when $N$ is 3 months, we can retrieve $AUT(F1, 3)$ values for each year from 2011 to 2019, since the test data for 3 months after training in 2020 is not available.
 By averaging the $AUT(F1, N)$ values sourced from distinct yearly datasets, we chart the outcomes in Figure~\ref{fig:evolution}.
 
 It is evident that malware evolution affects the effectiveness of the selected malware detectors.
@@ -556,6 +560,8 @@ To investigate the impact of adversarial attacks, we employ two primary strategi
 These two techniques are chosen for their simplicity and effectiveness, compromising most ML-based malware detectors, as shown in Table~\ref{tab:adversarial}.
 This suggests that more advanced attack strategies could pose even greater threats to these detectors~\cite{he2023efficient,zhao2021structural}.
 For JSMA, we first train a substitute model with the training set, followed by applying JSMA to the model to generate adversarial samples.
+Specifically, we utilize MLP as the substitute model for simple ML-based classifiers such as SVM, KNN, Random Forest, and MLP, for GNN-based detectors like MsDroid, we employ Graph Convolutional Networks (GCN) as the substitute model.
+During the crafting of adversarial samples, we calculate the Jacobian matrix to identify the most influential features and iteratively modify them until the samples are misclassified by the target model or a maximum number of modifications is reached.
 For RI, we randomly change a certain percentage of features in the testing set to produce adversarial examples.
 When crafting adversarial samples, we follow~\cite{li2023black,chen2019android} to ensure the feature modifications are domain-mappable and can be repackaged to APKs.
 For feature-vector-based approaches like Drebin, we follow~\cite{chen2019android} by constraining modifications to vector bits that are 0, changing them to 1.
@@ -599,11 +605,16 @@ These findings suggest that abstracting feature representations or augmenting mo
 \vspace{-0.3cm}
 \end{table}
 
+% \begin{conclusionbox}
+%     \textit{Summary:}
+%     ML-based malware detectors are susceptible to various real-world challenges, including malware evolution, obfuscation, and adversarial attacks. \textit{Malware semantics} play a crucial role in determining the robustness of detectors against these challenges.
+% \end{conclusionbox}
+
+
 \begin{conclusionbox}
     \textit{Summary:}
-    ML-based malware detectors are susceptible to various real-world challenges, including malware evolution, obfuscation, and adversarial attacks. \textit{Malware semantics} play a crucial role in determining the robustness of detectors against these challenges.
+    ML-based malware detectors are inherently susceptible to real-world challenges such as malware evolution, code obfuscation, and adversarial attacks. Our findings suggest that detectors capable of capturing stable features and underlying malware semantics are more robust to these challenges. These observations highlight the need for future research to focus on identifying, modeling, and integrating semantically meaningful behavioral representations that remain invariant under transformation and evolution.
 \end{conclusionbox}
-
 
 
 % \vspace{-0.1cm}
@@ -663,7 +674,7 @@ Table~\ref{tab:efficiency_ml_modeling} reports the training and testing time of 
 From a cross-method perspective, we observe that most DL-based techniques incur substantially higher training costs than traditional machine learning (TML) methods.
 Moreover, training time is strongly correlated with model complexity, with deeper or more expressive architectures requiring longer training durations.
 From a longitudinal perspective, training time consistently increases over the years, reflecting the growing complexity of Android applications and the expanding dimensionality of extracted features.
-When considered jointly with detection effectiveness (Sec.~\ref{effectiveness}), these results reveal that higher resource consumption does not necessarily translate into superior detection performance.
+When considered jointly with detection effectiveness (Section~\ref{effectiveness}), these results reveal that higher resource consumption does not necessarily translate into superior detection performance.
 This observation highlights a fundamental trade-off between effectiveness and efficiency in ML-based Android malware detection.
 Designing practical detectors therefore requires careful consideration of this balance, where incorporating semantically meaningful features plays a critical role in achieving strong performance without excessive computational overhead.
 During the testing phase, we observe trends similar to those in training, with prediction time increasing modestly over time.
@@ -674,7 +685,7 @@ Nevertheless, most approaches are able to complete inference within seconds when
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.76\linewidth]{fig/efficiency_encoding.pdf}
+    \includegraphics[width=0.71\linewidth]{fig/efficiency_encoding.pdf}
     % \vspace{-0.2cm}
     \caption{The efficiency of feature transformation of the selected approaches. The x-axis shows the dataset year, and the y-axis indicates the utilized time in hours.}
     \label{fig:efficiency_encoding}
@@ -715,9 +726,15 @@ Nevertheless, most approaches are able to complete inference within seconds when
 \vspace{-0.3cm}
 \end{table*}
 
+% \begin{conclusionbox}
+%     \textit{Summary:}
+%     The efficiency of ML-based malware detectors does not positively correlated with their effectiveness. Finding a balance between these two aspects is crucial when developing new detectors, requiring careful alignment of feature semantics with model capabilities to achieve an optimal trade-off.
+% \end{conclusionbox}
+
 \begin{conclusionbox}
     \textit{Summary:}
-    The efficiency of ML-based malware detectors does not positively correlated with their effectiveness. Finding a balance between these two aspects is crucial when developing new detectors, requiring careful alignment of feature semantics with model capabilities to achieve an optimal trade-off.
+    The basic costs of feature extraction and malware prediction for ML-based detectors remain within acceptable limits for practical deployment. However, the primary efficiency bottleneck lies in feature transformation, where both what features are selected and how they are represented have a significant impact on encoding time. Notably, detector efficiency does not necessarily correlate with detection effectiveness, underscoring the importance of balancing effectiveness and efficiency.
+    In particular, features should be well aligned with the capabilities of the chosen model to achieve an optimal trade-off. For example, when employing classifiers such as SVMs, extracting complex graph-based features may be unnecessary, as such models are not well suited to fully exploit the graph structure. Future work should focus on principled feature-model co-design, enabling efficient yet semantically expressive detection pipelines.
 \end{conclusionbox}
 
 \subsection{Further Experimental Validation}
@@ -781,7 +798,7 @@ Other aspects of detector behavior, such as robustness and efficiency, are less 
 Further discussion on the influence of dataset temporal characteristics is provided in Section~\ref{sec:discussion}.
 
 
-\begin{table}[ht]
+\begin{table}[t]
 \centering
 \caption{Average F1-Score and Accuracy for different methods on the additional datasets from 2021 to 2024.}
 \begin{adjustbox}{width=0.89\linewidth}

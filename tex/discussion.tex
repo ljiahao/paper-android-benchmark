@@ -25,6 +25,18 @@ For pattern discovery, \textit{machine learning}, including both traditional mac
 Particularly notable is the significant increase in the utilization of static feature extraction and ML-based techniques in recent years. 
 This evolving trend highlights the importance of our study, seeking to provide an in-depth understanding of the contemporary landscape in ML-based Android malware detection.
 
+\bulletpoint{Dataset considerations}
+
+\bulletpoint{App packing and it impact}
+To protect applications from reverse engineering and tampering, many developers employ app packing techniques that obfuscate the original code structure~\cite{dong2022did,duan2018things}.
+Such techniques can substantially degrade the effectiveness of static analysis-based malware detectors, as they hinder the extraction of meaningful features from packed apps.
+In this study, to systematically examine the state of ML-based Android malware detection, we focus primarily on unpacked apps, which is consistent with the scope of most prior work~\cite{chen2023continuous,wu2021homdroid}.
+During dataset construction, we identify an app as packed if it employs any known packing tools (\textit{e.g.,} Qihoo 360) and exclude these apps to ensure reliable static feature extraction.
+We acknowledge that packing techniques can increase static feature extraction failure rates, negatively impacting the performance of static analysis-based detectors.
+To mitigate this limitation in practical deployments, future detectors may benefit from integrating static and dynamic analysis techniques, enabling more robust feature extraction in the presence of packing and obfuscation.
+In this work, our objective is to evaluate and understand the performance characteristics of ML-based Android malware detectors under controlled and comparable conditions.
+A systematic investigation of app packing techniques and their impact on malware detection effectiveness is an important and complementary direction, which we leave for future work.
+
 \bulletpoint{Potential of large language models in Android malware analysis}
 Large Language Models (LLMs) have demonstrated remarkable capabilities in natural language processing, code understanding, and reasoning tasks.
 Building upon the findings and insights from our study, we believe that LLMs hold substantial promise in the domain of Android malware analysis, particularly in the following areas:
@@ -53,5 +65,3 @@ We also incorporate many evaluation scenarios, such as training data sizes, malw
 It is our hope that the framework can facilitate future work in ML-based Android malware detection.
 
 \tosem{Disucss the dataset limitation again, and highlgiht our additional experiments again... to say our finding still hold.}
-
-\tosem{Discuss about the app packing}
