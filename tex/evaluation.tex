@@ -131,10 +131,10 @@ For instance, for \ding{182}, each year contributes 1,440 benign and 160 malicio
 Duplicate apps are also avoided across these sets.
 We use these sub-datasets to investigate the effectiveness of the selected representative approaches under different settings, such as goodware-to-malware ratio and APK features.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.68\linewidth]{fig/new_data.pdf}
-    \vspace{-0.1cm}
+    \vspace{-0.2cm}
     \caption{Data statistics of apps collected from 2021 to 2024. The y axis uses a logarithmic scale.}
     \label{fig:new_data}
     \vspace{-0.3cm}
@@ -188,7 +188,7 @@ All experiments in this section are conducted on the primary dataset (Section~\r
  \footnotesize
  \item \textit{Tr:} training set, \textit{Ts:} testing set. \ding{182} - \ding{185} correspond to the four scenarios in Table~\ref{tab:effectiveness_dataset}. The top 3 results for each scenario are highlighted in bold.
  \end{tablenotes}
-    \vspace{-0.3cm}
+    \vspace{-0.5cm}
 \end{table}
 
 % We investigate how various factors --- goodware-to-malware ratio in training and testing sets, training set size, and APK feature --- affect the effectiveness of these approaches.
@@ -240,7 +240,7 @@ All experiments in this section are conducted on the primary dataset (Section~\r
     \footnotesize
     \item \textit{Tr:} training set, \textit{Ts:} testing set. \ding{182} - \ding{185} correspond to the four scenarios in Table~\ref{tab:effectiveness_dataset}. The top 3 results for each scenario are highlighted in bold.
     \end{tablenotes}
-    \vspace{-0.3cm}
+    \vspace{-0.5cm}
 \end{table}
 \bulletpoint{Goodware-to-malware ratio}
 The effectiveness of ML-based Android malware detectors is heavily influenced by malware distributions in the training and testing sets.
@@ -277,7 +277,7 @@ This indicates that having a higher proportion of malware samples in the trainin
     \vspace{-0.2cm}
     \caption{Effectiveness of the selected approaches using different sizes of training data.}
     \label{fig:training_size}
-    \vspace{-0.3cm}
+    \vspace{-0.5cm}
 \end{figure}
 
 \bulletpoint{Training set size}
@@ -344,7 +344,7 @@ For instance, MamaDroid and MalScan rely on specific API calls to extract featur
  \footnotesize
  \item \noindent w/o means without. N/A denotes features are not used in the original work.
  \end{tablenotes}
-    \vspace{-0.5cm}
+    \vspace{-0.3cm}
 \end{table}
 
 Table~\ref{tab:combination_feats} presents the outcomes of this experiment.
@@ -362,11 +362,11 @@ It is important to note that we further examine the impact of feature combinatio
 As shown in Table~\ref{tab:ablation_app_intent}, removing the app-intent feature consistently improves performance across all training epochs, in terms of both F1-score and accuracy. This demonstrates that the observed behavior is robust and not an artifact of a particular training configuration or convergence state.
 These findings highlight an important insight: under certain conditions—such as specific classifiers or feature-combination strategies—the inclusion of additional features does not necessarily enhance detection performance and may even be detrimental. Consequently, researchers and practitioners should critically assess the contribution of individual features to overall model performance, rather than assuming that incorporating more features will invariably yield better results.
 
-\begin{table}[t]
+\begin{table}[h]
 \centering
 \caption{Ablation study on the impact of app-intent information across different training epochs.}
 \label{tab:ablation_app_intent}
-\begin{adjustbox}{width=0.67\linewidth, center}
+\begin{adjustbox}{width=0.63\linewidth, center}
 \begin{tabular}{llcccc}
 \toprule
 \textbf{Method} & \textbf{Metric} & \textbf{50} & \textbf{100} & \textbf{150} & \textbf{200} \\
@@ -381,6 +381,7 @@ These findings highlight an important insight: under certain conditions—such a
 \bottomrule
 \end{tabular}
 \end{adjustbox}
+\vspace{-0.4cm}
 \end{table}
 
 \bulletpoint{Model type}
@@ -441,11 +442,11 @@ This section aims to fill these gaps by thoroughly re-evaluating the robustness 
 \begin{figure*}[t]
     \centering
     \includegraphics[width=\linewidth]{fig/evolution.pdf}
-    % \vspace{-0.1cm}
+    % \vspace{-0.2cm}
     \caption{The performance of the selected techniques against diverse malware evolution periods. Columns display the absolute values of $AUT(F1, N)$.
     The line charts depict the relative percentage of $AUT(F1, N)$ against $AUT(F1, 0)$.}
     \label{fig:evolution}
-\vspace{-0.3cm}
+\vspace{-0.5cm}
 \end{figure*}
 
 \bulletpoint{Malware evolution}
@@ -477,11 +478,11 @@ and (ii) designing models that can effectively capture evolving malware semantic
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.96\linewidth]{fig/stable_trend.pdf}
-    % \vspace{-0.1cm}
+    \includegraphics[width=0.94\linewidth]{fig/stable_trend.pdf}
+    \vspace{-0.2cm}
     \caption{Performance of the selected detection approaches for each year from 2011 to 2020. Orange markers indicate Accuracy, and blue markers indicate F1-score.}
     \label{fig:stable_trend}
-\vspace{-0.3cm}
+\vspace{-0.5cm}
 \end{figure*}
 
 \bulletpoint{Detector stableness on different time period datasets}
@@ -521,10 +522,10 @@ To better defend against obfuscation, it is therefore crucial to (i) select feat
 
 \begin{table}[t]
     \centering
-    \renewcommand{\arraystretch}{0.7}
+    \renewcommand{\arraystretch}{0.9}
     \caption{The F-score of the selected approaches under different obfuscation strategies~\cite{aonzo2020obfuscapk}.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.86\linewidth, center}
+    \begin{adjustbox}{width=0.76\linewidth, center}
     \begin{tabular}{@{}c|c|c|c|c|c@{}}
     \toprule
     \diagbox[innerleftsep=-0.1em, innerrightsep=-0.3em, height=2.7em,width=7em]{\textbf{Approach}}{\textbf{Obfuscation}} & \textbf{\begin{tabular}[c]{@{}c@{}}Without \\ Obfus.\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rename \\ Identifier\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Encrypt \\ Resource\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Modify \\ Code\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Reflect \\ Invocation\end{tabular}} \\ \midrule
@@ -543,7 +544,7 @@ To better defend against obfuscation, it is therefore crucial to (i) select feat
     \end{tabular}
     \end{adjustbox}
     \label{table:res_obfuscation}
-    \vspace{-0.3cm}
+    \vspace{-0.5cm}
 \end{table}
 
 \bulletpoint{Adversarial attack}
@@ -650,6 +651,15 @@ All experiments are performed on a server with 32-core CPUs operating at 2.10 GH
     \vspace{-0.3cm}
 \end{figure}
 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.61\linewidth]{fig/efficiency_encoding.pdf}
+    \vspace{-0.2cm}
+    \caption{The efficiency of feature transformation of the selected approaches. The x-axis shows the dataset year, and the y-axis indicates the utilized time in hours.}
+    \label{fig:efficiency_encoding}
+    \vspace{-0.3cm}
+\end{figure}
 \bulletpoint{Feature extraction}
 We first measure the performance overhead incurred during feature extraction from APKs.
 The extraction process supports multi-process execution to enable concurrent feature extraction; in our experiments, we set the number of processes to 16.
@@ -658,39 +668,6 @@ Memory usage is monitored across all processes at 30-second intervals, and the m
 
 Figure~\ref{fig:efficiency_combined} illustrates the time and memory efficiency of feature extraction. We observe that both time and memory overheads increase over the years, a trend that can be attributed to the growing complexity and size of APKs, which require more resources for effective feature extraction. In general, time and memory consumption are positively correlated, with higher extraction times typically accompanied by higher memory usage.
 Despite this upward trend, the observed overheads remain acceptable for practical use of \codename. For example, extracting features from an APK released in 2020 takes approximately 5.5 seconds, with an overall memory consumption of about 22.9~GB when using 16 concurrent processes --- well within the capabilities of modern systems.
-
-\bulletpoint{Feature transformation}
-With pre-extracted features available, we further evaluate the time efficiency of the selected methods in retrieving and encoding their required features. All feature transformation procedures are executed using 16 concurrent processes to ensure consistency across methods.
-
-Figure~\ref{fig:efficiency_encoding} presents the time overhead incurred by different approaches during feature transformation. We observe a clear increasing trend over time, with more recent APKs requiring longer processing times. This trend is consistent with the rapid growth in both the size and structural complexity of Android applications, which imposes higher computational costs during feature encoding. These results highlight the importance of designing scalable and efficient feature encoding strategies to keep pace with the evolution of Android ecosystems.
-Notably, substantial variance in time consumption is observed across different detection approaches. This variation aligns with our expectations, as different methods rely on distinct feature types and encoding mechanisms with varying computational complexity. For example, SDAC exhibits the highest time overhead due to its need to recursively traverse the program graph to generate API call sequences, an operation that scales poorly with increasing code complexity. In contrast, approaches such as Xmal and RAMDA are considerably more time-efficient, as they rely on a single traversal of the program graph to extract API calls, resulting in significantly lower processing overhead.
-
-Overall, these findings demonstrate that the choice of feature representation and encoding strategy has a substantial impact on time efficiency, underscoring a key trade-off between expressive feature modeling and computational scalability in ML-based Android malware detection.
-
-\bulletpoint{ML modeling}
-For each yearly dataset, we split the samples into training, validation, and testing sets using an \texttt{8:1:1} ratio. We then measure the time required by the selected approaches for both model training and testing. For deep learning (DL)-based methods, we adopt an early-stopping strategy during training to prevent overfitting and ensure fair comparison.
-
-Table~\ref{tab:efficiency_ml_modeling} reports the training and testing time of the evaluated approaches.
-From a cross-method perspective, we observe that most DL-based techniques incur substantially higher training costs than traditional machine learning (TML) methods.
-Moreover, training time is strongly correlated with model complexity, with deeper or more expressive architectures requiring longer training durations.
-From a longitudinal perspective, training time consistently increases over the years, reflecting the growing complexity of Android applications and the expanding dimensionality of extracted features.
-When considered jointly with detection effectiveness (Section~\ref{effectiveness}), these results reveal that higher resource consumption does not necessarily translate into superior detection performance.
-This observation highlights a fundamental trade-off between effectiveness and efficiency in ML-based Android malware detection.
-Designing practical detectors therefore requires careful consideration of this balance, where incorporating semantically meaningful features plays a critical role in achieving strong performance without excessive computational overhead.
-During the testing phase, we observe trends similar to those in training, with prediction time increasing modestly over time.
-Nevertheless, most approaches are able to complete inference within seconds when evaluating approximately 2,000 apps, indicating that they remain suitable for near real-time malware detection in practical deployment scenarios.
-
-
-
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.71\linewidth]{fig/efficiency_encoding.pdf}
-    % \vspace{-0.2cm}
-    \caption{The efficiency of feature transformation of the selected approaches. The x-axis shows the dataset year, and the y-axis indicates the utilized time in hours.}
-    \label{fig:efficiency_encoding}
-    \vspace{-0.3cm}
-\end{figure}
 
 \begin{table*}[t]
     \centering
@@ -726,6 +703,34 @@ Nevertheless, most approaches are able to complete inference within seconds when
 \vspace{-0.3cm}
 \end{table*}
 
+\bulletpoint{Feature transformation}
+With pre-extracted features available, we further evaluate the time efficiency of the selected methods in retrieving and encoding their required features. All feature transformation procedures are executed using 16 concurrent processes to ensure consistency across methods.
+
+Figure~\ref{fig:efficiency_encoding} presents the time overhead incurred by different approaches during feature transformation. We observe a clear increasing trend over time, with more recent APKs requiring longer processing times. This trend is consistent with the rapid growth in both the size and structural complexity of Android applications, which imposes higher computational costs during feature encoding. These results highlight the importance of designing scalable and efficient feature encoding strategies to keep pace with the evolution of Android ecosystems.
+Notably, substantial variance in time consumption is observed across different detection approaches. This variation aligns with our expectations, as different methods rely on distinct feature types and encoding mechanisms with varying computational complexity. For example, SDAC exhibits the highest time overhead due to its need to recursively traverse the program graph to generate API call sequences, an operation that scales poorly with increasing code complexity. In contrast, approaches such as Xmal and RAMDA are considerably more time-efficient, as they rely on a single traversal of the program graph to extract API calls, resulting in significantly lower processing overhead.
+
+Overall, these findings demonstrate that the choice of feature representation and encoding strategy has a substantial impact on time efficiency, underscoring a key trade-off between expressive feature modeling and computational scalability in ML-based Android malware detection.
+
+\bulletpoint{ML modeling}
+For each yearly dataset, we split the samples into training, validation, and testing sets using an \texttt{8:1:1} ratio. We then measure the time required by the selected approaches for both model training and testing. For deep learning (DL)-based methods, we adopt an early-stopping strategy during training to prevent overfitting and ensure fair comparison.
+
+Table~\ref{tab:efficiency_ml_modeling} reports the training and testing time of the evaluated approaches.
+From a cross-method perspective, we observe that most DL-based techniques incur substantially higher training costs than traditional machine learning (TML) methods.
+Moreover, training time is strongly correlated with model complexity, with deeper or more expressive architectures requiring longer training durations.
+From a longitudinal perspective, training time consistently increases over the years, reflecting the growing complexity of Android applications and the expanding dimensionality of extracted features.
+When considered jointly with detection effectiveness (Section~\ref{effectiveness}), these results reveal that higher resource consumption does not necessarily translate into superior detection performance.
+This observation highlights a fundamental trade-off between effectiveness and efficiency in ML-based Android malware detection.
+Designing practical detectors therefore requires careful consideration of this balance, where incorporating semantically meaningful features plays a critical role in achieving strong performance without excessive computational overhead.
+During the testing phase, we observe trends similar to those in training, with prediction time increasing modestly over time.
+Nevertheless, most approaches are able to complete inference within seconds when evaluating approximately 2,000 apps, indicating that they remain suitable for near real-time malware detection in practical deployment scenarios.
+
+
+
+
+
+
+
+
 % \begin{conclusionbox}
 %     \textit{Summary:}
 %     The efficiency of ML-based malware detectors does not positively correlated with their effectiveness. Finding a balance between these two aspects is crucial when developing new detectors, requiring careful alignment of feature semantics with model capabilities to achieve an optimal trade-off.
@@ -742,27 +747,7 @@ Nevertheless, most approaches are able to complete inference within seconds when
 
 
 
-\begin{table}[htbp]
-\centering
-\caption{Test Set Performance Comparison: APKTool vs Androguard Features}
-\label{tab:results}
-\renewcommand{\arraystretch}{1.1}
-\begin{adjustbox}{width=0.93\linewidth}
-\begin{tabular}{l|cccc|cccc}
-\hline
-\multirow{2}{*}{\textbf{Model}} & \multicolumn{4}{c|}{\textbf{APKTool}} & \multicolumn{4}{c}{\textbf{Androguard}} \\
-\cline{2-9}
-& \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} \\
-\hline
-RandomForest & 0.975 & 0.941 & 0.800 & 0.865 & 0.984 & 0.886 & 0.975 & 0.929 \\
-SVM          & 0.963 & 0.931 & 0.675 & 0.783 & 0.978 & 0.921 & 0.875 & 0.897 \\
-DecisionTree & 0.960 & 0.786 & 0.825 & 0.805 & 0.984 & 0.905 & 0.950 & 0.927 \\
-KNN          & 0.960 & 0.900 & 0.675 & 0.771 & 0.973 & 0.941 & 0.800 & 0.865 \\
-MLP          & 0.973 & 0.939 & 0.775 & 0.849 & 0.981 & 0.884 & 0.950 & 0.916 \\
-\hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
+
 
 \subsubsection{\textbf{Influence of Reverse Engineering Tools}}
 \label{tool_influence}
@@ -782,6 +767,29 @@ The results show noticeable performance differences across models depending on t
 This finding underscores the importance of standardizing the feature extraction toolchain when conducting comparative evaluations.
 Accordingly, in this work, we use the same tool for all approaches to ensure fair and reproducible comparisons.
 Given its consistently stronger performance across most settings, we select Androguard as the default feature extraction tool in \codename.
+
+\begin{table}[t]
+\centering
+\caption{Test Set Performance Comparison: APKTool vs Androguard Features}
+\label{tab:results}
+\renewcommand{\arraystretch}{1.1}
+\begin{adjustbox}{width=0.93\linewidth}
+\begin{tabular}{l|cccc|cccc}
+\hline
+\multirow{2}{*}{\textbf{Model}} & \multicolumn{4}{c|}{\textbf{APKTool}} & \multicolumn{4}{c}{\textbf{Androguard}} \\
+\cline{2-9}
+& \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} \\
+\hline
+RandomForest & 0.975 & 0.941 & 0.800 & 0.865 & 0.984 & 0.886 & 0.975 & 0.929 \\
+SVM          & 0.963 & 0.931 & 0.675 & 0.783 & 0.978 & 0.921 & 0.875 & 0.897 \\
+DecisionTree & 0.960 & 0.786 & 0.825 & 0.805 & 0.984 & 0.905 & 0.950 & 0.927 \\
+KNN          & 0.960 & 0.900 & 0.675 & 0.771 & 0.973 & 0.941 & 0.800 & 0.865 \\
+MLP          & 0.973 & 0.939 & 0.775 & 0.849 & 0.981 & 0.884 & 0.950 & 0.916 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\vspace{-0.5cm}
+\end{table}
 
 \subsubsection{\textbf{Detection Effectiveness}}
 \label{sec:detect_effectiveness}
