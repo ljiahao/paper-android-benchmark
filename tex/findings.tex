@@ -33,9 +33,10 @@ One more practical observation is given feature sets including discrete features
 % When introducing a new model to detect malware, it is crucial to justify the rationale behind it.
 
 \noindent \textit{(4) Both feature abstraction and models' defensive mechanism contribute to detectors' robustness.}
-Our analysis indicates that abstracting features can help models capture robust malicious patterns~\cite{bhagoji2018enhancing}.
-For instance, MamaDroid~\cite{mariconti2016mamadroid} abstracts program graphs with families and packages, enhancing its robustness to adversarial attacks.
-Moreover, bolstering the defensive capability of ML models can further amplify detectors' reliability and stability~\cite{papernot2016distillation}.
+Our analysis indicates that feature abstraction can help ML models capture more robust malicious patterns~\cite{bhagoji2018enhancing}.
+For example, MamaDroid~\cite{mariconti2016mamadroid} abstracts program graphs at the family and package levels, which enhances its robustness against adversarial attacks.
+In addition, strengthening the defensive capabilities of ML models can further improve detector reliability and stability~\cite{papernot2016distillation}.
+As an illustration, RAMDA~\cite{li2021robust} employs an autoencoder to reconstruct input features, learning compact and robust app representations that mitigate the impact of adversarial perturbations.
 
 \noindent \textit{(5) Detection effectiveness does not positively correlate with efficiency.}
 Through a combined analysis of effectiveness and efficiency, we observe that effectiveness and efficiency do not always positively correlate.
@@ -73,8 +74,10 @@ Our findings reveal that the effectiveness of ML-based Android malware detectors
 To design more effective and robust detectors, we recommend the following strategies:
 
 \noindent \textit{(1) Quantify malware semantics.}
-Instead of simply incorporating more features to enhance detection performance, one can design metrics to evaluate the quantity and quality of malware semantics captured by the features, as well as the redundancy among them.
-This can guide researchers in selecting features that are more informative and complementary, improving the effectiveness of detectors.
+Rather than indiscriminately incorporating additional features to enhance detection performance, a more principled approach is to design metrics that explicitly evaluate both the quantity and quality of malware semantics captured by features, as well as the degree of redundancy among them.
+Such metrics could measure properties such as semantic coverage, discriminative power, and feature overlap across different behavior representations.
+By systematically quantifying these aspects, researchers can better identify features that are not only informative but also complementary, enabling more effective feature selection and combination strategies. 
+Ultimately, this direction can lead to malware detectors that achieve stronger performance with fewer, semantically richer features, while also improving efficiency and robustness in real-world deployment scenarios.
 
 \noindent \textit{(2) Investigate feature combination and abstraction.}
 Given the diverse features available to describe app behaviors, a promising research direction is to explore effective strategies for combining these features to amplify their collective ability to capture malware semantics. 
@@ -82,14 +85,24 @@ Additionally, feature abstraction has demonstrated potential in enhancing the ro
 Future work could focus on developing techniques to abstract features in ways that improve detectors' resilience to real-world challenges while maintaining or even enhancing detection performance.
 
 \noindent \textit{(3) Mine invariant malware semantics.}
-Noticeable challenges in ML-based Android malware detection include the instability against malware evolution and susceptibility to adversarial attacks.
-To address these challenges, researchers can explore invariant malware semantics that remain consistent across different versions of malware.
+Noticeable challenges in ML-based Android malware detection include vulnerability to malware evolution and susceptibility to adversarial attacks, both of which can significantly degrade detection performance in real-world deployments.
+To mitigate these challenges, future research should focus on identifying and modeling invariant malware semantics—high-level behavioral characteristics that remain stable across malware variants, transformations, and obfuscation techniques.
+Such semantics may capture fundamental malicious intents, such as unauthorized data access or covert communication patterns, rather than surface-level syntactic features.
+By grounding detection models in these invariant semantics, it becomes possible to build detectors that are more resilient to code evolution, packing, and adversarial manipulation. 
+
+
+% Noticeable challenges in ML-based Android malware detection include the instability against malware evolution and susceptibility to adversarial attacks.
+% To address these challenges, researchers can explore invariant malware semantics that remain consistent across different versions of malware.
 
 \noindent \textit{(4) Align model complexity with malware semantics.}
-Once the features and their role in describing malware semantics are determined, the next step is selecting models that can effectively utilize this information.
-Researchers should carefully match the complexity of the models to the richness of the malware semantics to achieve optimal detection performance.
-Failing to do so may result in unnecessary computational overhead without improving detection effectiveness.
-
+% Once the features and their role in describing malware semantics are determined, the next step is selecting models that can effectively utilize this information.
+% Researchers should carefully match the complexity of the models to the richness of the malware semantics to achieve optimal detection performance.
+% Failing to do so may result in unnecessary computational overhead without improving detection effectiveness.
+%
+Once the relevant features and their roles in capturing malware semantics are identified, an equally critical step is selecting models that can effectively leverage this semantic information.
+Model complexity should be carefully aligned with the richness and structure of the extracted semantics to achieve an optimal balance between detection effectiveness and computational efficiency.
+Overly complex models may fail to provide additional benefits when the input features lack sufficient semantic depth, while overly simplistic models may be incapable of exploiting rich behavioral representations.
+Future detector design should therefore emphasize feature-model co-design, ensuring that model expressiveness is commensurate with the semantic information available, particularly in resource-constrained or real-world deployment scenarios.
 
 % \bulletpoint{Detection effectiveness does not positively correlate with efficiency}
 % Through a combined analysis of effectiveness and efficiency, we observe that effectiveness and efficiency do not always positively correlate.

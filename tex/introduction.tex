@@ -8,19 +8,18 @@
 % Instead, recent advancements leverage machine learning (ML) to improve the scalability and accuracy in Android malware detection~\cite{qiu2020survey,liu2022deep,wu2019malscan,wu2021homdroid,mclaughlin2017deep,he2022msdroid,xu2018deeprefiner,aafer2013droidapiminer,arp2014drebin}.
 % Specifically, the common paradigm is extracting features from APKs (\textit{e.g.,} permissions and intents), encoding them into numeric vectors, and applying ML models (\textit{e.g.,}neural networks) to automatically distinguish malware from benign apps.
 
-Over the past decade, ML-based Android malware detection has received increased attention from various research communities, such as software engineering, security, and machine learning~\cite{qiu2020survey,liu2022deep,wu2019malscan,wu2021homdroid,mclaughlin2017deep,he2022msdroid,xu2018deeprefiner,aafer2013droidapiminer,arp2014drebin}.
+Over the past decade, ML-based Android malware detection has attracted increasing attention from various research communities, such as software engineering, security, and machine learning~\cite{qiu2020survey,liu2022deep,wu2019malscan,wu2021homdroid,mclaughlin2017deep,he2022msdroid,xu2018deeprefiner,aafer2013droidapiminer,arp2014drebin}.
 Much attention has been given to exploring various combinations of APK features and ML models.
 The trend is primarily led by advancements in ML models (\textit{e.g.}, graph neural network~\cite{he2022msdroid}) and analogies drawn from other well-studied fields (\textit{e.g.}, social network~\cite{wu2019malscan}).
 Most existing approaches report high F1 scores (up to 0.98)~\cite{wu2019malscan,kim2018multimodal}.
 Such promising results motivate us to ask a number of important research questions \tosem{regarding the current state of ML-based Android malware detection.}
 For example,
-how does the existing work represent and incorporate diverse APK features into ML models for Android malware detection?
-How do different detection approaches compare when evaluated on the same datasets, metrics, and toolchains?
-Are current ML-based approaches sufficient to meet the requirements in real-world scenarios?
-Does a more powerful ML model necessarily yield better results?
-\tosem{Does model selection materially affect the detection effectiveness when the features are fixed?}
-Does incorporating more features to describe app behaviors always come with better outcomes?
-Is there a positive correlation between the detection effectiveness and efficiency?
+How do existing approaches represent and incorporate diverse APK features into ML models? 
+How do different detection methods compare when evaluated under the same datasets, metrics, and toolchains?
+Are current ML-based approaches sufficient to meet real-world deployment requirements?
+Does employing more powerful ML models necessarily lead to better detection performance? Does model selection materially affect detection effectiveness when the feature set is fixed?
+Does incorporating more features to describe app behavior always improve performance?
+Finally, is there a positive correlation between detection effectiveness and computational efficiency?
 
 \tosem{Existing studies~\cite{faruki2014android,qiu2020survey,liu2022deep,gao2024comprehensive} provide a good starting point to understand the landscape of ML-based Android malware detection.
 However, most are either theoretical reviews or limited in experimental scope and scalability, and thus fall short of a systematic, end-to-end view of the field.
