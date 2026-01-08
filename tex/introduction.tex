@@ -21,13 +21,12 @@ Does employing more powerful ML models necessarily lead to better detection perf
 Does incorporating more features to describe app behavior always improve performance?
 Finally, is there a positive correlation between detection effectiveness and computational efficiency?
 
-\tosem{Existing studies~\cite{faruki2014android,qiu2020survey,liu2022deep,gao2024comprehensive} provide a good starting point to understand the landscape of ML-based Android malware detection.
+Existing studies~\cite{faruki2014android,qiu2020survey,liu2022deep,gao2024comprehensive} provide a good starting point to understand the landscape of ML-based Android malware detection.
 However, most are either theoretical reviews or limited in experimental scope and scalability, and thus fall short of a systematic, end-to-end view of the field.
 For example, Qiu et al.~\cite{qiu2020survey} organize the landscape by model family (\textit{e.g.,} CNN and RNN) and examine how these models are applied in Android malware detection.
 % Gao et al.~\cite{gao2024comprehensive} evaluate the robustness of malware detectors under ideal conditions but do not explore how real-world factors (\textit{e.g.,} malware ratio and dataset size) affect effectiveness, and omit an assessment of end-to-end efficiency.
 To our knowledge, no prior work provides an empirical and quantitative real-world analysis that jointly considers effectiveness, robustness, and efficiency.
 Additionally, there is no publicly available framework that standardizes the implementation and evaluation of Android malware detectors, enabling reproducible research and supporting future development.
-}
 
 Accordingly, in this paper, we conduct an empirical, quantitative study to answer these questions and clarify the current state of ML-based Android malware detection.
 Given the scale of the ecosystem --- Google Play's catalog reached 4.2 million apps in 2025, a 6.3\% increase over 2024~\cite{appnumber} --- we prioritize methods that scale to large datasets and are practical for real-world deployment.

@@ -1,7 +1,7 @@
 % \documentclass[conference,compsoc]{IEEEtran}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL ../paper-android-malware-main/main.tex   Mon Jan  5 12:30:58 2026
-%DIF ADD ./main.tex                               Tue Jan  6 09:49:45 2026
+%DIF ADD ./main.tex                               Tue Jan  6 15:00:28 2026
 \documentclass[manuscript,screen,review]{acmart}
 \usepackage{shortcuts}
 
@@ -226,7 +226,19 @@
   \country{Singapore}}
 \email{liangzk@comp.nus.edu.sg}
 
-
+\clearpage
+\thispagestyle{empty}
+% --- Response Letter Page ---
+\begingroup
+\pagestyle{empty}
+\begin{center}
+  {\LARGE \textbf{Revision Response Letter}}
+\end{center}
+\vspace{2ex}
+\input{response.tex}
+\clearpage
+\endgroup
+\newpage
 % \affiliation{%
 %   \institution{The Th{\o}rv{\"a}ld Group}
 %   \city{Hekla}
@@ -341,6 +353,7 @@ We attribute these \DIFdelbegin \DIFdel{issues }\DIFdelend \DIFaddbegin \DIFadd{
   Android, Malware Detection, Machine Learning, Systematization of Knowledge
 }
 \maketitle
+
 \section{Introduction}
 \label{sec:intro}
 
@@ -367,10 +380,14 @@ Does }\DIFaddend incorporating more features to describe app \DIFdelbegin \DIFde
 Is }\DIFdelend \DIFaddbegin \DIFadd{behavior always improve performance?
 Finally, is }\DIFaddend there a positive correlation between \DIFdelbegin \DIFdel{the }\DIFdelend detection effectiveness and \DIFaddbegin \DIFadd{computational }\DIFaddend efficiency?
 
-\DIFdelbegin \DIFdel{In }\DIFdelend \DIFaddbegin \tosem{Existing studies~\cite{faruki2014android,qiu2020survey,liu2022deep,gao2024comprehensive} provide a good starting point to understand the landscape of ML-based Android malware detection.
+\DIFdelbegin \DIFdel{In }\DIFdelend \DIFaddbegin \DIFadd{Existing studies~\mbox{%DIFAUXCMD
+\cite{faruki2014android,qiu2020survey,liu2022deep,gao2024comprehensive} }\hskip0pt%DIFAUXCMD
+provide a good starting point to understand the landscape of ML-based Android malware detection.
 However, most are either theoretical reviews or limited in experimental scope and scalability, and thus fall short of a systematic, end-to-end view of the field.
-For example, Qiu et al.~\cite{qiu2020survey} organize the landscape by model family (\textit{e.g.,} CNN and RNN) and examine how these models are applied in Android malware detection.
-% Gao et al.~\cite{gao2024comprehensive} evaluate the robustness of malware detectors under ideal conditions but do not explore how real-world factors (\textit{e.g.,} malware ratio and dataset size) affect effectiveness, and omit an assessment of end-to-end efficiency.
+For example, Qiu et al.~\mbox{%DIFAUXCMD
+\cite{qiu2020survey} }\hskip0pt%DIFAUXCMD
+organize the landscape by model family (}\textit{\DIFadd{e.g.,}} \DIFadd{CNN and RNN) and examine how these models are applied in Android malware detection.
+%DIF >  Gao et al.~\cite{gao2024comprehensive} evaluate the robustness of malware detectors under ideal conditions but do not explore how real-world factors (\textit{e.g.,} malware ratio and dataset size) affect effectiveness, and omit an assessment of end-to-end efficiency.
 To our knowledge, no prior work provides an empirical and quantitative real-world analysis that jointly considers effectiveness, robustness, and efficiency.
 Additionally, there is no publicly available framework that standardizes the implementation and evaluation of Android malware detectors, enabling reproducible research and supporting future development.
 }
@@ -2332,7 +2349,7 @@ and (ii) designing models that can effectively capture evolving malware semantic
 \end{figure*}
 \DIFaddend 
 
-\DIFaddbegin \bulletpoint{Detector stableness on different time period datasets}
+\DIFaddbegin \bulletpoint{Detector stability on different time period datasets}
 \DIFadd{Having examined the impact of malware evolution on detection effectiveness, we now turn to investigating whether the selected approaches can be applied to datasets collected in different time periods.
 This experiment aims to assess the sensitivity of these approaches to temporal variations in the data. 
 Such an analysis helps determine whether the approaches can be used reliably in practice and whether our findings are generalizable.
@@ -2781,9 +2798,13 @@ Instead, the choice of models should take into account the richness of the seman
 \DIFaddend % When introducing a new model to detect malware, it is crucial to justify the rationale behind it.
 
 \noindent \textit{(4) Both feature abstraction and models' defensive mechanism contribute to detectors' robustness.}
-Our analysis indicates that abstracting features can help models capture robust malicious patterns~\cite{bhagoji2018enhancing}.
-For instance, MamaDroid~\cite{mariconti2016mamadroid} abstracts program graphs with families and packages, enhancing its robustness to adversarial attacks.
-Moreover, bolstering the defensive capability of ML models can further amplify detectors' reliability and stability~\cite{papernot2016distillation}.
+Our analysis indicates that \DIFdelbegin \DIFdel{abstracting features can help models capture }\DIFdelend \DIFaddbegin \DIFadd{feature abstraction can help ML models capture more }\DIFaddend robust malicious patterns~\cite{bhagoji2018enhancing}.
+For \DIFdelbegin \DIFdel{instance}\DIFdelend \DIFaddbegin \DIFadd{example}\DIFaddend , MamaDroid~\cite{mariconti2016mamadroid} abstracts program graphs \DIFdelbegin \DIFdel{with families and packages, enhancing its robustness to }\DIFdelend \DIFaddbegin \DIFadd{at the family and package levels, which enhances its robustness against }\DIFaddend adversarial attacks.
+\DIFdelbegin \DIFdel{Moreover, bolstering the defensive capability }\DIFdelend \DIFaddbegin \DIFadd{In addition, strengthening the defensive capabilities }\DIFaddend of ML models can further \DIFdelbegin \DIFdel{amplify detectors' }\DIFdelend \DIFaddbegin \DIFadd{improve detector }\DIFaddend reliability and stability~\cite{papernot2016distillation}.
+\DIFaddbegin \DIFadd{As an illustration, RAMDA~\mbox{%DIFAUXCMD
+\cite{li2021robust} }\hskip0pt%DIFAUXCMD
+employs an autoencoder to reconstruct input features, learning compact and robust app representations that mitigate the impact of adversarial perturbations.
+}\DIFaddend 
 
 \noindent \textit{(5) Detection effectiveness does not positively correlate with efficiency.}
 Through a combined analysis of effectiveness and efficiency, we observe that effectiveness and efficiency do not always positively correlate.
@@ -3053,8 +3074,10 @@ Our findings reveal that the effectiveness of ML-based Android malware detectors
 To design more effective and robust detectors, we recommend the following strategies:
 
 \noindent \textit{(1) Quantify malware semantics.}
-Instead of simply incorporating more features to enhance detection performance, one can design metrics to evaluate the quantity and quality of malware semantics captured by the features, as well as the redundancy among them.
-This can guide researchers in selecting features that are more informative and complementary, improving the effectiveness of detectors.
+\DIFdelbegin \DIFdel{Instead of simply incorporating more }\DIFdelend \DIFaddbegin \DIFadd{Rather than indiscriminately incorporating additional }\DIFaddend features to enhance detection performance, \DIFdelbegin \DIFdel{one can design metrics to evaluate }\DIFdelend \DIFaddbegin \DIFadd{a more principled approach is to design metrics that explicitly evaluate both }\DIFaddend the quantity and quality of malware semantics captured by \DIFdelbegin \DIFdel{the }\DIFdelend features, as well as the \DIFaddbegin \DIFadd{degree of }\DIFaddend redundancy among them.
+\DIFdelbegin \DIFdel{This can guide researchers in selecting }\DIFdelend \DIFaddbegin \DIFadd{Such metrics could measure properties such as semantic coverage, discriminative power, and feature overlap across different behavior representations.
+By systematically quantifying these aspects, researchers can better identify }\DIFaddend features that are \DIFdelbegin \DIFdel{more informative and complementary, improving the effectiveness of detectors }\DIFdelend \DIFaddbegin \DIFadd{not only informative but also complementary, enabling more effective feature selection and combination strategies. 
+Ultimately, this direction can lead to malware detectors that achieve stronger performance with fewer, semantically richer features, while also improving efficiency and robustness in real-world deployment scenarios}\DIFaddend .
 
 \noindent \textit{(2) Investigate feature combination and abstraction.}
 Given the diverse features available to describe app behaviors, a promising research direction is to explore effective strategies for combining these features to amplify their collective ability to capture malware semantics. 
@@ -3062,14 +3085,30 @@ Additionally, feature abstraction has demonstrated potential in enhancing the ro
 Future work could focus on developing techniques to abstract features in ways that improve detectors' resilience to real-world challenges while maintaining or even enhancing detection performance.
 
 \noindent \textit{(3) Mine invariant malware semantics.}
-Noticeable challenges in ML-based Android malware detection include the instability against malware evolution and susceptibility to adversarial attacks.
-To address these challenges, researchers can explore invariant malware semantics that remain consistent across different versions of malware.
+Noticeable challenges in ML-based Android malware detection include \DIFdelbegin \DIFdel{the instability against }\DIFdelend \DIFaddbegin \DIFadd{vulnerability to }\DIFaddend malware evolution and susceptibility to adversarial attacks\DIFdelbegin \DIFdel{.
+To address }\DIFdelend \DIFaddbegin \DIFadd{, both of which can significantly degrade detection performance in real-world deployments.
+To mitigate }\DIFaddend these challenges, \DIFdelbegin \DIFdel{researchers can explore }\DIFdelend \DIFaddbegin \DIFadd{future research should focus on identifying and modeling }\DIFaddend invariant malware semantics\DIFdelbegin \DIFdel{that remain consistent across different versions of malware .
+}\DIFdelend \DIFaddbegin \DIFadd{—high-level behavioral characteristics that remain stable across malware variants, transformations, and obfuscation techniques.
+Such semantics may capture fundamental malicious intents, such as unauthorized data access or covert communication patterns, rather than surface-level syntactic features.
+By grounding detection models in these invariant semantics, it becomes possible to build detectors that are more resilient to code evolution, packing, and adversarial manipulation. 
+}\DIFaddend 
 
-\noindent \textit{(4) Align model complexity with malware semantics.}
-Once the features and their role in describing malware semantics are determined, the next step is selecting models that can effectively utilize this information.
-Researchers should carefully match the complexity of the models to the richness of the malware semantics to achieve optimal detection performance.
-Failing to do so may result in unnecessary computational overhead without improving detection effectiveness.
 
+%DIF >  Noticeable challenges in ML-based Android malware detection include the instability against malware evolution and susceptibility to adversarial attacks.
+%DIF >  To address these challenges, researchers can explore invariant malware semantics that remain consistent across different versions of malware.
+\DIFaddbegin 
+
+\DIFaddend \noindent \textit{(4) Align model complexity with malware semantics.}
+\DIFdelbegin \DIFdel{Once the }\DIFdelend %DIF >  Once the features and their role in describing malware semantics are determined, the next step is selecting models that can effectively utilize this information.
+%DIF >  Researchers should carefully match the complexity of the models to the richness of the malware semantics to achieve optimal detection performance.
+%DIF >  Failing to do so may result in unnecessary computational overhead without improving detection effectiveness.
+%DIF > 
+\DIFaddbegin \DIFadd{Once the relevant }\DIFaddend features and their \DIFdelbegin \DIFdel{role in describing }\DIFdelend \DIFaddbegin \DIFadd{roles in capturing }\DIFaddend malware semantics are \DIFdelbegin \DIFdel{determined, the next }\DIFdelend \DIFaddbegin \DIFadd{identified, an equally critical }\DIFaddend step is selecting models that can effectively \DIFdelbegin \DIFdel{utilize this information.
+Researchers should carefully match the complexity of the models to the richness of the malware }\DIFdelend \DIFaddbegin \DIFadd{leverage this semantic information.
+Model complexity should be carefully aligned with the richness and structure of the extracted }\DIFaddend semantics to achieve \DIFdelbegin \DIFdel{optimal detection performance.
+Failing to do so may result in unnecessary computational overhead without improving detection effectiveness}\DIFdelend \DIFaddbegin \DIFadd{an optimal balance between detection effectiveness and computational efficiency.
+Overly complex models may fail to provide additional benefits when the input features lack sufficient semantic depth, while overly simplistic models may be incapable of exploiting rich behavioral representations.
+Future detector design should therefore emphasize feature-model co-design, ensuring that model expressiveness is commensurate with the semantic information available, particularly in resource-constrained or real-world deployment scenarios}\DIFaddend .
 
 % \bulletpoint{Detection effectiveness does not positively correlate with efficiency}
 % Through a combined analysis of effectiveness and efficiency, we observe that effectiveness and efficiency do not always positively correlate.
@@ -3137,7 +3176,7 @@ While acknowledging the dataset's limitations, we believe that our primary datas
 }
 
 \DIFadd{For the effectiveness evaluation, we observe that detection trends are consistent across both datasets, with similar performance rankings among the evaluated approaches. For example, HinDroid, Kim et al., and HomDroid achieve top performance in both time periods. This consistency indicates that our key findings regarding detection effectiveness are robust and generalizable across different time periods.
-We further examine performance variations across datasets from different time periods in Section~\ref{effectiveness} (}\textit{\DIFadd{Detector stableness of different time period dataset}}\DIFadd{). The results show that the effectiveness of these detectors remains relatively stable across the two periods, with only minor fluctuations in performance metrics. This observation further supports the conclusion that our findings derived from the primary dataset are applicable to more recent Android ecosystems as well.
+We further examine performance variations across datasets from different time periods in Section~\ref{effectiveness} (}\textit{\DIFadd{Detector stability of different time period dataset}}\DIFadd{). The results show that the effectiveness of these detectors remains relatively stable across the two periods, with only minor fluctuations in performance metrics. This observation further supports the conclusion that our findings derived from the primary dataset are applicable to more recent Android ecosystems as well.
 For the robustness evaluation, the results are conceptually insensitive to the specific time period of the dataset. In malware evolution experiments, the key requirement is that training samples precede testing samples temporally. For obfuscation and adversarial evaluations, robustness is assessed by applying controlled transformations to testing apps, which does not depend on the absolute collection years of the dataset.
 For the efficiency evaluation, we measure performance using the primary dataset while explicitly accounting for temporal changes in app characteristics. The decade-long span of this dataset is sufficient to capture substantial changes in app complexity and scale, enabling a meaningful assessment of efficiency trends.
 }
@@ -3463,9 +3502,11 @@ Committed to the research community's growth, all the artifacts (code, data, and
         %DIFDELCMD < {%%%
 \DIFdel{cai2020assessing}%DIFDELCMD < }
 %DIFDELCMD < %%%
-\DIFdel{\bibfield{author}{\bibinfo{person}{Haipeng Cai}.} \bibinfo{year}{2020}}%DIFDELCMD < \natexlab{}%%%
+\DIFdel{\bibfield{author}{\bibinfo{person}{Haipeng Cai}.}
+  \bibinfo{year}{2020}}%DIFDELCMD < \natexlab{}%%%
 \DIFdel{.
-}%DIFDELCMD < \newblock \showarticletitle{Assessing and improving malware detection sustainability through app evolution studies}%%%
+}%DIFDELCMD < \newblock \showarticletitle{Assessing and improving malware detection
+%DIFDELCMD <   sustainability through app evolution studies}%%%
 \DIFdel{.
 }%DIFDELCMD < \newblock %%%
 \DIFdel{\bibinfo{journal}{\emph{TOSEM}} (\bibinfo{year}{2020}).
@@ -3864,9 +3905,12 @@ Committed to the research community's growth, all the artifacts (code, data, and
 
 \DIFdelbegin %DIFDELCMD < \bibitem[Lei et~al\mbox{.}(2019)]%%%
 \bibitem[Le and Mikolov(2014)]{le2014distributed}
-\DIFdelbegin \DIFdel{\bibfield{author}{\bibinfo{person}{Tao Lei}, \bibinfo{person}{Zhan Qin}, \bibinfo{person}{Zhibo Wang}, \bibinfo{person}{Qi Li}, {and} \bibinfo{person}{Dengpan Ye}.} \bibinfo{year}{2019}}\DIFdelend \DIFaddbegin \DIFadd{\bibfield{author}{\bibinfo{person}{Quoc Le} {and} \bibinfo{person}{Tomas
+\DIFdelbegin \DIFdel{\bibfield{author}{\bibinfo{person}{Tao Lei}, \bibinfo{person}{Zhan Qin},
+  \bibinfo{person}{Zhibo Wang}, \bibinfo{person}{Qi Li}, {and}
+  \bibinfo{person}{Dengpan Ye}.} \bibinfo{year}{2019}}\DIFdelend \DIFaddbegin \DIFadd{\bibfield{author}{\bibinfo{person}{Quoc Le} {and} \bibinfo{person}{Tomas
   Mikolov}.} \bibinfo{year}{2014}}\DIFaddend \natexlab{}.
-\newblock \DIFdelbegin %DIFDELCMD < \showarticletitle{EveDroid: Event-aware Android malware detection against model degrading for IoT devices}%%%
+\newblock \DIFdelbegin %DIFDELCMD < \showarticletitle{EveDroid: Event-aware Android malware detection
+%DIFDELCMD <   against model degrading for IoT devices}%%%
 \DIFdel{. }%DIFDELCMD < \newblock %%%
 \DIFdel{\bibinfo{journal}{\emph{IoTJ}} (\bibinfo{year}{2019})}\DIFdelend \DIFaddbegin \showarticletitle{Distributed representations of sentences and
   documents}\DIFadd{. In \bibinfo{booktitle}{\emph{ICML}}}\DIFaddend .

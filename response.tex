@@ -1,0 +1,172 @@
+
+We appreciate the valuable feedback from the reviewers and have made improvements to the paper accordingly.
+In this revision, we conducted new experiments to address the reviewers' concerns, clarified several sections, and refined the writing throughout the paper.
+Below we provide a point-by-point response to the reviewers' comments.
+
+\section*{Associate Editor}
+Thanks for the overall comments and suggestions.
+Here, we summarize how we address the high-level concerns raised. And in the following sections, we provide detailed responses to each reviewer's comments.
+
+\vspace{0.1cm}
+\noindent \textbf{1. Limitation of the application dataset.}
+
+To address concerns regarding the dataset, we have expanded the discussion of its representativeness and potential limitations in Section~\ref{sec:discussion} (Dataset consideration). In addition, we collected a new dataset spanning 2021-2024 and conducted additional experiments to evaluate detector effectiveness on more recent applications. We also added stability experiments in Section~\ref{robustness} (Detector stability on different time period datasets) to demonstrate the robustness of the evaluated detectors across datasets from different time periods.
+
+Based on these revisions, we justify that our key findings continue to hold for recent apps and reliably reflect general trends in ML-based Android malware detection.
+
+\vspace{0.1cm}
+\noindent \textbf{2. Lack of practical efficiency evaluation.}
+
+We have expanded the efficiency evaluation in Section~\ref{efficiency} to cover the entire ML-based Android malware detection pipeline, including feature extraction, feature transformation, model training, and model prediction. In addition, we introduce new metrics --- such as memory consumption during feature extraction --- to provide a more comprehensive assessment of computational overhead. With these additions, we present a more holistic view of the computational costs associated with ML-based Android malware detection.
+
+\vspace{0.1cm}
+\noindent \textbf{3. Clarification of contributions and findings.}
+
+We have revised the introduction in Section~\ref{sec:intro} to explicitly highlight the lack of a comprehensive investigation and a standardized framework in the field of ML-based Android malware detection. In addition, we provide a more explicit comparison with existing studies at the beginning of Section~\ref{sec:systematic_investigation}, discussing how prior work is either largely theoretical or limited in experimental scope and scalability, and falls short of offering a framework that supports flexible and reproducible evaluation and new detector development.
+
+Our work addresses these gaps by conducting a systematic and empirical investigation of ML-based Android malware detection and by providing a general-purpose benchmarking framework to support reproducible evaluation and future research. Furthermore, we summarize our key findings and present actionable recommendations, offering clear takeaways for both researchers and practitioners.
+
+\vspace{0.1cm}
+\noindent \textbf{4. Clarification about approaches and summaries.}
+
+We have clarified several technical details throughout the paper, such as the feature selection process in \codename (Section~\ref{sec:framework}), the application of JSMA for generating adversarial samples (Section~\ref{robustness}), and the summary discussions in various sections. Additional details are provided in the responses to individual reviewers below.
+
+\newpage
+\section*{Reviewer 1}
+
+\noindent \textbf{1. Move the discussion of differences between this work and existing studies earlier.}
+
+We have added a motivated discussion in Section~\ref{sec:intro}, Paragraph 2, to explicitly outline the limitations of existing studies and to clarify the requirements that a comprehensive investigation and benchmarking framework should satisfy.
+
+In addition, we have moved and expanded the comparison with prior work to the beginning of Section~\ref{sec:systematic_investigation}, where we provide a more detailed and systematic discussion of how our work differs from existing studies. Specifically, we show that prior efforts either focus primarily on theoretical reviews or are limited in experimental scope and scalability, making it difficult to obtain a systematic, end-to-end understanding of the field. We further clarify that, no prior work provides an empirical and quantitative real-world analysis that jointly considers effectiveness, robustness, and efficiency. Moreover, there is currently no publicly available framework that standardizes the implementation and evaluation of Android malware detectors, which hinders reproducible research and future development.
+
+Our work addresses these gaps by conducting a large-scale empirical and quantitative study to clarify the current state of ML-based Android malware detection, and by developing FrameDroid, a general-purpose benchmarking framework to support reproducible evaluation and future research.
+
+\vspace{0.1cm}
+\noindent \textbf{2. Investigation of models and feature sets in real-world scenarios.}
+
+To investigate the impact of different models and feature sets under realistic settings, we added new experimental results and updated our findings and recommendations in Section~\ref{sec:intro} accordingly.
+
+Specifically, in Section~\ref{effectiveness}, we first conduct a detailed analysis of the detection performance of MamaDroid, HinDroid, and MalScan, as reported in Table~\ref{tab:res_ratio}. This analysis demonstrates that, for a fixed feature set, the choice of ML model can significantly influence detection effectiveness in real-world scenarios.
+We then select API calls and permissions as representative feature sets and evaluate their detection performance across different models, with results shown in Table~\ref{tab:model_comparison}. This experiment illustrates that, for a fixed model, different feature sets can lead to substantially different detection effectiveness. Furthermore, we observe that ensemble-based models and deep learning models generally achieve better performance when using API and permission features.
+
+Based on these new findings, we revise and refine our observations and recommendations in Section~\ref{sec:intro} to more clearly reflect the interplay between feature selection and model choice in practical Android malware detection settings.
+
+\vspace{0.1cm}
+\noindent \textbf{3. Clarification about feature selection in \codename.}
+
+In \codename, extracted features are organized according to the APK characterization taxonomy described in Section~\ref{sub:apk_characterization}. This design allows users to easily select a subset of features by specifying the desired feature categories.
+We have added detailed clarification in Section~\ref{sec:framework} explaining how users can select, combine, and utilize subsets of features when designing and evaluating their own experiments within \codename.
+
+\vspace{0.1cm}
+\noindent \textbf{4. Clarification on training methods and obfuscation.}
+
+\codename supports checkpointing and resuming training processes, and it can seamlessly incorporate new samples into the training set to enable incremental learning. To address this comment, we have added clarification in Section~\ref{sec:framework}, explaining how new samples can be integrated into the framework to support different training strategies.
+Regarding obfuscation, our approach is to apply obfuscation techniques directly to the original APKs to generate obfuscated variants. Multiple obfuscation strategies can be applied to the same APK, producing diverse obfuscated versions for evaluation. We have added explicit clarification of this process in Section~\ref{sec:framework} to better explain how obfuscation is handled within \codename.
+
+\newpage
+\noindent \textbf{5. Investigation about APK reverse engineering tools.}
+
+We first clarify in Section~\ref{sub:compare} that different APK reverse engineering tools may produce varying feature extraction results, which can subsequently affect the performance of malware detectors. To systematically investigate this effect, we introduce new experiments in Section~\ref{tool_influence}, where features are extracted using APKTool and AndroGuard.
+Our results show that different tools can extract different sets of features (e.g., API calls) from the same APK. We further evaluate the detection performance of multiple models trained on features extracted by each tool, with the results summarized in Table~\ref{tab:results}. These findings demonstrate that the choice of reverse engineering tool can significantly influence the detection effectiveness of ML-based Android malware detectors, underscoring the importance of standardizing toolchains for fair and reproducible evaluation.
+
+\vspace{0.1cm}
+\noindent \textbf{6. Clarification about apk deduplication process.}
+
+For the APK deduplication process, we have reorganized and clarified the dataset construction principles in Section~\ref{sec:dataset}, with a detailed description of how deduplication is performed. Specifically, we apply both hash-based deduplication and package-name-based deduplication to ensure that the dataset contains unique APKs. 
+
+\vspace{0.1cm}
+\noindent \textbf{7. Detection success rate of malware.}
+
+We agree that detection success rate (recall) is an important metric for evaluating malware detectors. To address this comment, we have added Table~\ref{tab:res_ratio_prec_rec} in Section~\ref{effectiveness}, which reports the recall and precision of each evaluated detector under different experimental settings. This addition provides a more comprehensive view of detector performance and complements the previously reported accuracy and F1-score metrics.
+We have also updated the corresponding discussion in Section~\ref{effectiveness} to incorporate insights from the recall results. For example, we observe that increasing the malware ratio generally leads to higher recall across all detectors, indicating improved malware detection capability under higher malware prevalence.
+
+\vspace{0.1cm}
+\noindent \textbf{8. Further investigation about Kim's results in APK features.}
+
+To verify whether the results for Kim et al. reported in Section~\ref{effectiveness} are affected by model configuration, such as the number of training epochs, we conduct additional experiments by varying the training epochs for Kim's model under both the original feature set and the configuration without app-intent features.
+The results show that detection performance is not sensitive to different configurations. We have updated the discussion in Section~\ref{effectiveness} accordingly to reflect this observation.
+
+\noindent \textbf{9. Clarification on defending against concept drift.}
+
+In the malware evolution analysis presented in Section~\ref{robustness}, we clarify that concept drift refers to changes in malware characteristics over time, which can lead to performance degradation when detectors are trained on outdated data. To address this concern, we have expanded the discussion by providing additional insights into potential defenses against concept drift. In particular, we highlight strategies such as extracting more robust and abstract features and focusing on capturing stable malware behaviors that persist across different malware variants and time periods.
+
+\vspace{0.1cm}
+\noindent \textbf{10. Clarification on the obfuscation results of Xmal.}
+
+Following the reviewer's suggestion, we conduct a more detailed analysis of Xmal's obfuscation results in Section~\ref{robustness}. We observe that Xmal relies on a set of manually defined API calls as anchors for feature extraction from APKs. Our analysis shows that these APIs are less likely to be affected by the obfuscation techniques used in our experiments.
+This behavior aligns with our expectations: obfuscation techniques aim to evade detection by modifying features relied upon by detectors, and if the key features remain unchanged, detection performance is unlikely to be impacted. We have added this clarification in Section~\ref{robustness} to better explain the observed robustness of Xmal under obfuscation.
+
+\newpage
+\section*{Reviewer 2}
+
+\noindent \textbf{1. Dataset update and discussion.}
+
+Thank you for highlighting the importance of evaluation dataset construction. To address concerns regarding dataset representativeness and the inclusion of recent apps, we have expanded our discussion on dataset representativeness and its potential limitations. In addition, we collected a new dataset spanning 2021-2024 and conducted additional experiments to evaluate detector effectiveness on more recent applications. We also added stability experiments to demonstrate the robustness of the evaluated detectors across datasets from different time periods.
+
+Specifically, in Section~\ref{sec:discussion} (Dataset consideration), we provide a detailed discussion of dataset representativeness.
+We explain how incorporating apps from diverse markets can enhance dataset representativeness and discuss the potential biases that may arise when certain distribution channels are ignored. We clarify that our dataset construction includes apps from multiple markets, ensuring that our findings are not biased toward any single distribution channel.
+To address temporal concerns, we evaluate detection performance on the newly collected 2021-2024 dataset in Section~\ref{sec:detect_effectiveness}, demonstrating that our key findings remain valid for recent apps. Furthermore, we conduct detector stability experiments in Section~\ref{robustness} (Detector stability on different time period dataset), showing that detection performance is relatively stable when evaluated across datasets from different time periods. 
+Finally, regarding robustness and efficiency evaluations on recent apps, we add detailed discussion in Section~\ref{sec:discussion} (Dataset consideration) to clarify that these aspects are largely insensitive to dataset time span and therefore do not affect our overall conclusions.
+
+\vspace{0.1cm}
+\noindent \textbf{2. End-to-end efficiency evaluation.}
+
+We agree that measuring efficiency overhead during feature extraction and model prediction is essential for assessing the practicality of ML-based Android malware detection. To address this comment, we expanded our efficiency evaluation in Section~\ref{efficiency} to include the time overhead of feature extraction and model prediction, in addition to the previously reported feature transformation and model training times.
+For feature extraction, we measure both the average extraction time and memory consumption per APK, with the results summarized in Figure~\ref{fig:efficiency_combined}. We observe that these overheads increase over time, which can be attributed to the growing complexity of APKs. For model prediction, the results reported in Table~\ref{tab:efficiency_ml_modeling} show trends similar to those observed during training, where more complex models generally incur higher prediction costs.
+We have updated the discussion in Section~\ref{efficiency} accordingly to incorporate these findings, providing a more comprehensive end-to-end evaluation of the efficiency of ML-based Android malware detection.
+
+\vspace{0.1cm}
+\noindent \textbf{3. Discussion about app packing and its impact.}
+
+We appreciate the reviewer's suggestion to discuss the impact of app packing on static analysis-based malware detection. In response, we have added a new subsection in Section~\ref{sec:discussion} (App packing and its impact) that provides a detailed discussion of this topic.
+
+\vspace{0.1cm}
+\noindent \textbf{4. Potential usage of \codename.}
+
+We have added a new subsection in Section~\ref{sec:framework} (Potential usage and availability of \codename) to elaborate on the practical applications of \codename for both researchers and practitioners. Specifically, \codename can be used to design and evaluate new Android malware detection methods, benchmark existing approaches under standardized and reproducible settings, and facilitate systematic comparisons across different models and feature sets.
+We also note that \codename has already been requested and adopted by several research groups for their ongoing projects, demonstrating its practical utility in real-world research scenarios. In addition, we provide details on our plan to release \codename as an open-source project, with the goal of encouraging community contributions and fostering collaborative development.
+
+
+\section*{Reviewer 3}
+
+\noindent \textbf{1.Clarification about the contributions.}
+
+Thank you for the suggestion, which highlights the importance of clearly articulating our contributions. We have revised the introduction in Section~\ref{sec:intro} to explicitly highlight the lack of a comprehensive investigation and a standardized framework in the field of ML-based Android malware detection. We clarify that this gap makes it difficult for researchers to quickly grasp the current state of the art and hinders reproducible research.
+In addition, we provide a more explicit comparison with existing studies at the beginning of Section~\ref{sec:systematic_investigation}, clearly outlining how our work differs from prior efforts in terms of scope, methodology, and contributions. Our work addresses these gaps by conducting a systematic and empirical investigation of ML-based Android malware detection and by designing a general-purpose benchmarking framework to support reproducible evaluation and future research.
+Finally, we summarize our key findings and provide actionable recommendations, offering clear takeaways for both researchers and practitioners in the field.
+
+\vspace{0.1cm}
+\noindent \textbf{2. Computational cost evaluation.}
+
+We appreciate the suggestion to expand our evaluation of computational cost to include additional metrics and stages. In response, we have extended the efficiency evaluation in Section~\ref{efficiency} to cover multiple stages of the detection pipeline, including feature extraction, feature transformation, model training, and model prediction. In addition, we introduce new metrics such as memory consumption during feature extraction to provide a more comprehensive assessment of computational overhead.
+The results of this expanded evaluation are summarized in Figure~\ref{fig:efficiency_combined}, Figure~\ref{fig:efficiency_encoding}, and Table~\ref{tab:efficiency_ml_modeling}. With these additions, we present a more holistic view of the computational costs associated with ML-based Android malware detection, enabling researchers and practitioners to better understand the trade-offs involved when deploying these methods in real-world scenarios.
+
+\vspace{0.1cm}
+\noindent \textbf{3. Clarification about the summary part of robustness and efficiency.}
+
+Thank you for pointing out the need for clearer and better-supported summaries in the robustness and efficiency sections. In response, we have revised both sections to include concise summaries that clearly encapsulate their key findings and insights.
+
+Specifically, in the robustness section (Section~\ref{robustness}), we emphasize the importance of focusing on stable features and malware semantics that capture core and meaningful malicious behaviors when designing robust detectors. This summary is now more clearly articulated and directly supported by our experimental results, making the conclusions easier to follow and better grounded in evidence.
+In the efficiency section (Section~\ref{efficiency}), we highlight the primary bottlenecks that hinder practical deployment and provide more actionable guidance on balancing effectiveness and efficiency based on our empirical findings. In particular, we stress the importance of feature-model co-design for achieving a favorable trade-off between detection performance and computational cost. For example, we clarify that certain models (e.g., SVMs) are not well suited to fully exploit complex graph-based features, and that mismatches between feature representations and model capabilities can lead to unnecessary overhead without performance gains.
+
+\vspace{0.1cm}
+\noindent \textbf{4. Clarification about the dataset time span.}
+
+In the original submission, we followed common practice in the literature and constructed our dataset using apps collected between 2010 and 2020. To address concerns regarding the dataset time span, we have added two complementary experiments.
+
+First, we conduct stability experiments in Section~\ref{robustness} (Detector stability on different time period datasets), where detectors are evaluated on apps from different years. The results show that the effectiveness of the evaluated detectors remains relatively stable across time periods, indicating that our findings are not overly sensitive to the chosen dataset time span.
+Second, we collect an additional dataset consisting of apps from 2021 to 2024 and perform further evaluation in Section~\ref{sec:detect_effectiveness} to assess detection performance on more recent apps. The results demonstrate that our key findings continue to hold on recent Android applications.
+
+\vspace{0.1cm}
+\noindent \textbf{5. Clarification about next N in Robustness section.}
+
+We have clarified in Section~\ref{robustness} that the N-month test period may span multiple calendar years. For example, when using apps collected in 2011 as the training set and setting N = 15, the corresponding test data include apps collected from January 2012 to March 2013.
+More generally, when training models on yearly data from 2011 to 2020, we obtain multiple AUT(F1, N) values. For instance, to compute AUT(F1, 3), we train the model on apps from 2011 and test it on apps collected in January-March 2012; train on 2012 and test on January-March 2013; and so on. The final AUT(F1, 3) score is calculated by averaging the F1-scores across all such yearly evaluations.
+More details have been added in Section~\ref{robustness} to clarify this evaluation procedure.
+
+\vspace{0.1cm}
+\noindent \textbf{6. Clarification about the JSMA.}
+
+We use an MLP as the substitute model for conventional ML-based classifiers such as SVM, KNN, and Random Forest. For GNN-based detectors (e.g., MsDroid), we employ a Graph Convolutional Network (GCN) as the substitute model. During adversarial sample generation, we compute the Jacobian matrix to identify the most influential features and iteratively perturb them until the crafted samples are misclassified by the target model or a predefined maximum number of modifications is reached.
+We have added this clarification in Section~\ref{robustness} to provide a more detailed explanation of how the JSMA method is applied for generating adversarial samples.
