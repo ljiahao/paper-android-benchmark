@@ -63,7 +63,7 @@ To conduct an evaluation that is representative of real-world scenarios and enab
     \caption{Evaluation Dataset Statistics of the Primary Dataset.
     The unit used for measuring APK size is megabytes (MB).}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.8\linewidth, center}
+    \begin{adjustbox}{width=0.64\linewidth, center}
     \begin{tabular}{c|ccccc}
     \hline
     \textbf{Year}  & \textbf{Malicious} & \textbf{Benign} & \textbf{M+B} & \textbf{M/(M+B)} & \textbf{Avg.Size} \\ \hline
@@ -99,7 +99,7 @@ Following these principles, we construct two datasets: a primary dataset (Sectio
     \centering
     \caption{Data distribution of four sub-datasets derived from primary dataset. M/N indicates M benign and N malicious apps.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.6\linewidth, center}
+    \begin{adjustbox}{width=0.51\linewidth, center}
  \begin{tabular}{r|r|r|c}
      \hline
      \multicolumn{1}{c|}{\textbf{Training}} & \multicolumn{1}{c|}{\textbf{Validation}} & \multicolumn{1}{c|}{\textbf{Testing}} & \textbf{Alias} \\ \hline
@@ -133,7 +133,7 @@ We use these sub-datasets to investigate the effectiveness of the selected repre
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.68\linewidth]{fig/new_data.pdf}
+    \includegraphics[width=0.64\linewidth]{fig/new_data.pdf}
     \vspace{-0.2cm}
     \caption{Data statistics of apps collected from 2021 to 2024. The y axis uses a logarithmic scale.}
     \label{fig:new_data}
@@ -273,7 +273,7 @@ This indicates that having a higher proportion of malware samples in the trainin
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.8\linewidth]{fig/training_size.pdf}
+    \includegraphics[width=0.74\linewidth]{fig/training_size.pdf}
     \vspace{-0.2cm}
     \caption{Effectiveness of the selected approaches using different sizes of training data.}
     \label{fig:training_size}
@@ -366,7 +366,7 @@ These findings highlight an important insight: under certain conditions—such a
 \centering
 \caption{Ablation study on the impact of app-intent information across different training epochs.}
 \label{tab:ablation_app_intent}
-\begin{adjustbox}{width=0.63\linewidth, center}
+\begin{adjustbox}{width=0.6\linewidth, center}
 \begin{tabular}{llcccc}
 \toprule
 \textbf{Method} & \textbf{Metric} & \textbf{50} & \textbf{100} & \textbf{150} & \textbf{200} \\
@@ -590,7 +590,7 @@ These findings suggest that abstracting feature representations or augmenting mo
     \renewcommand{\arraystretch}{0.73}
     \caption{The robustness of our selected approaches on various adversarial attacks.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.9\linewidth, center}
+    \begin{adjustbox}{width=0.78\linewidth, center}
  \begin{tabular}{@{}c|cc|c||c|cc|c@{}}
   \toprule
   \multirow{2}{*}{\textbf{\makecell[c]{Selected\\ Approach}}} & \multicolumn{2}{c|}{\textbf{ASR}}      & \multirow{2}{*}{\textbf{APR}} & \multirow{2}{*}{\textbf{\makecell[c]{Selected\\ Approach}}} & \multicolumn{2}{c|}{\textbf{ASR}}      & \multirow{2}{*}{\textbf{APR}} \\ \cmidrule(lr){2-3} \cmidrule(lr){6-7}
@@ -773,7 +773,7 @@ Given its consistently stronger performance across most settings, we select Andr
 \caption{Test Set Performance Comparison: APKTool vs Androguard Features}
 \label{tab:results}
 \renewcommand{\arraystretch}{1.1}
-\begin{adjustbox}{width=0.93\linewidth}
+\begin{adjustbox}{width=0.83\linewidth}
 \begin{tabular}{l|cccc|cccc}
 \hline
 \multirow{2}{*}{\textbf{Model}} & \multicolumn{4}{c|}{\textbf{APKTool}} & \multicolumn{4}{c}{\textbf{Androguard}} \\
@@ -788,7 +788,7 @@ MLP          & 0.973 & 0.939 & 0.775 & 0.849 & 0.981 & 0.884 & 0.950 & 0.916 \\
 \hline
 \end{tabular}
 \end{adjustbox}
-\vspace{-0.5cm}
+\vspace{-0.3cm}
 \end{table}
 
 \subsubsection{\textbf{Detection Effectiveness}}
