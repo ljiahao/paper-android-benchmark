@@ -279,3 +279,5 @@ TSWLatexianTemp*
 bp.tex
 *.md
 main.pdf
+diff.pdf
+diff.tex
