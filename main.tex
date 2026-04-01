@@ -66,28 +66,29 @@
 % 3) Emphasize our goal to revisit the status of existing Android malware detectors and highlight our contributions.
 % 4) Address the reviewers’ concerns about not including data from 2021 to 2023. I found that the size of malware distributed in 2021 to 2023 in AndroZoo is not enough. I will clarify this in the dataset section.
 % 5) Discuss the potential use of LLM in Android analysis, specifically whether it could help address some of the challenges we have identified.
-\setcopyright{none}
+% \setcopyright{none}
 
-\settopmatter{printacmref=false}
+% \settopmatter{printacmref=false}
 
-\makeatletter
-\renewcommand\@copyrightpermission{}
-\makeatother
+% \makeatletter
+% \renewcommand\@copyrightpermission{}
+% \makeatother
 % --------------
-% \copyrightyear{2018}
-% \acmYear{2018}
-% \acmDOI{XXXXXXX.XXXXXXX}
-% %% These commands are for a PROCEEDINGS abstract or paper.
-% \acmConference[Conference acronym 'XX]{Make sure to enter the correct
-%   conference title from your rights confirmation email}{June 03--05,
-%   2018}{Woodstock, NY}
-%
-%  Uncomment \acmBooktitle if the title of the proceedings is different
-%  from ``Proceedings of ...''!
-%
-%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
-%  June 03--05, 2018, Woodstock, NY}
-% \acmISBN{978-1-4503-XXXX-X/2018/06}
+\setcopyright{acmlicensed}
+\copyrightyear{2018}
+\acmYear{2018}
+\acmDOI{XXXXXXX.XXXXXXX}
+%% These commands are for a PROCEEDINGS abstract or paper.
+\acmConference[Conference acronym 'XX]{Make sure to enter the correct
+  conference title from your rights confirmation email}{June 03--05,
+  2018}{Woodstock, NY}
+%%
+%%  Uncomment \acmBooktitle if the title of the proceedings is different
+%%  from ``Proceedings of ...''!
+%%
+%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%%  June 03--05, 2018, Woodstock, NY}
+\acmISBN{978-1-4503-XXXX-X/2018/06}
 
 \begin{document}
 
@@ -102,6 +103,7 @@
   \country{Singapore}}
 \email{jiahao99@comp.nus.edu.sg}
 \author{Jun Zeng}
+\authornote{Contact Jiahao Liu, Jun Zeng, and Ziqi Yang for more details about this work.}
 \affiliation{%
   \institution{National University of Singapore}
   \city{Singapore}
@@ -114,6 +116,7 @@
   \country{United Kingdom}}
 \email{f.pierazzi@ucl.ac.uk}
 \author{Ziqi Yang}
+\authornotemark[1]
 \affiliation{%
   \institution{The State Key Laboratory of Blockchain and Data Security, Zhejiang University}
   \city{Hangzhou}
@@ -135,7 +138,6 @@
   \city{Singapore}
   \country{Singapore}}
 \email{liangzk@comp.nus.edu.sg}
-
 
 % \affiliation{%
 %   \institution{The Th{\o}rv{\"a}ld Group}
@@ -200,7 +202,7 @@
 % \IEEEpubid{0000--0000/00\$00.00~\copyright~2021 IEEE}
 % Remember, if you use this you must call \IEEEpubidadjcol in the second
 % column for its text to clear the IEEEpubid mark.
-
+\renewcommand{\shortauthors}{Jiahao Liu et al.}
 \begin{abstract}
 %Android malware detection serves as the front line against malicious apps.
 %These learning-driven methods have reported promising results in detecting malware.
