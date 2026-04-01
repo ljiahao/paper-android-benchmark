@@ -124,7 +124,7 @@ Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and
 We employ this primary dataset for the main evaluation of the selected approaches in effectiveness, robustness, and efficiency.
 
 \bulletpoint{Settings}
-To further support specifc evaluation scenarios, we construct four sub-datasets wtih different configurations derived from the primary dataset.
+To further support specific evaluation scenarios, we construct four sub-datasets with different configurations derived from the primary dataset.
 For each sub-dataset, apps are randomly sampled to form training, validation, and testing sets, and their distributions are summarized in Table~\ref{tab:effectiveness_dataset}.
 Importantly, the apps in these sub-datasets are sampled from different years to ensure comprehensive temporal representation.
 For instance, for \ding{182}, each year contributes 1,440 benign and 160 malicious apps for training, 180 benign and 20 malicious apps for validation, and the same number for testing. 
@@ -135,7 +135,7 @@ We use these sub-datasets to investigate the effectiveness of the selected repre
     \centering
     \includegraphics[width=0.64\linewidth]{fig/new_data.pdf}
     \vspace{-0.2cm}
-    \caption{Data statistics of apps collected from 2021 to 2024. The y axis uses a logarithmic scale.}
+    \caption{Data statistics of apps collected from 2021 to 2024. The y-axis uses a logarithmic scale.}
     \label{fig:new_data}
     \vspace{-0.3cm}
 \end{figure}
@@ -741,15 +741,11 @@ Nevertheless, most approaches are able to complete inference within seconds when
 \begin{conclusionbox}
     \textit{Summary:}
     The basic costs of feature extraction and malware prediction for ML-based detectors remain within acceptable limits for practical deployment. However, the primary efficiency bottleneck lies in feature transformation, where both what features are selected and how they are represented have a significant impact on encoding time. Notably, detector efficiency does not necessarily correlate with detection effectiveness, underscoring the importance of balancing effectiveness and efficiency.
-    In particular, features should be well aligned with the capabilities of the chosen model to achieve an optimal trade-off. For example, when employing classifiers such as SVMs, extracting complex graph-based features may be unnecessary, as such models are not well suited to fully exploit the graph structure. Future work should focus on principled feature-model co-design, enabling efficient yet semantically expressive detection pipelines.
+    In particular, features should be well aligned with the capabilities of the chosen model to achieve an optimal trade-off. For example, when employing classifiers such as SVMs, extracting complex graph-based features may be unnecessary, as such models are not well-suited to fully exploit the graph structure. Future work should focus on principled feature-model co-design, enabling efficient yet semantically expressive detection pipelines.
 \end{conclusionbox}
 
 \subsection{Further Experimental Validation}
 \label{further_experiments}
-
-
-
-
 
 \subsubsection{\textbf{Influence of Reverse Engineering Tools}}
 \label{tool_influence}

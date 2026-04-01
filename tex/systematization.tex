@@ -74,7 +74,7 @@ The quartet of file types described above forms the foundation of APK characteri
 In contrast, the \textit{Dex} and \textit{Library} components consist of binary files, making their analysis substantially more involved. Feature extraction from these binaries requires reverse engineering techniques and specialized tooling.
 \textit{Dex} can be disassembled by Androguard~\cite{androguard} and APKTool~\cite{apkt} into smali code, which is a more human-readable representation depicting apps' behaviors.
 For the \textit{Library}, tools like Angr~\cite{angr} or IDA Pro~\cite{ida_pro} are helpful in disassembling the native libraries into assembly codes, which facilitates analysis of the native services utilized by apps.
-By analyzing this assembly code, it is possible to capture critical features within native codes.
+By analyzing this assembly code, it is possible to capture critical features within native code.
 % From this code, features are then teased out for further analysis.
 % \jh{The \textit{META-INF} category is not viewed as a primary feature source because it does not directly pertain to the app's core functionality~\cite{faruki2014android}.}
 %
@@ -266,7 +266,7 @@ Recently, graph structure has been widely adopted to represent apps' semantics~\
 One direction is to leverage program graphs to model APK behaviors~\cite{wu2019malscan,wu2021homdroid,he2022msdroid,pektacs2020deep,pektacs2020learning}.
 Another avenue aims to build API-based feature graphs, drawing insights from API calls and their meta-relationships. 
 An example is to identify whether two API calls are in the same block, thereby capturing the app's intended operations~\cite{hou2017hindroid,huang2019deep}.
-When these features are represented as graphs, graph-based techniques (\textit{e.g.,} Graph2Vec~\cite{narayanan2017graph2vec}, social network~\cite{wu2019malscan}) are employed to extract apps's structural information.
+When these features are represented as graphs, graph-based techniques (\textit{e.g.,} Graph2Vec~\cite{narayanan2017graph2vec}, social network~\cite{wu2019malscan}) are employed to extract apps' structural information.
 
 
 
@@ -291,7 +291,7 @@ In this section, we provide a concise introduction to the widely used models.
 % (SVM)~\cite{noble2006support}
 % (KNN)~\cite{peterson2009k} (RF)~\cite{breiman2001random}
 Given APK features, TML models are commonly employed to discern patterns from them.
-The Support Vector Machine (SVM) can find one hyperplane that separates the high-dimension data points with varying labels.
+The Support Vector Machine (SVM) can find one hyperplane that separates the high-dimensional data points with varying labels.
 This capability has made it a popular choice to detect Android malware~\cite{arp2014drebin,hou2017hindroid,xu2020sdac,sun2016sigpid,garcia2018lightweight}.
 K-Nearest Neighbors (KNN) has also been applied in Android malware detection~\cite{wu2019malscan,wu2021homdroid,aafer2013droidapiminer,wu2016effective}.
 This algorithm identifies the nearest neighbors of a given sample and subsequently classifies the sample based on the majority label of its neighbors.

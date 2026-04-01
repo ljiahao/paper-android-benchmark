@@ -59,7 +59,7 @@ To support experimental reproducibility and fair comparison, we propose a genera
 Figure~\ref{fig:framework} illustrates the overall architecture and workflow of \codename.
 % It starts with a collection of apps, from which a set of features is extracted and stored in a {\em feature database}.
 The process begins with a collection of apps, from which a set of features is extracted and stored in a {\em feature database}.
-These features are then processed by a {\em preprocessor}, which transformes them into numerical vectors.
+These features are then processed by a {\em preprocessor}, which transforms them into numerical vectors.
 A selected {\em ML model} is subsequently trained and evaluated to detect malicious applications.
 Furthermore, \codename provides configurable experimental settings to support diverse real-world scenarios, such as varying goodware-to-malware ratios, different training data sizes, and robustness assessments against adversarial attacks.
 % It is implemented in 17K lines of Python code, detailed in Appendix~\ref{sub:implementation}.
@@ -97,7 +97,7 @@ If certain features or models are not yet supported, the framework can be readil
 
 
 \codename provides configurable experimental settings to support different evaluation scenarios.
-Parameters, such as, training sample size, goodware-to-malware ratios, and temporal distribution of samples, are all adjustable.
+Parameters, such as training sample size, goodware-to-malware ratios, and temporal distribution of samples, are all adjustable.
 The framework offers fine-grained control over these parameters and supports checkpointing during both training and evaluation.
 This flexibility facilitates app selection and scenario construction, ensuring comprehensive and accurate evaluations.
 For example, users can configure the goodware-to-malware ratio to assess model performance under varying malware prevalence.
@@ -143,7 +143,7 @@ Such flexibility and adaptability make \codename a versatile tool for developing
 To ensure consistency and mitigate biases from different feature extraction toolchains and learning frameworks, we adopt a standardized setup across all Android malware detectors.
 For feature extraction, we use Androguard~\cite{androguard} to disassemble APK files and derive features such as permissions, intents, and program graphs. 
 LibRadar~\cite{libradar} helps in identifying third-party libraries within the applications, while Angr~\cite{angr} is used for analyzing native libraries and capturing essential features like opcodes and API calls. 
-When it comes to machine learning models, the scikit-learn library is our choice for traditional ML algorithms like SVM, KNN, DT and RF.
+When it comes to machine learning models, the scikit-learn library is our choice for traditional ML algorithms like SVM, KNN, DT, and RF.
 On the other hand, for deep learning architectures such as CNN, GNN, and AE, we resort to Pytorch~\cite{pytorch}.
 This uniform approach ensures a balanced evaluation, concentrating purely on the uniqueness and performance of each method.
 
