@@ -240,7 +240,7 @@ All experiments in this section are conducted on the primary dataset (Section~\r
     \footnotesize
     \item \textit{Tr:} training set, \textit{Ts:} testing set. \ding{182} - \ding{185} correspond to the four scenarios in Table~\ref{tab:effectiveness_dataset}. The top 3 results for each scenario are highlighted in bold.
     \end{tablenotes}
-    \vspace{-0.5cm}
+    \vspace{-0.3cm}
 \end{table}
 \bulletpoint{Goodware-to-malware ratio}
 The effectiveness of ML-based Android malware detectors is heavily influenced by malware distributions in the training and testing sets.
@@ -323,8 +323,8 @@ For instance, MamaDroid and MalScan rely on specific API calls to extract featur
     \centering
     \renewcommand{\arraystretch}{0.8}
     \caption{The impact of APK features on the effectiveness of Drebin, Kim et al., Xmal, and RAMDA.}
-    % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.86\linewidth, center}
+    \vspace{-0.1cm}
+    \begin{adjustbox}{width=0.84\linewidth, center}
  \begin{tabular}{@{}l|cc|cc|cc|cc@{}}
  \toprule
  \multirow{2}{*}{\textbf{\raisebox{-0.2cm}{\begin{tabular}[c]{@{}l@{}}Feature\\ Combination\end{tabular}}}} & \multicolumn{2}{c|}{\textbf{Drebin}}      & \multicolumn{2}{c|}{\textbf{Kim et al.}}  & \multicolumn{2}{c|}{\textbf{Xmal}} & \multicolumn{2}{c}{\textbf{RAMDA}} \\ \cmidrule(l){2-9} 
@@ -344,7 +344,7 @@ For instance, MamaDroid and MalScan rely on specific API calls to extract featur
  \footnotesize
  \item \noindent w/o means without. N/A denotes features are not used in the original work.
  \end{tablenotes}
-    \vspace{-0.3cm}
+    \vspace{-0.4cm}
 \end{table}
 
 Table~\ref{tab:combination_feats} presents the outcomes of this experiment.
@@ -365,6 +365,7 @@ These findings highlight an important insight: under certain conditions—such a
 \begin{table}[h]
 \centering
 \caption{Ablation study on the impact of app-intent information across different training epochs.}
+\vspace{-0.1cm}
 \label{tab:ablation_app_intent}
 \begin{adjustbox}{width=0.6\linewidth, center}
 \begin{tabular}{llcccc}
@@ -381,7 +382,7 @@ These findings highlight an important insight: under certain conditions—such a
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-\vspace{-0.4cm}
+\vspace{-0.3cm}
 \end{table}
 
 \bulletpoint{Model type}
@@ -524,7 +525,7 @@ To better defend against obfuscation, it is therefore crucial to (i) select feat
     \centering
     \renewcommand{\arraystretch}{0.9}
     \caption{The F-score of the selected approaches under different obfuscation strategies~\cite{aonzo2020obfuscapk}.}
-    % \vspace{-0.1cm}
+    \vspace{-0.1cm}
     \begin{adjustbox}{width=0.76\linewidth, center}
     \begin{tabular}{@{}c|c|c|c|c|c@{}}
     \toprule
@@ -544,7 +545,7 @@ To better defend against obfuscation, it is therefore crucial to (i) select feat
     \end{tabular}
     \end{adjustbox}
     \label{table:res_obfuscation}
-    \vspace{-0.5cm}
+    \vspace{-0.4cm}
 \end{table}
 
 \bulletpoint{Adversarial attack}
@@ -560,8 +561,9 @@ Attackers can embed malicious code in the ignored part to evade detection.
 To investigate the impact of adversarial attacks, we employ two primary strategies: Jacobian Saliency Map Attack (JSMA) and Randomized Input (RI).
 These two techniques are chosen for their simplicity and effectiveness, compromising most ML-based malware detectors, as shown in Table~\ref{tab:adversarial}.
 This suggests that more advanced attack strategies could pose even greater threats to these detectors~\cite{he2023efficient,zhao2021structural}.
-For JSMA, we first train a substitute model with the training set, followed by applying JSMA to the model to generate adversarial samples.
-Specifically, we utilize MLP as the substitute model for simple ML-based classifiers such as SVM, KNN, Random Forest, and MLP, for GNN-based detectors like MsDroid, we employ Graph Convolutional Networks (GCN) as the substitute model.
+For JSMA, we first train a substitute model on the training set, and then apply JSMA to generate adversarial samples. 
+Specifically, we utilize a Multi-Layer Perceptron (MLP) as the substitute model for conventional ML-based classifiers (e.g., SVM, KNN, and Random Forest), as MLP can effectively approximate the decision boundaries learned by these classifiers while remaining fully differentiable for gradient-based attacks such as JSMA.
+For GNN-based detectors (e.g., MsDroid), we adopt a Graph Convolutional Network (GCN) as the substitute model, as GCN captures both node features and edge structures through message passing, and provides a simple yet representative architecture for modeling graph-based malware detectors.
 During the crafting of adversarial samples, we calculate the Jacobian matrix to identify the most influential features and iteratively modify them until the samples are misclassified by the target model or a maximum number of modifications is reached.
 For RI, we randomly change a certain percentage of features in the testing set to produce adversarial examples.
 When crafting adversarial samples, we follow~\cite{li2023black,chen2019android} to ensure the feature modifications are domain-mappable and can be repackaged to APKs.
@@ -654,11 +656,11 @@ All experiments are performed on a server with 32-core CPUs operating at 2.10 GH
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.61\linewidth]{fig/efficiency_encoding.pdf}
+    \includegraphics[width=0.56\linewidth]{fig/efficiency_encoding.pdf}
     \vspace{-0.2cm}
     \caption{The efficiency of feature transformation of the selected approaches. The x-axis shows the dataset year, and the y-axis indicates the utilized time in hours.}
     \label{fig:efficiency_encoding}
-    \vspace{-0.3cm}
+    \vspace{-0.5cm}
 \end{figure}
 \bulletpoint{Feature extraction}
 We first measure the performance overhead incurred during feature extraction from APKs.

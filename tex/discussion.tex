@@ -29,15 +29,25 @@ This evolving trend highlights the importance of our study, seeking to provide a
 Including mobile apps from multiple markets is essential for improving the representativeness of an Android malware dataset.
 To incorporate diverse app sources, we select AndroZoo~\cite{allix2016androzoo} as the primary data source, following common practice in prior studies~\cite{chen2023continuous,pendlebury2019tesseract}. 
 AndroZoo aggregates apps collected from multiple distribution channels, including Google Play as well as third-party markets such as Anzhi and AppChina, enabling the construction of a dataset that spans different app ecosystems rather than relying on a single market.
-We acknowledge that, despite its scale and diversity, AndroZoo does not cover all existing Android markets.
-In particular, some prominent regional app stores—such as Huawei AppGallery and other OEM-operated markets—are not included.
-Incorporating apps from these additional sources could further enhance the comprehensiveness of the dataset, and we consider this an important direction for future work.
+
+However, we acknowledge certain limitations of using AndroZoo as the primary malware source. 
+Although AndroZoo integrates samples from various sources (e.g., VirusShare, AppChina, and Anzhi), a substantial portion of its apps originate from Google Play. 
+As a result, some malware samples in AndroZoo may have previously passed Google Play's vetting process at some point in their lifecycle, which may introduce a potential bias. 
+Specifically, such samples might not fully capture the characteristics of in-the-wild malware ecosystems, particularly those distributed through less regulated or underground channels.
+Beyond this, AndroZoo also does not cover all existing Android markets. 
+For example, some prominent regional app stores—such as Huawei AppGallery and other OEM-operated markets—are not included. 
+Incorporating apps from these additional sources, as well as alternative malware feeds, could further enhance dataset comprehensiveness and better reflect the diversity of the Android threat landscape.
+
+% We acknowledge that, despite its scale and diversity, AndroZoo does not cover all existing Android markets.
+% In particular, some prominent regional app stores—such as Huawei AppGallery and other OEM-operated markets—are not included.
+% Incorporating apps from these additional sources could further enhance the comprehensiveness of the dataset, and we consider this an important direction for future work.
+
 Nevertheless, during dataset construction, we explicitly ensured that our samples include applications originating from multiple markets within AndroZoo, including Google Play, VirusShare, AppChina, Anzhi, and VirusTotal, rather than being dominated by a single source.
 Consequently, our analysis and findings are grounded in behaviors observed across diverse app markets, which mitigates the risk that our conclusions are driven by market-specific biases.
-
+%
 Moreover, different app markets adopt security policies and vetting mechanisms, which can affect both the prevalence and behavioral characteristics of malware.
 Although these vetting strategies often share common mechanisms --- such as signature-based scanning and heuristic analysis --- prior work has shown that they are inherently reactive and subject to non-negligible detection delays~\cite{grace2012riskranker,zhou2012dissecting}.
-To account for this, we intentionally adopt a long time span when constructing our dataset, allowing malicious apps to be labeled post hoc and increasing the likelihood that the collected malware samples are representative and behaviorally diverse.
+To account for this, we adopt a long time span when constructing our dataset, allowing malicious apps to be labeled post hoc and increasing the likelihood that the collected malware samples are representative and behaviorally diverse.
 While acknowledging the dataset's limitations, we believe that our primary dataset is sufficiently diverse and representative to support a meaningful and realistic evaluation of ML-based Android malware detectors.
 
 We assess the performance of the selected Android malware detectors using two datasets collected over different time periods: a primary dataset spanning 2010-2020 and an additional dataset from 2021-2024. The additional dataset is used to evaluate effectiveness, allowing us to examine whether detection performance trends remain consistent across temporally distinct Android ecosystems.
@@ -47,7 +57,10 @@ We further examine performance variations across datasets from different time pe
 For the robustness evaluation, the results are conceptually insensitive to the specific time period of the dataset. In malware evolution experiments, the key requirement is that training samples precede testing samples temporally. For obfuscation and adversarial evaluations, robustness is assessed by applying controlled transformations to testing apps, which does not depend on the absolute collection years of the dataset.
 For the efficiency evaluation, we measure performance using the primary dataset while explicitly accounting for temporal changes in app characteristics. The decade-long span of this dataset is sufficient to capture substantial changes in app complexity and scale, enabling a meaningful assessment of efficiency trends.
 
-Overall, by combining effectiveness evaluation across two time periods with conceptually grounded robustness and efficiency analyses, our evaluation provides valuable insights into the performance characteristics of ML-based Android malware detectors, supporting the generalizability of our findings.
+Overall, while the reliance on AndroZoo introduces inherent limitations in fully capturing the in-the-wild malware landscape, our dataset provides a large-scale, systematically curated, and widely adopted benchmark. 
+Combined with cross-temporal evaluation and complementary robustness and efficiency analyses, it supports a meaningful and reproducible assessment of ML-based Android malware detectors.
+
+% Overall, by combining effectiveness evaluation across two time periods with conceptually grounded robustness and efficiency analyses, our evaluation provides valuable insights into the performance characteristics of ML-based Android malware detectors, supporting the generalizability of our findings.
 
 \bulletpoint{App packing and its impact}
 To protect applications from reverse engineering and tampering, many developers employ app packing techniques that obfuscate the original code structure~\cite{dong2022did,duan2018things}.
