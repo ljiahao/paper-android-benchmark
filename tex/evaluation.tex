@@ -95,7 +95,19 @@ Following these principles, we construct two datasets: a primary dataset (Sectio
 % \tosem{Provide a more detailed explanation of the deduplication process.}
 
 
-\begin{table}[t]
+
+
+\subsubsection{\textbf{Primary Dataset}}
+\label{primary_dataset}
+
+To build the main evaluation dataset, we take AndroZoo~\cite{allix2016androzoo} as our app source, which is a growing collection of apps from different platforms, like Google Play, PlayDrone, and AppChina.
+As for the temporal distribution, we set the time span as ten years (\textit{i.e.,} from 2011 to 2020) for a comprehensive evaluation, following previous studies~\cite{chen2023continuous,gao2024comprehensive}.
+To mimic actual conditions, we select apps based on a monthly time window, ensuring that around 2,000 apps are collected each month, with a goodware-to-malware ratio aligning with the estimated $9:1$ in the wild~\cite{pendlebury2019tesseract}.
+Additionally, to ensure the quality of the dataset, we exclude apps that cannot be parsed by AndroGuard~\cite{androguard} because we cannot extract the required features for malware detection.
+Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and 198,440 benign apps, as summarized in Table~\ref{tab:dataset_stat}.
+We employ this primary dataset for the main evaluation of the selected approaches in effectiveness, robustness, and efficiency.
+
+\begin{table}[h]
     \centering
     \caption{Data distribution of four sub-datasets derived from primary dataset. M/N indicates M benign and N malicious apps.}
     % \vspace{-0.1cm}
@@ -112,16 +124,6 @@ Following these principles, we construct two datasets: a primary dataset (Sectio
     \label{tab:effectiveness_dataset}
     \vspace{-0.3cm}
 \end{table}
-
-\subsubsection{\textbf{Primary Dataset}}
-\label{primary_dataset}
-
-To build the main evaluation dataset, we take AndroZoo~\cite{allix2016androzoo} as our app source, which is a growing collection of apps from different platforms, like Google Play, PlayDrone, and AppChina.
-As for the temporal distribution, we set the time span as ten years (\textit{i.e.,} from 2011 to 2020) for a comprehensive evaluation, following previous studies~\cite{chen2023continuous,gao2024comprehensive}.
-To mimic actual conditions, we select apps based on a monthly time window, ensuring that around 2,000 apps are collected each month, with a goodware-to-malware ratio aligning with the estimated $9:1$ in the wild~\cite{pendlebury2019tesseract}.
-Additionally, to ensure the quality of the dataset, we exclude apps that cannot be parsed by AndroGuard~\cite{androguard} because we cannot extract the required features for malware detection.
-Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and 198,440 benign apps, as summarized in Table~\ref{tab:dataset_stat}.
-We employ this primary dataset for the main evaluation of the selected approaches in effectiveness, robustness, and efficiency.
 
 \bulletpoint{Settings}
 To further support specific evaluation scenarios, we construct four sub-datasets with different configurations derived from the primary dataset.
@@ -160,10 +162,10 @@ All experiments in this section are conducted on the primary dataset (Section~\r
 
 \begin{table}[t]
     \centering
-    \renewcommand{\arraystretch}{0.9}
+    % \renewcommand{\arraystretch}{0.9}
     \caption{The effectiveness (F1 and Accuracy) of the approaches across varied goodware-to-malware ratios in training and testing sets.}
     % \vspace{-0.1cm}
-    \begin{adjustbox}{width=0.84\linewidth, center}
+    \begin{adjustbox}{width=0.78\linewidth, center}
  \begin{tabular}{@{}c|cccc|cccc@{}}
      \toprule
      \multirow{3}{*}{\textbf{\makecell[c]{Selected\\ Approach}}} & \multicolumn{4}{c|}{\textbf{B:M=9:1 in Tr (\ding{182} - \ding{183})}}& \multicolumn{4}{c}{\textbf{B:M=1:1 in Tr (\ding{184} - \ding{185})}}\\ \cmidrule(l){2-9} 
@@ -196,7 +198,7 @@ All experiments in this section are conducted on the primary dataset (Section~\r
 \begin{table}[t]
     \centering
     \renewcommand{\arraystretch}{0.9}
-    \caption{The effectiveness (precision and recall) of the approaches across varied goodware-to-malware ratios in training and testing sets.}
+    \caption{The effectiveness (precision and recall) of the approaches across varied goodware-to-malware ratios.}
     \begin{adjustbox}{width=0.84\linewidth, center}
     \begin{tabular}{@{}c|cccc|cccc@{}}
      \toprule
@@ -342,9 +344,9 @@ For instance, MamaDroid and MalScan rely on specific API calls to extract featur
     % \centering
     \begin{tablenotes}[flushleft, labelsep=0]
  \footnotesize
- \item \noindent w/o means without. N/A denotes features are not used in the original work.
+ \item \noindent w/o means without. N/A denotes features that are not used in the original work.
  \end{tablenotes}
-    \vspace{-0.4cm}
+    \vspace{-0.3cm}
 \end{table}
 
 Table~\ref{tab:combination_feats} presents the outcomes of this experiment.
@@ -362,7 +364,7 @@ It is important to note that we further examine the impact of feature combinatio
 As shown in Table~\ref{tab:ablation_app_intent}, removing the app-intent feature consistently improves performance across all training epochs, in terms of both F1-score and accuracy. This demonstrates that the observed behavior is robust and not an artifact of a particular training configuration or convergence state.
 These findings highlight an important insight: under certain conditions—such as specific classifiers or feature-combination strategies—the inclusion of additional features does not necessarily enhance detection performance and may even be detrimental. Consequently, researchers and practitioners should critically assess the contribution of individual features to overall model performance, rather than assuming that incorporating more features will invariably yield better results.
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \caption{Ablation study on the impact of app-intent information across different training epochs.}
 \vspace{-0.1cm}
@@ -746,26 +748,6 @@ Nevertheless, most approaches are able to complete inference within seconds when
 
 \subsection{Further Experimental Validation}
 \label{further_experiments}
-
-\subsubsection{\textbf{Influence of Reverse Engineering Tools}}
-\label{tool_influence}
-As discussed in Section~\ref{sub:compare}, different reverse engineering tools may extract divergent features from the same APK, potentially affecting the performance of ML-based malware detectors.
-To systematically investigate this effect, we randomly select 4,000 apps from the additional dataset shown in Figure~\ref{fig:new_data}, maintaining a malware ratio of 10\%.
-We then extract features using two widely adopted reverse engineering tools: Androguard~\cite{androguard} and APKTool~\cite{apkt}.
-In this experiment, we focus on two commonly used feature types—API calls and permissions.
-We split the dataset into training, validation, and testing sets, and train five representative ML models --- Random Forest, SVM, Decision Tree, KNN, and MLP --- using features extracted by each tool independently.
-Each trained model is evaluated on its corresponding test set, and the results are compared to assess the impact of tool choice on detection performance.
-
-Our analysis reveals that the features extracted by the two tools are not always consistent.
-In some cases, certain API calls or permissions are identified by one tool but missed by the other.
-For instance, for the APK \texttt{00002EA4***0B6FB1}, Androguard extracts 15 additional API calls, such as \texttt{getRunningAppProcesses} and \texttt{getRunningTasks}, that are not detected by APKTool.
-Such discrepancies are expected, as different tools employ distinct parsing strategies and static analysis techniques, leading to variations in feature coverage.
-We further evaluate the performance of models trained on features extracted by each tool, with the results summarized in Table~\ref{tab:results}.
-The results show noticeable performance differences across models depending on the tool used for feature extraction, demonstrating that the choice of reverse engineering tool can significantly influence experimental outcomes
-This finding underscores the importance of standardizing the feature extraction toolchain when conducting comparative evaluations.
-Accordingly, in this work, we use the same tool for all approaches to ensure fair and reproducible comparisons.
-Given its consistently stronger performance across most settings, we select Androguard as the default feature extraction tool in \codename.
-
 \begin{table}[t]
 \centering
 \caption{Test Set Performance Comparison: APKTool vs Androguard Features}
@@ -789,6 +771,27 @@ MLP          & 0.973 & 0.939 & 0.775 & 0.849 & 0.981 & 0.884 & 0.950 & 0.916 \\
 \vspace{-0.3cm}
 \end{table}
 
+\subsubsection{\textbf{Influence of Reverse Engineering Tools}}
+\label{tool_influence}
+As discussed in Section~\ref{sub:compare}, different reverse engineering tools may extract divergent features from the same APK, potentially affecting the performance of ML-based malware detectors.
+To systematically investigate this effect, we randomly select 4,000 apps from the additional dataset shown in Figure~\ref{fig:new_data}, maintaining a malware ratio of 10\%.
+We then extract features using two widely adopted reverse engineering tools: Androguard~\cite{androguard} and APKTool~\cite{apkt}.
+In this experiment, we focus on two commonly used feature types—API calls and permissions.
+We split the dataset into training, validation, and testing sets, and train five representative ML models --- Random Forest, SVM, Decision Tree, KNN, and MLP --- using features extracted by each tool independently.
+Each trained model is evaluated on its corresponding test set, and the results are compared to assess the impact of tool choice on detection performance.
+
+Our analysis reveals that the features extracted by the two tools are not always consistent.
+In some cases, certain API calls or permissions are identified by one tool but missed by the other.
+For instance, for the APK \texttt{00002EA4***0B6FB1}, Androguard extracts 15 additional API calls, such as \texttt{getRunningAppProcesses} and \texttt{getRunningTasks}, that are not detected by APKTool.
+Such discrepancies are expected, as different tools employ distinct parsing strategies and static analysis techniques, leading to variations in feature coverage.
+We further evaluate the performance of models trained on features extracted by each tool, with the results summarized in Table~\ref{tab:results}.
+The results show noticeable performance differences across models depending on the tool used for feature extraction, demonstrating that the choice of reverse engineering tool can significantly influence experimental outcomes
+This finding underscores the importance of standardizing the feature extraction toolchain when conducting comparative evaluations.
+Accordingly, in this work, we use the same tool for all approaches to ensure fair and reproducible comparisons.
+Given its consistently stronger performance across most settings, we select Androguard as the default feature extraction tool in \codename.
+
+
+
 \subsubsection{\textbf{Detection Effectiveness}}
 \label{sec:detect_effectiveness}
 As described in Section~\ref{sec:dataset}, we use the primary dataset spanning 2011-2020 as the main benchmark for evaluating the effectiveness of the selected representative approaches, providing a comprehensive view of the state of ML-based Android malware detection.
@@ -807,7 +810,7 @@ Further discussion on the influence of dataset temporal characteristics is provi
 \begin{table}[t]
 \centering
 \caption{Average F1-Score and Accuracy for different methods on the additional datasets from 2021 to 2024.}
-\begin{adjustbox}{width=0.89\linewidth}
+\begin{adjustbox}{width=0.8\linewidth}
 \begin{tabular}{lcccccc}
 	\toprule
 	\textbf{Method} & Drebin & Mamadroid & Mclaughin et al. & Hindroid & DeepRefiner & Kim et al. \\
@@ -824,6 +827,7 @@ Further discussion on the influence of dataset temporal characteristics is provi
 \end{tabular}
 \end{adjustbox}
 \label{tab:2021_2024_results}
+\vspace{-0.3cm}
 \end{table}
 
 

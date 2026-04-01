@@ -108,14 +108,14 @@ For instance, we can easily implement an add-on feature extractor and store the 
 Table~\ref{tab:literature} offers a summary of the 12 representative approaches we have selected from leading publications in security~\cite{arp2014drebin,mariconti2016mamadroid,mclaughlin2017deep,xu2018deeprefiner,kim2018multimodal,xu2020sdac,he2022msdroid}, software engineering~\cite{wu2019malscan,wu2021homdroid,wu2021android}, and machine learning~\cite{hou2017hindroid,li2021robust}.
 Within this table, we outline the publication details, input from APK, feature engineering style, dataset statistics, and their original effectiveness.
 % As highlighted in Section~\ref{sec:discussion}, inconsistencies might exist between our quantitative evaluation results and those previously reported due to various biases, such as datasets, feature extraction toolchains, and learning frameworks.
-To better support subsequent research and foster replicability and comparison, we provide the hyper-parameters of these approaches.
+To better support subsequent research and foster replicability, we provide the hyper-parameters of these approaches.
 
 \bulletpoint{Drebin}
 We replicate Drebin~\cite{arp2014drebin} utilizing a linear SVM with $C=1$, and set max number of iterations to $1000$.
 
 \bulletpoint{MamaDroid}
 MamaDroid~\cite{mariconti2016mamadroid} has two abstract mode \textit{i.e.}, package and family.
-In our experiments, we choose the family mode, as it is more efficient in terms of time and memory.
+In our experiments, we chose the family mode, as it is more efficient in terms of time and memory.
 For the RF classifier, we employ the default hyper-parameters provided by scikit-learn.
 
 \bulletpoint{Mclaughlin et al}
@@ -232,7 +232,7 @@ The model's training parameters are set with a learning rate of $0.01$ and a bat
 \begin{table}[t]
     \centering
     \renewcommand{\arraystretch}{0.6}
-    \caption{The effectiveness of the selected approaches using different size training data.}
+    \caption{The effectiveness of the selected approaches using different-sized training data.}
     \vspace{-0.1cm}
     \begin{adjustbox}{width=0.54\linewidth}
     \begin{tabular}{@{}c|c|c|c@{}}
