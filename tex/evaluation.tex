@@ -95,19 +95,7 @@ Following these principles, we construct two datasets: a primary dataset (Sectio
 % \tosem{Provide a more detailed explanation of the deduplication process.}
 
 
-
-
-\subsubsection{\textbf{Primary Dataset}}
-\label{primary_dataset}
-
-To build the main evaluation dataset, we take AndroZoo~\cite{allix2016androzoo} as our app source, which is a growing collection of apps from different platforms, like Google Play, PlayDrone, and AppChina.
-As for the temporal distribution, we set the time span as ten years (\textit{i.e.,} from 2011 to 2020) for a comprehensive evaluation, following previous studies~\cite{chen2023continuous,gao2024comprehensive}.
-To mimic actual conditions, we select apps based on a monthly time window, ensuring that around 2,000 apps are collected each month, with a goodware-to-malware ratio aligning with the estimated $9:1$ in the wild~\cite{pendlebury2019tesseract}.
-Additionally, to ensure the quality of the dataset, we exclude apps that cannot be parsed by AndroGuard~\cite{androguard} because we cannot extract the required features for malware detection.
-Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and 198,440 benign apps, as summarized in Table~\ref{tab:dataset_stat}.
-We employ this primary dataset for the main evaluation of the selected approaches in effectiveness, robustness, and efficiency.
-
-\begin{table}[h]
+\begin{table}[t]
     \centering
     \caption{Data distribution of four sub-datasets derived from primary dataset. M/N indicates M benign and N malicious apps.}
     % \vspace{-0.1cm}
@@ -124,6 +112,18 @@ We employ this primary dataset for the main evaluation of the selected approache
     \label{tab:effectiveness_dataset}
     \vspace{-0.3cm}
 \end{table}
+
+\subsubsection{\textbf{Primary Dataset}}
+\label{primary_dataset}
+
+To build the main evaluation dataset, we take AndroZoo~\cite{allix2016androzoo} as our app source, which is a growing collection of apps from different platforms, like Google Play, PlayDrone, and AppChina.
+As for the temporal distribution, we set the time span as ten years (\textit{i.e.,} from 2011 to 2020) for a comprehensive evaluation, following previous studies~\cite{chen2023continuous,gao2024comprehensive}.
+To mimic actual conditions, we select apps based on a monthly time window, ensuring that around 2,000 apps are collected each month, with a goodware-to-malware ratio aligning with the estimated $9:1$ in the wild~\cite{pendlebury2019tesseract}.
+Additionally, to ensure the quality of the dataset, we exclude apps that cannot be parsed by AndroGuard~\cite{androguard} because we cannot extract the required features for malware detection.
+Finally, we obtain a dataset of 221,310 Android apps, i.e., 22,870 malicious and 198,440 benign apps, as summarized in Table~\ref{tab:dataset_stat}.
+We employ this primary dataset for the main evaluation of the selected approaches in effectiveness, robustness, and efficiency.
+
+
 
 \bulletpoint{Settings}
 To further support specific evaluation scenarios, we construct four sub-datasets with different configurations derived from the primary dataset.
@@ -195,6 +195,29 @@ All experiments in this section are conducted on the primary dataset (Section~\r
 
 % We investigate how various factors --- goodware-to-malware ratio in training and testing sets, training set size, and APK feature --- affect the effectiveness of these approaches.
 
+
+\bulletpoint{Goodware-to-malware ratio}
+The effectiveness of ML-based Android malware detectors is heavily influenced by malware distributions in the training and testing sets.
+Here, we consider two ratios, \textit{i.e.}, 10\%, and 50\%, in both training and testing sets.
+These choices are inspired by the estimated 10\% in the wild~\cite{pendlebury2019tesseract,chen2023continuous} and the 50\% widely used in previous studies~\cite{wu2019malscan,li2021robust,mariconti2016mamadroid}.
+The \ding{182} - \ding{185} in Table~\ref{tab:effectiveness_dataset} present these four scenarios, where \ding{182} and \ding{183} have a 10\% malware ratio in training sets, while \ding{184} and \ding{185} have a 50\% malware ratio.
+
+Table~\ref{tab:res_ratio} summarizes the results in terms of F1-score and Accuracy.
+The results are arranged from left to right, corresponding to scenarios \ding{182} through \ding{185}.
+We observe that all approaches achieve promising performance in all metrics under scenario \ding{185}, which is characterized by a \texttt{1:1} goodware-to-malware ratio in both the training and testing sets.
+These findings are consistent with the results reported in the original papers, confirming the validity of our re-implementations. 
+This demonstrates that these approaches can effectively detect Android malware under ideal conditions, where goodware and malware are balanced.
+However, when the malware proportion is reduced to 10\% (\ding{182}), there is a pronounced decline in F1-score across all methods.
+It is evident that many existing approaches experience performance degradation when evaluated under realistic malware ratios.
+This is primarily attributed to the scarcity of malware samples in the training data, which constrains the model's ability to learn discriminative malware semantics.
+Moreover, when the malware ratio in the test set is increased from 10\% to 50\% (\ding{183} and \ding{185}), we observe a consistent improvement in F1-scores across all methods.
+This trend is expected, as a higher prevalence of malware samples in the test set increases the likelihood that models will encounter patterns similar to those seen during training, enhancing their predictive performance.
+To more clearly reveal the performance differences between deep learning (DL)-based and traditional machine learning (TML)-based approaches, we conduct a coarse-grained, averaged analysis of the results, as averaging can partially mitigate the influence of the differing feature combinations employed by both types of approaches.
+We observe an interesting phenomenon: DL-based approaches appear to outperform TML-based methods when the testing malware ratio is 50\% (\ding{183} and \ding{185}) --- almost all the top three results are achieved by DL-based methods.
+While in more realistic scenarios (\ding{182} and \ding{184}), DL-based approaches do not exhibit a pronounced advantage over TML-based methods.
+One possible explanation is that DL-based methods are better equipped to capture the complex semantics underlying app behaviors, but require more malware samples to effectively distill such semantics, which tend to be more prominent in datasets with a higher malware ratio.
+% This is because malware samples are typically more diverse and intricate, presenting greater challenges for detection.
+
 \begin{table}[t]
     \centering
     \renewcommand{\arraystretch}{0.9}
@@ -245,29 +268,6 @@ All experiments in this section are conducted on the primary dataset (Section~\r
     \end{tablenotes}
     \vspace{-0.4cm}
 \end{table}
-\bulletpoint{Goodware-to-malware ratio}
-The effectiveness of ML-based Android malware detectors is heavily influenced by malware distributions in the training and testing sets.
-Here, we consider two ratios, \textit{i.e.}, 10\%, and 50\%, in both training and testing sets.
-These choices are inspired by the estimated 10\% in the wild~\cite{pendlebury2019tesseract,chen2023continuous} and the 50\% widely used in previous studies~\cite{wu2019malscan,li2021robust,mariconti2016mamadroid}.
-The \ding{182} - \ding{185} in Table~\ref{tab:effectiveness_dataset} present these four scenarios, where \ding{182} and \ding{183} have a 10\% malware ratio in training sets, while \ding{184} and \ding{185} have a 50\% malware ratio.
-
-Table~\ref{tab:res_ratio} summarizes the results in terms of F1-score and Accuracy.
-The results are arranged from left to right, corresponding to scenarios \ding{182} through \ding{185}.
-We observe that all approaches achieve promising performance in all metrics under scenario \ding{185}, which is characterized by a \texttt{1:1} goodware-to-malware ratio in both the training and testing sets.
-These findings are consistent with the results reported in the original papers, confirming the validity of our re-implementations. 
-This demonstrates that these approaches can effectively detect Android malware under ideal conditions, where goodware and malware are balanced.
-However, when the malware proportion is reduced to 10\% (\ding{182}), there is a pronounced decline in F1-score across all methods.
-It is evident that many existing approaches experience performance degradation when evaluated under realistic malware ratios.
-This is primarily attributed to the scarcity of malware samples in the training data, which constrains the model's ability to learn discriminative malware semantics.
-Moreover, when the malware ratio in the test set is increased from 10\% to 50\% (\ding{183} and \ding{185}), we observe a consistent improvement in F1-scores across all methods.
-This trend is expected, as a higher prevalence of malware samples in the test set increases the likelihood that models will encounter patterns similar to those seen during training, enhancing their predictive performance.
-To more clearly reveal the performance differences between deep learning (DL)-based and traditional machine learning (TML)-based approaches, we conduct a coarse-grained, averaged analysis of the results, as averaging can partially mitigate the influence of the differing feature combinations employed by both types of approaches.
-We observe an interesting phenomenon: DL-based approaches appear to outperform TML-based methods when the testing malware ratio is 50\% (\ding{183} and \ding{185}) --- almost all the top three results are achieved by DL-based methods.
-While in more realistic scenarios (\ding{182} and \ding{184}), DL-based approaches do not exhibit a pronounced advantage over TML-based methods.
-One possible explanation is that DL-based methods are better equipped to capture the complex semantics underlying app behaviors, but require more malware samples to effectively distill such semantics, which tend to be more prominent in datasets with a higher malware ratio.
-% This is because malware samples are typically more diverse and intricate, presenting greater challenges for detection.
-
-
 
 Table~\ref{tab:res_ratio_prec_rec} provides Precision and Recall values for these scenarios.
 When the training set ratio is fixed, we observe that the malware detection performance (in terms of Recall) does not change significantly as the testing set ratio varies, as shown by pairs \ding{182}-\ding{183} and \ding{184}-\ding{185} in Table~\ref{tab:res_ratio_prec_rec}. 
@@ -361,9 +361,9 @@ These two observations underscore:
 (ii) in some cases (\textit{e.g.,} specifc models or feature combination style), simply expanding the feature set does not guarantee enhanced performance.
 This phenomenon underscores the importance of evaluating and justifying the inclusion of each feature in a malware detector based on the semantics.
 
-It is important to note that we further examine the impact of feature combinations on the approach proposed by Kim et al. by varying the number of training epochs, in order to verify whether the observed phenomenon persists across different model configurations. Specifically, we set the training epochs to 50, 100, 150, and 200, and repeat the app-intent removal experiment under each setting to assess result consistency.
+We further examine the impact of feature combinations on the approach proposed by Kim et al. by varying the number of training epochs, in order to verify whether the observed phenomenon persists across different model configurations. Specifically, we set the training epochs to 50, 100, 150, and 200, and repeat the app-intent removal experiment under each setting to assess result consistency.
 As shown in Table~\ref{tab:ablation_app_intent}, removing the app-intent feature consistently improves performance across all training epochs, in terms of both F1-score and accuracy. This demonstrates that the observed behavior is robust and not an artifact of a particular training configuration or convergence state.
-These findings highlight an important insight: under certain conditions—such as specific classifiers or feature-combination strategies—the inclusion of additional features does not necessarily enhance detection performance and may even be detrimental. Consequently, researchers and practitioners should critically assess the contribution of individual features to overall model performance, rather than assuming that incorporating more features will invariably yield better results.
+These findings highlight an important insight: under certain conditions—such as specific classifiers or feature-combination strategies—the inclusion of additional features does not necessarily enhance detection performance and may even be detrimental. Consequently, researchers and practitioners should critically assess the contribution of individual features to overall performance, rather than assuming that incorporating more features will invariably yield better results.
 
 \begin{table}[t]
 \centering
@@ -385,7 +385,7 @@ These findings highlight an important insight: under certain conditions—such a
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-\vspace{-0.3cm}
+\vspace{-0.5cm}
 \end{table}
 
 \bulletpoint{Model type}
@@ -398,6 +398,7 @@ This suggests that given a fixed feature set, different models demonstrate varyi
 \begin{table}[ht]
   \centering
   \caption{Performance of common ML models across API and permission feature subsets.}
+  \vspace{-0.2cm}
   \label{tab:model_comparison}
   \begin{adjustbox}{width=0.87\linewidth}
     \begin{tabular}{lcccccc}
@@ -417,7 +418,7 @@ This suggests that given a fixed feature set, different models demonstrate varyi
       \bottomrule
     \end{tabular}
   \end{adjustbox}
-  \vspace{-0.3cm}
+  \vspace{-0.4cm}
 \end{table}
 
 Beyond analyzing existing approaches, we conduct a small-scale empirical study to examine how different learning models perform given a fixed feature set. Specifically, we select two widely used feature types—API calls and permissions—to represent app behavior, and evaluate five representative models commonly adopted in Android malware detection: Random Forest, SVM, Decision Tree, KNN, and MLP.
@@ -594,7 +595,7 @@ These findings suggest that abstracting feature representations or augmenting mo
 \begin{table}[t]
     \renewcommand{\arraystretch}{0.73}
     \caption{The robustness of our selected approaches on various adversarial attacks.}
-    % \vspace{-0.1cm}
+    \vspace{-0.2cm}
     \begin{adjustbox}{width=0.78\linewidth, center}
  \begin{tabular}{@{}c|cc|c||c|cc|c@{}}
   \toprule
@@ -608,7 +609,7 @@ These findings suggest that abstracting feature representations or augmenting mo
   \end{tabular}
     \end{adjustbox}
     \label{tab:adversarial}
-\vspace{-0.3cm}
+\vspace{-0.4cm}
 \end{table}
 
 % \begin{conclusionbox}
